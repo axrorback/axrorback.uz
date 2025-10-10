@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Savol berish{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="glass-card p-4 shadow-lg rounded-4" style="background: rgba(30, 30, 45, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1);">
+    <h2 class="mb-4 text-gradient fw-bold"><i class="bi bi-question-circle"></i> Savol berish</h2>
+
+    <!-- ✅ Savol yuborish formasi -->
+    <form method="post" class="mb-5">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ form.name }}
+      </div>
+      <div class="mb-3">
+        {{ form.phone_number }}
+      </div>
+      <div class="mb-3">
+        {{ form.question }}
+      </div>
+      <button type="submit" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold">
+        <i class="bi bi-send"></i> Yuborish
+      </button>
+    </form>
+
+    <!-- 💬 Eski savollar ro‘yxati -->
+    <h3 class="mb-3 text-light fw-bold"><i class="bi bi-chat-dots"></i> Avval berilgan savollar</h3>
+    {% for q in questions %}
+    <div class="mb-4 p-4 rounded-4 shadow-sm" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1);">
+      <p class="text-info small mb-2">
+        <i class="bi bi-person-circle"></i> {{ q.name }} • 📞 {{ q.masked_phone }}
+      </p>
+      <p class="text-light mb-2">{{ q.question }}</p>
+      <small class="text-secondary">
+        <i class="bi bi-clock"></i> {{ q.created|date:"d M Y, H:i" }}
+      </small>
+
+      {% if q.answer %}
+      <div class="mt-3 p-3 rounded-3" style="background: linear-gradient(90deg, rgba(108,92,231,0.2), rgba(0,206,201,0.2)); border-left: 4px solid #00CEC9;">
+        <strong class="text-gradient"><i class="bi bi-chat-left-quote"></i> Admin javobi:</strong>
+        <p class="mb-0 text-light">{{ q.answer }}</p>
+      </div>
+      {% else %}
+      <div class="mt-3 p-2 rounded-3" style="background: rgba(255, 255, 255, 0.05); border-left: 4px solid rgba(255,255,255,0.2);">
+        <span class="text-muted"><i class="bi bi-hourglass-split"></i> Javob kutilmoqda...</span>
+      </div>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p class="text-center text-muted">Hozircha savollar yo‘q 😎</p>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.text-gradient {
+  background: linear-gradient(90deg, #6C5CE7, #00CEC9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #6C5CE7, #00CEC9);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #00CEC9, #6C5CE7);
+  transform: scale(1.02);
+}
+
+body {
+  background: radial-gradient(circle at top, #1e1e2d, #151521);
+  color: #fff;
+}
+
+input, textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #aaa !important;
+}
+
+label {
+  color: #ccc !important;
+}
+
+.card, .form-control:focus {
+  box-shadow: none;
+}
+</style>
+{% endblock %}

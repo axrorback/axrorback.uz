@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Savollar{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="glass-card p-4">
+    <h2 class="mb-4 text-gradient"><i class="bi bi-chat-dots"></i> Foydalanuvchi savollari</h2>
+
+    {% for q in questions %}
+    <div class="mb-4 p-3 border rounded-3 bg-transparent shadow-sm">
+      <h5 class="text-light">{{ q.title }}</h5>
+      <p class="text-muted mb-1"><i class="bi bi-person-circle"></i> {{ q.name }} • 📞 {{ q.masked_phone }}</p>
+      <p class="text-light">{{ q.question }}</p>
+      <small class="text-secondary"><i class="bi bi-clock"></i> {{ q.created|date:"d M Y, H:i" }}</small>
+
+      {% if q.answer %}
+      <div class="mt-3 p-3 rounded-3" style="background: rgba(108, 92, 231, 0.1); border-left: 3px solid #6C5CE7;">
+        <strong><i class="bi bi-chat-left-quote"></i> Admin javobi:</strong>
+        <p class="mb-0">{{ q.answer }}</p>
+      </div>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p class="text-center text-muted">Hozircha savollar yo‘q 😎</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

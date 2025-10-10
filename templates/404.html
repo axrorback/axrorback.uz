@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Sahifa topilmadi</title>
+  <script
+    src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js"
+    type="module"
+  ></script>
+  <style>
+    :root {
+      --primary: #f2f6ff;
+      --accent: #1d3557;
+      --button-bg: #457b9d;
+      --button-hover: #1d3557;
+    }
+
+    body {
+      background: var(--primary);
+      color: var(--accent);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    dotlottie-wc {
+      width: 420px;
+      max-width: 90vw;
+      height: auto;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      max-width: 600px;
+    }
+
+    .btn-home {
+      margin-top: 30px;
+      display: inline-block;
+      background: var(--button-bg);
+      color: #fff;
+      padding: 14px 30px;
+      border-radius: 35px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .btn-home:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .btn-home {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <dotlottie-wc
+    src="https://lottie.host/26a42d90-1005-4106-8f78-55dd91130587/kg9WDVwrkU.lottie"
+    autoplay
+    loop
+  ></dotlottie-wc>
+  <p>
+    Ehh.... afsuski siz izlagan sahifa serverimda topilmadi...
+    Balki u hozir bekatda Wi-Fi izlayotgandir 📡
+  </p>
+
+  <a href="/" class="btn-home">🏡 Bosh sahifaga qaytish</a>
+</body>
+</html>

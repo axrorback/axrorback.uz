@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 shadow-lg">
+
+                <!-- Blog Title -->
+                <h1 class="mb-3" style="color:#6C5CE7;">{{ blog.title }}</h1>
+
+                <!-- Author and Published Date -->
+                <p class="mb-4" style="color:#adb5bd; font-size:0.95rem;">
+                    By <strong style="color:#fff;">{{ blog.author.get_full_name|default:blog.author.username }}</strong> |
+                    Published: {{ blog.created|date:"d M Y H:i" }}
+                </p>
+
+                <!-- Blog Image (if exists) -->
+                {% if blog.image %}
+                <div class="mb-4">
+                    <div class="card shadow-sm border-0">
+                        <img src="{% url 'protected_media' path=blog.image.name %}" alt="{{ blog.title }}" class="img-fluid rounded">
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Blog Content -->
+                <div class="blog-content mb-4" style="color:#e6eef8;">
+                    {{ blog.content|safe }}
+                </div>
+
+                <!-- Share Buttons -->
+                <div class="mb-4">
+                    <h5 class="mb-3" style="color:#fff;">Share this post:</h5>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary btn-sm me-2 mb-2">
+                        <i class="bi bi-facebook"></i> Facebook
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="btn btn-info btn-sm me-2 mb-2">
+                        <i class="bi bi-twitter"></i> Twitter
+                    </a>
+                    <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="btn btn-secondary btn-sm me-2 mb-2">
+                        <i class="bi bi-telegram"></i> Telegram
+                    </a>
+                    <a href="mailto:?subject={{ blog.title }}&body={{ request.build_absolute_uri }}" class="btn btn-outline-dark btn-sm me-2 mb-2">
+                        <i class="bi bi-envelope"></i> Email
+                    </a>
+
+                    <!-- Copy Link Button -->
+                    <button class="btn btn-warning btn-sm mb-2" id="copyLinkBtn">
+                        <i class="bi bi-clipboard"></i> Copy Link
+                    </button>
+                </div>
+
+                <!-- Back Button -->
+                <a href="{% url 'blog' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Back to Blog
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const copyBtn = document.getElementById('copyLinkBtn');
+    copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText("{{ request.build_absolute_uri }}")
+        .then(() => {
+            copyBtn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+            setTimeout(() => {
+                copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> Copy Link';
+            }, 2000);
+        })
+        .catch(err => console.error('Failed to copy: ', err));
+    });
+</script>
+{% endblock %}

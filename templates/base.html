@@ -1,0 +1,215 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+  <title>{% block title %}Ahrorjon Ibrohimjonov — Web Developer{% endblock %}</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Ahrorjon Ibrohimjonov - Full-stack Web Developer. Python, Django, Flask, and web technologies enthusiast. Explore my blog, projects, and portfolio.">
+  <meta name="keywords" content="Ahrorjon Ibrohimjonov, web developer, Django, Flask, Python, Telegram bots, backend, frontend, DevOps, portfolio, IT">
+  <meta name="author" content="Ahrorjon Ibrohimjonov">
+  <meta name="robots" content="index, follow">
+
+  <!-- Social Meta -->
+  <meta property="og:title" content="Ahrorjon Ibrohimjonov — Web Developer">
+  <meta property="og:description" content="Explore my projects, blog posts, and full-stack web development skills.">
+  <meta property="og:image" content="{% static 'images/profile.jpg' %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourwebsite.com">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <style>
+    :root {
+      --accent: #6C5CE7;
+      --accent-hover: #5a4bd0;
+      --muted: #a3b0c2;
+      --card-bg: rgba(255,255,255,0.04);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg,#0f172a 0%, #0b1220 60%);
+      color: #e6eef8;
+      scroll-behavior: smooth;
+    }
+
+    /* Navbar */
+    header.navbar {
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      color: var(--accent);
+    }
+
+    .nav-link {
+      color: #e6eef8;
+      font-weight: 500;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background-color: var(--accent);
+    }
+
+    .nav-link.active {
+      background-color: var(--accent);
+      color: #fff !important;
+      font-weight: 600;
+    }
+
+    .navbar-toggler {
+      border: none;
+    }
+
+    .navbar-toggler-icon {
+      filter: invert(1);
+    }
+
+    /* Glass Cards */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    /* Footer */
+    footer {
+      backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, 0.95);
+      width: 100%;
+    }
+
+    .social-link {
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-link:hover {
+      color: var(--accent);
+      transform: translateY(-4px) scale(1.2);
+    }
+
+    .text-secondary {
+      color: var(--muted) !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar-nav {
+        text-align: center;
+        gap: 8px;
+      }
+      .nav-link {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="container-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'about' %}">
+           <img src="{% url 'protected_media' path='images/favicon.ico' %}" alt="favicon" style="width:24px; height:24px; margin-right:8px;">axrorback</a>
+        <button class="navbar-toggler bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'about' %}">Home</a>
+            </li>
+              <li class="nav-item">
+               <a class="nav-link" href="{% url 'achievements' %}">Yutuqlar</a>
+                </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="https://library.coderboys.uz" target="_blank">Kutubxona</a>
+                </li>
+            <li class="nav-item">
+               <a class="nav-link" href="https://project.coderboys.uz" target="_blank">Loyihalar</a>
+                </li>
+            <li class="nav-item">
+               <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">Telegram Bot</a>
+                </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About Me</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'ask_question' %}active{% endif %}" href="{% url 'ask_question' %}">
+                Savol berish
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4 text-center text-light">
+      <div class="mb-3 d-flex justify-content-center flex-wrap gap-3">
+        <a href="https://instagram.com/axrorback" target="_blank" class="text-light fs-4 social-link"><i class="bi bi-instagram"></i></a>
+        <a href="https://twitter.com/axrorback" target="_blank" class="text-light fs-4 social-link"><i class="bi bi-twitter-x"></i></a>
+        <a href="https://t.me/axrorback" target="_blank" class="text-light fs-4 social-link"><i class="bi bi-telegram"></i></a>
+        <a href="https://facebook.com/axrorback" target="_blank" class="text-light fs-4 social-link"><i class="bi bi-facebook"></i></a>
+        <a href="https://github.com/axrorback" target="_blank" class="text-light fs-4 social-link"><i class="bi bi-github"></i></a>
+        <a href="mailto:axrorback@gmail.com" class="text-light fs-4 social-link"><i class="bi bi-envelope"></i></a>
+        <a href="tel:+998931004005" class="text-light fs-4 social-link"><i class="bi bi-telephone"></i></a>
+      </div>
+      <div class="small text-secondary">
+        © <span id="footerYear"></span> <strong>Ahrorjon Ibrohimjonov</strong> — Barcha huquqlar himoyalangan
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

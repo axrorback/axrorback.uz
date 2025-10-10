@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Men haqimda — Ahrorjon Ibrohimjonov{% endblock %}
+{% load static %}
+
+{% block meta %}
+<meta name="description" content="Ahrorjon Ibrohimjonov — Full-stack veb dasturchi. Python, Django, Flask va zamonaviy texnologiyalar bo‘yicha mutaxassis. Mening tajriba va ko‘nikmalarim haqida bilib oling.">
+<meta name="keywords" content="Ahrorjon Ibrohimjonov, veb dasturchi, Django, Flask, Python, PostgreSQL, frontend, backend, Telegram botlar, DevOps, texnologiya">
+<meta name="author" content="Ahrorjon Ibrohimjonov">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .name-highlight {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: #0d6efd; /* Bootstrap primary color */
+  }
+  .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #343a40;
+  }
+  .lead-text {
+      font-size: 1.1rem;
+      color: #6c757d;
+  }
+  ul li {
+      margin-bottom: 0.5rem;
+  }
+</style>
+
+<div class="container-lg py-5">
+
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="name-highlight">Ahrorjon Ibrohimjonov</h1>
+    <p class="lead lead-text">Full-stack veb dasturchi | Python, Django & Flask | Texnologiya ishqibozi</p>
+  </div>
+
+  <!-- Profile -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-4 text-center mb-3 mb-md-0">
+      <img src="{% url 'protected_media' path='images/img.png' %}"
+     alt="Ahrorjon Ibrohimjonov"
+     class="img-fluid rounded-circle shadow"
+     style="max-width:250px;">
+    </div>
+    <div class="col-md-8">
+      <h3 class="section-title">Men haqimda</h3>
+      <p>
+        Men <strong>Ahrorjon Ibrohimjonov</strong>,  Backend dasturchiman. Asosiy yo‘nalishim — backend dasturlash bo‘lib, Python, Django va Flask hamda DRF yordamida veb ilovalar ishlab chiqaman. Shuningdek, HTML, CSS, Bootstrap va JavaScript kabi texnologiyalarda faol ishlayman.
+      </p>
+      <p>
+        Hozirda Acharya Universitetida ikkinchi bosqich talabasi bo‘lib, IT va dasturlash sohasida bilimlarimni chuqurlashtirishga harakat qilyapman. Yangi texnologiyalarni o‘rganish va ularni amaliy loyihalarda qo‘llash — mening asosiy maqsadimdir.
+      </p>
+    </div>
+  </div>
+
+  <!-- Skills & Experience -->
+  <div class="mb-5">
+    <h3 class="section-title">Ko‘nikmalar va tajriba</h3>
+    <ul>
+      <li>Python & Django — veb ilovalar, REST API va backend mantiqlarini yaratish</li>
+      <li>Flask — yengil va tezkor veb ilovalar ishlab chiqish</li>
+      <li>Frontend — HTML, CSS, Bootstrap, JavaScript</li>
+      <li>Ma’lumotlar bazasi — PostgreSQL va SQLite</li>
+      <li>Telegram botlar — Aiogram yordamida bot va userbotlar yaratish</li>
+      <li>Docker & DevOps asoslari — veb ilovalarni konteynerlarda ishlatish</li>
+      <li>Git & GitHub — versiya nazorati va jamoaviy ishlash</li>
+      <li>Muammolarni hal qilish va algoritmik fikrlash</li>
+    </ul>
+  </div>
+
+  <!-- Interests -->
+  <div class="mb-5">
+    <h3 class="section-title">Qiziqishlarim</h3>
+    <p>
+      Texnologiyalar, sun’iy intellekt, veb va mobil ilovalar hamda ta’limga oid platformalar yaratishga katta qiziqishim bor. Kod yozishdan tashqari, yangi texnologiyalarni o‘rganish, amaliyotga joriy etish va foydali mahsulotlar yaratishni yoqtiraman.
+    </p>
+  </div>
+
+  <!-- Motivation -->
+  <div class="mb-5">
+    <h3 class="section-title">Mening maqsadim</h3>
+    <p>
+      Har bir loyiha — bu yangi imkoniyat va tajriba. Men texnologiyalar yordamida insonlar hayotini yengillashtirish, qulay va zamonaviy yechimlar yaratishga intilaman. O‘rganish, o‘sish va amaliyotda qo‘llash — mening harakatlarimning asosidir.
+    </p>
+  </div>
+
+  <!-- Projects / Achievements -->
+  <div class="mb-5">
+    <h3 class="section-title">Loyihalar va yutuqlar</h3>
+    <ul>
+      <li>Python va Django yordamida talabalarga mo‘ljallangan interaktiv ta’lim platformalari ishlab chiqdim</li>
+      <li>Telegram botlar yaratdim va foydalanuvchilar bilan avtomatik aloqa tizimlarini joriy qildim</li>
+      <li>PostgreSQL va responsive UI bilan to‘liq ishlaydigan veb ilovalar tuzdim</li>
+      <li>Kod yozish bo‘yicha o‘quv materiallarini chop etdim</li>
+      <li>Docker orqali loyihalarda CI/CD tizimini joriy qildim</li>
+    </ul>
+  </div>
+
+</div>
+{% endblock %}
