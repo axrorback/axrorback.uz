@@ -1,5 +1,13 @@
 from django.db import models
-from django.conf import settings  # ✅ eng to‘g‘ri yo‘l shu
+from django.conf import settings  # eng to‘g‘ri yo‘l shu
+import hashlib
+import time
+from django.utils import timezone
+
+TOKEN_EXPIRE_SECONDS = 30 * 60  # 30 daqiqa = 1800 s
+
+
+
 
 # 📌 Blog Post modeli
 class Post(models.Model):
@@ -124,6 +132,15 @@ class Certificate(models.Model):
     def is_pdf(self):
         return self.file.name.lower().endswith('.pdf')
 
+    def get_secure_url(self, expires_in_minutes=30):
+        """
+        30 daqiqalik tokenli havola yaratadi
+        """
+        expire_timestamp = int(time.time()) + expires_in_minutes * 60
+        data = f"{self.pk}:{expire_timestamp}:{settings.SECRET_KEY}"
+        token = hashlib.sha256(data.encode()).hexdigest()
+        return f"/cert/{self.pk}/{expire_timestamp}/{token}/"
+
     def __str__(self):
         return self.title
 
@@ -131,7 +148,6 @@ class Certificate(models.Model):
         verbose_name = "Sertifikat"
         verbose_name_plural = "Sertifikatlar"
         ordering = ['-created_at']
-
 
 class AdminLog(models.Model):
     LEVELS = (
