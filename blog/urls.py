@@ -10,5 +10,6 @@ urlpatterns = [
     path('ask/', ask_question, name='ask_question'),
     path('achievements/', achievements, name='achievements'),  #
     path('media/<path:path>/', protected_media, name='protected_media'),
+    path('cert/<int:pk>/<int:expire>/<str:token>/', secure_certificate_view, name='secure_certificate'),
 
 ]
