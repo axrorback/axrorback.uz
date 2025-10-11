@@ -7,7 +7,7 @@ from .forms import QuestionForm
 from .models import *
 
 
-ALLOWED_DOMAINS = ['axrorback.uz', 'www.axrorback.uz','127.0.0.1:8000']
+ALLOWED_DOMAINS = ['axrorback.uz', 'www.axrorback.uz','127.0.0.1']
 
 def protected_media(request, path):
     """
@@ -37,21 +37,32 @@ def protected_media(request, path):
 def secure_certificate_view(request, pk, expire, token):
     cert = get_object_or_404(Certificate, pk=pk)
 
-    # Token va muddatni tekshirish
-    if time.time() > expire:
-        return HttpResponseForbidden("⏳ Havola muddati tugagan!")
+    # Hozirgi vaqt
+    now = int(time.time())
 
+    # Muddati tugaganini tekshirish
+    if now > int(expire):
+        return render(request, "blog/error_expired.html", {
+            "cert": cert,
+            "message": "Havola muddati tugagan.",
+            "expired_time": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(expire))),
+        }, status=403)
+
+    # Tokenni tekshirish
     expected = hashlib.sha256(f"{cert.pk}:{expire}:{settings.SECRET_KEY}".encode()).hexdigest()
     if token != expected:
-        return HttpResponseForbidden("❌ Noto‘g‘ri token!")
+        return render(request, "blog/error_invalid.html", {
+            "cert": cert,
+            "message": "Noto‘g‘ri yoki buzilgan token.",
+        }, status=403)
 
-    # Qolgan vaqtni teskari sanoq uchun yuboramiz
-    remaining = expire - int(time.time())
+    # Qolgan vaqtni hisoblash
+    remaining = int(expire) - now
+
     return render(request, "blog/certificate_view.html", {
         "cert": cert,
         "remaining": remaining
     })
-
 
 
 
