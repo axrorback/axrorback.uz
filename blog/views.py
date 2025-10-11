@@ -1,7 +1,7 @@
 import os
 
 from django.http import HttpResponseForbidden ,FileResponse,Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import requests
 from .forms import QuestionForm
 from .models import *
@@ -34,6 +34,29 @@ def protected_media(request, path):
     # Agar topilmasa
     raise Http404()
 
+def secure_certificate_view(request, pk, expire, token):
+    cert = get_object_or_404(Certificate, pk=pk)
+
+    # Token va muddatni tekshirish
+    if time.time() > expire:
+        return HttpResponseForbidden("⏳ Havola muddati tugagan!")
+
+    expected = hashlib.sha256(f"{cert.pk}:{expire}:{settings.SECRET_KEY}".encode()).hexdigest()
+    if token != expected:
+        return HttpResponseForbidden("❌ Noto‘g‘ri token!")
+
+    # Qolgan vaqtni teskari sanoq uchun yuboramiz
+    remaining = expire - int(time.time())
+    return render(request, "blog/certificate_view.html", {
+        "cert": cert,
+        "remaining": remaining
+    })
+
+
+
+
+
+
 def thanks(request):
     return render(request, 'blog/thanks.html')
 
@@ -50,11 +73,15 @@ def blog(request):
 
 def achievements(request):
     certificates = Certificate.objects.all().order_by('-created_at')
-    # har bir sertifikat uchun to‘liq URL yasaymiz
-    for c in certificates:
-        c.full_url = request.build_absolute_uri(c.file.url)
-    return render(request, 'blog/achievements.html', {'certificates': certificates})
 
+    # Har bir sertifikat uchun 30 daqiqalik xavfsiz tokenli URL yasaymiz
+    for c in certificates:
+        secure_link = c.get_secure_url(expires_in_minutes=30)
+        c.full_url = request.build_absolute_uri(secure_link)
+
+    return render(request, 'blog/achievements.html', {
+        'certificates': certificates
+    })
 
 
 def blog_detail(request, slug):
