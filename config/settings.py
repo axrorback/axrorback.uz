@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import logging
 import os
 from pathlib import Path
+
+from django.conf.global_settings import X_FRAME_OPTIONS
 from dotenv import load_dotenv
 
 
@@ -29,8 +31,9 @@ SECRET_KEY = os.getenv('SECRET')
 DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*']
-
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+
+X_FRAME_OPTIONS = 'ALLOWALL'
 
 # Application definition
 
