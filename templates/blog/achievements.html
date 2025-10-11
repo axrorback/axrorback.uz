@@ -114,9 +114,11 @@
         <a href="{{ cert.file.url }}" download class="btn btn-success btn-sm">
           <i class="bi bi-download"></i> Yuklab olish
         </a>
-        <button class="btn btn-outline-secondary btn-sm" onclick="shareCertificate('{{ cert.full_url }}')">
-          <i class="bi bi-share"></i> Ulashish
-        </button>
+            <button
+            class="btn btn-outline-secondary btn-sm"
+            onclick="shareCertificate('{{ cert.full_url|escapejs }}')">
+            <i class="bi bi-share"></i> Ulashish
+            </button>
       </div>
     </div>
     {% empty %}
@@ -133,17 +135,23 @@
     window.open(url, '_blank');
   }
 
-  function shareCertificate(link) {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Sertifikat',
-        text: 'Mening sertifikatimni ko‘ring 👇',
-        url: link
-      });
-    } else {
-      navigator.clipboard.writeText(link);
-      alert("📎 Havola nusxalandi!");
-    }
+function shareCertificate(link) {
+  if (!link || link.trim() === "") {
+    alert("❌ Sertifikat havolasi mavjud emas!");
+    return;
   }
+
+  if (navigator.share) {
+    navigator.share({
+      url: link
+    }).catch(err => {
+      console.warn('Ulashishda xato:', err);
+    });
+  } else {
+    navigator.clipboard.writeText(link)
+      .then(() => alert("📎 Havola nusxalandi!"))
+      .catch(() => alert("❌ Nusxalab bo‘lmadi."));
+  }
+}
 </script>
 {% endblock %}
