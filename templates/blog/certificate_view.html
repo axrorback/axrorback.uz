@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}{{ cert.title }} — Sertifikat{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="mb-4">{{ cert.title }}</h1>
+
+  <div class="card shadow-sm p-3">
+    {% if cert.is_image %}
+      <img src="{{ cert.file.url }}" class="img-fluid rounded" alt="{{ cert.title }}">
+    {% elif cert.is_pdf %}
+      <div class="ratio ratio-16x9">
+        <iframe
+          src="{{ cert.file.url }}"
+          width="100%"
+          height="600"
+          style="border:none;"
+          allowfullscreen>
+        </iframe>
+      </div>
+    {% else %}
+      <p class="text-danger">⚠️ Sertifikat fayli ko‘rsatib bo‘lmaydi.</p>
+    {% endif %}
+  </div>
+
+  <div class="mt-4 fs-5 fw-semibold">
+    ⏳ Havola amal qilish muddati tugashiga:
+    <span id="timer" class="text-primary"></span> qoldi
+  </div>
+</div>
+
+<script>
+  let remaining = {{ remaining }};
+  function updateTimer() {
+    if (remaining <= 0) {
+      document.body.innerHTML = `
+        <div class="container text-center mt-5">
+          <h2>⏳ Havola muddati tugadi!</h2>
+          <p class="text-muted">Sertifikatga kirish vaqti yakunlandi.</p>
+        </div>`;
+      return;
+    }
+
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+    document.getElementById("timer").textContent =
+      `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+    remaining--;
+    setTimeout(updateTimer, 1000);
+  }
+  updateTimer();
+</script>
+{% endblock %}
