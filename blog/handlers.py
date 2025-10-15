@@ -11,3 +11,4 @@ class AdminLogHandler(logging.Handler):
             )
         except Exception:
             pass
+
