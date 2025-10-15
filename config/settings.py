@@ -13,6 +13,7 @@ import logging
 import os
 from pathlib import Path
 
+
 from django.conf.global_settings import X_FRAME_OPTIONS
 from dotenv import load_dotenv
 
