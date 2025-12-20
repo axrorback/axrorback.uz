@@ -1,4 +1,9 @@
 from django.urls import path
+from .sitemaps import PostSitemap
+from .feeds import LatestPostFeed
+
+
+
 from .views import *
 urlpatterns = [
     path('thanks/', thanks, name='thanks'),
@@ -11,5 +16,6 @@ urlpatterns = [
     path('achievements/', achievements, name='achievements'),  #
     path('media/<path:path>/', protected_media, name='protected_media'),
     path('cert/<int:pk>/<int:expire>/<str:token>/', secure_certificate_view, name='secure_certificate'),
+    path('rss/',LatestPostFeed(),name='rss-feed')
 
 ]

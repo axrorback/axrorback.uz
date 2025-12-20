@@ -25,15 +25,15 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET')
+SECRET_KEY = os.getenv('SECRET_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','*']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz']
 
-X_FRAME_OPTIONS = 'ALLOWALL'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Application definition
 
@@ -44,8 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'blog',
 ]
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,15 +83,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-TELEGRAM_BOT_TOKEN=os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHANNEL_ID=os.getenv('TELEGRAM_CHANNEL_ID')
+TELEGRAM_BOT_TOKEN = os.getenv('TOKEN')
+TELEGRAM_CHANNEL_ID = os.getenv('ID')
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / os.getenv('BAZA'),
+        'NAME': BASE_DIR / 'db.sqlite3'
     }
 }
 

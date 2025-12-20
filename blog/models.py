@@ -43,9 +43,13 @@ class Post(models.Model):
         blank=True,
         verbose_name="Rasm"
     )
+    is_published = models.BooleanField(default=True,verbose_name='Post saytga joylanganmi')
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return f"/blog/{self.slug}/"
 
     class Meta:
         verbose_name = "Post"
