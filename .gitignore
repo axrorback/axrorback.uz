@@ -4,3 +4,4 @@ baza.sqlite3
 django.log
 blog/migrations/*
 media/*
+venv
