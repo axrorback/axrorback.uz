@@ -26,13 +26,13 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_DJANGO')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz']
+ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1','axrorback.dev']
+CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','axrorback.dev']
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
