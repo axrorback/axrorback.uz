@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1','axrorback.dev']
-CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','axrorback.dev']
+CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','https://axrorback.dev']
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
