@@ -14,4 +14,5 @@ python-dotenv==1.1.0
 PyJWT<2.10.0
 requests==2.32.3
 Pillow==10.4.0
-
+dj-database-url==2.1.0
+psycopg2-binary==2.9.9
