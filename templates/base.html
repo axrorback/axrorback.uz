@@ -69,6 +69,17 @@
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 
+    .navbar{
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 20px;
+        padding: 12px 25px;
+        margin-top: 20px;
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
     .navbar-brand {
       color: #ffffff !important;
       font-weight: 700;
@@ -78,26 +89,17 @@
     }
 
     .nav-link {
-      color: #cbd5e1;
-      font-weight: 500;
-      padding: 6px 8px !important;
-      border-radius: 10px;
+      color: #cbd5e1 !important;
+      padding: 8px 15px !important;
       transition: all 0.3s ease;
-      margin: 0 1px;
-      font-size: 0.88rem;
-      white-space: nowrap;
     }
 
-    .nav-link:hover {
-      color: #fff;
-      background-color: rgba(108, 92, 231, 0.2);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      background-color: var(--accent) !important;
+    .nav-link:hover, .nav-link.active {
       color: #fff !important;
-      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    }
+
+    .navbar-brand span {
+      color: var(--accent);
     }
 
     .glass-card {
@@ -147,19 +149,18 @@
       box-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
     }
 
-    @media (min-width: 992px) {
-      .navbar-expand-lg .navbar-nav {
-        flex-wrap: nowrap !important;
+    @media (max-width: 991px) {
+      .navbar-collapse {
+        background: #1e293b;
+        margin-top: 15px;
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid var(--border);
       }
 
-      .container-lg, .container-fluid {
-        padding-left: 5px !important;
-        padding-right: 5px !important;
-      }
-
-      .navbar-brand {
-        margin-right: 10px !important;
-        font-size: 1.1rem;
+      .nav-item {
+        width: 100%;
+        margin-bottom: 5px;
       }
     }
 
@@ -185,35 +186,43 @@
 <body>
   <div class="container-lg">
     <!-- Navbar -->
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-      <li class="nav-item">
-        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'about' %}">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'achievements' %}active{% endif %}" href="{% url 'achievements' %}">Yutuqlar</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://library.coderboys.uz" target="_blank">Kutubxona</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://project.coderboys.uz" target="_blank">Loyihalar</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">Telegram Bot</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'about' and request.path != '/' %}active{% endif %}" href="{% url 'about' %}">About Me</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link {% if request.resolver_match.url_name == 'ask_question' %}active{% endif %}" href="{% url 'ask_question' %}">Savol berish</a>
-      </li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'about' %}">Ahrorjon<span>.dev</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'about' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'achievements' %}active{% endif %}" href="{% url 'achievements' %}">Yutuqlar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://library.coderboys.uz" target="_blank">Kutubxona</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://project.coderboys.uz" target="_blank">Loyihalar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">Bot</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'ask_question' %}active{% endif %}" href="{% url 'ask_question' %}">Savol berish</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
     <!-- Main content -->
     <main>
