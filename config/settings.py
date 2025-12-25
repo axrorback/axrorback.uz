@@ -30,8 +30,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1','axrorback.dev']
-CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','https://axrorback.dev']
+ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1','axrorback.dev','axrorback-6964a061f541.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','https://axrorback.dev','https://axrorback-6964a061f541.herokuapp.com/']
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
