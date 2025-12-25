@@ -2,104 +2,175 @@
 {% block title %}Men haqimda — Ahrorjon Ibrohimjonov{% endblock %}
 {% load static %}
 
-{% block meta %}
-<meta name="description" content="Ahrorjon Ibrohimjonov — Full-stack veb dasturchi. Python, Django, Flask va zamonaviy texnologiyalar bo‘yicha mutaxassis. Mening tajriba va ko‘nikmalarim haqida bilib oling.">
-<meta name="keywords" content="Ahrorjon Ibrohimjonov, veb dasturchi, Django, Flask, Python, PostgreSQL, frontend, backend, Telegram botlar, DevOps, texnologiya">
-<meta name="author" content="Ahrorjon Ibrohimjonov">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block extra_head %}
+<style>
+  .name-highlight {
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--accent);
+    margin-top: 5px;
+    border-radius: 2px;
+  }
+
+  .about-glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 30px;
+    margin-bottom: 30px;
+  }
+
+  .profile-img-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .profile-img-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+
+  .skill-list {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  .skill-item {
+    background: rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    padding: 10px 15px;
+    border-radius: 12px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+  }
+
+  .skill-item:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateX(5px);
+  }
+
+  .skill-item i {
+    margin-right: 10px;
+    color: var(--accent);
+  }
+
+  .skill-item:hover i {
+    color: white;
+  }
+
+  .lead-text {
+    color: var(--muted);
+    font-size: 1.2rem;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-
-<style>
-  .name-highlight {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-      font-size: 2.5rem;
-      color: #0d6efd; /* Bootstrap primary color */
-  }
-  .section-title {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: #343a40;
-  }
-  .lead-text {
-      font-size: 1.1rem;
-      color: #6c757d;
-  }
-  ul li {
-      margin-bottom: 0.5rem;
-  }
-</style>
-
 <div class="container-lg py-5">
 
-  <!-- Header -->
   <div class="text-center mb-5">
     <h1 class="name-highlight">Ahrorjon Ibrohimjonov</h1>
-    <p class="lead lead-text">Full-stack veb dasturchi | Python, Django & Flask | Texnologiya ishqibozi</p>
+    <p class="lead lead-text">Full-stack veb dasturchi | Python, Django & Flask</p>
   </div>
 
-  <!-- Profile -->
-  <div class="row align-items-center mb-5">
-    <div class="col-md-4 text-center mb-3 mb-md-0">
-      <img src="{% url 'protected_media' path='images/img.png' %}"
-     alt="Ahrorjon Ibrohimjonov"
-     class="img-fluid rounded-circle shadow"
-     style="max-width:250px;">
-    </div>
-    <div class="col-md-8">
-      <h3 class="section-title">Men haqimda</h3>
-      <p>
-        Men <strong>Ahrorjon Ibrohimjonov</strong>,  Backend dasturchiman. Asosiy yo‘nalishim — backend dasturlash bo‘lib, Python, Django va Flask hamda DRF yordamida veb ilovalar ishlab chiqaman. Shuningdek, HTML, CSS, Bootstrap va JavaScript kabi texnologiyalarda faol ishlayman.
-      </p>
-      <p>
-        Hozirda Acharya Universitetida ikkinchi bosqich talabasi bo‘lib, IT va dasturlash sohasida bilimlarimni chuqurlashtirishga harakat qilyapman. Yangi texnologiyalarni o‘rganish va ularni amaliy loyihalarda qo‘llash — mening asosiy maqsadimdir.
-      </p>
+  <div class="about-glass-card">
+    <div class="row align-items-center">
+      <div class="col-md-4 text-center mb-4 mb-md-0">
+        <div class="profile-img-wrapper">
+          <img src="{% url 'protected_media' path='images/img.png' %}"
+               alt="Ahrorjon Ibrohimjonov"
+               class="img-fluid rounded-circle shadow-lg"
+               style="max-width:220px; border: 4px solid rgba(255,255,255,0.1);">
+        </div>
+      </div>
+      <div class="col-md-8">
+        <h3 class="section-title">Men haqimda</h3>
+        <p class="text-light opacity-75">
+          Men <strong>Ahrorjon Ibrohimjonov</strong>, Backend dasturchiman. Asosiy yo‘nalishim — backend dasturlash bo‘lib,
+          Python, Django va Flask hamda DRF yordamida veb ilovalar ishlab chiqaman. Shuningdek, frontend texnologiyalarida faol ishlayman.
+        </p>
+        <p class="text-light opacity-75">
+          Hozirda Acharya Universitetida ikkinchi bosqich talabasi bo‘lib, IT sohasida bilimlarimni chuqurlashtiryapman.
+          Yangi texnologiyalarni o‘rganish va ularni amaliy loyihalarda qo‘llash — mening asosiy maqsadimdir.
+        </p>
+      </div>
     </div>
   </div>
 
-  <!-- Skills & Experience -->
-  <div class="mb-5">
+  <div class="about-glass-card">
     <h3 class="section-title">Ko‘nikmalar va tajriba</h3>
-    <ul>
-      <li>Python & Django — veb ilovalar, REST API va backend mantiqlarini yaratish</li>
-      <li>Flask — yengil va tezkor veb ilovalar ishlab chiqish</li>
-      <li>Frontend — HTML, CSS, Bootstrap, JavaScript</li>
-      <li>Ma’lumotlar bazasi — PostgreSQL va SQLite</li>
-      <li>Telegram botlar — Aiogram yordamida bot va userbotlar yaratish</li>
-      <li>Docker & DevOps asoslari — veb ilovalarni konteynerlarda ishlatish</li>
-      <li>Git & GitHub — versiya nazorati va jamoaviy ishlash</li>
-      <li>Muammolarni hal qilish va algoritmik fikrlash</li>
-    </ul>
+    <div class="skill-list">
+      <div class="skill-item"><i class="bi bi-patch-check"></i> Python & Django</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> Flask & FastApi</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> HTML, CSS, JS, Bootstrap</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> PostgreSQL & SQLite</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> Telegram Bot (Aiogram)</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> Docker & DevOps basics</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> Git & GitHub</div>
+      <div class="skill-item"><i class="bi bi-patch-check"></i> Linux (Ubuntu)</div>
+    </div>
   </div>
 
-  <!-- Interests -->
-  <div class="mb-5">
-    <h3 class="section-title">Qiziqishlarim</h3>
-    <p>
-      Texnologiyalar, sun’iy intellekt, veb va mobil ilovalar hamda ta’limga oid platformalar yaratishga katta qiziqishim bor. Kod yozishdan tashqari, yangi texnologiyalarni o‘rganish, amaliyotga joriy etish va foydali mahsulotlar yaratishni yoqtiraman.
-    </p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="about-glass-card h-100">
+        <h3 class="section-title">Qiziqishlarim</h3>
+        <p class="opacity-75">
+          Texnologiyalar, sun’iy intellekt va ta’limga oid platformalar yaratishga katta qiziqishim bor.
+          Kod yozishdan tashqari, foydali mahsulotlar yaratishni yoqtiraman.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="about-glass-card h-100">
+        <h3 class="section-title">Mening maqsadim</h3>
+        <p class="opacity-75">
+          Texnologiyalar yordamida insonlar hayotini yengillashtirish, qulay va zamonaviy yechimlar yaratishga intilaman.
+          O‘rganish va o‘sish — mening asosimdir.
+        </p>
+      </div>
+    </div>
   </div>
 
-  <!-- Motivation -->
-  <div class="mb-5">
-    <h3 class="section-title">Mening maqsadim</h3>
-    <p>
-      Har bir loyiha — bu yangi imkoniyat va tajriba. Men texnologiyalar yordamida insonlar hayotini yengillashtirish, qulay va zamonaviy yechimlar yaratishga intilaman. O‘rganish, o‘sish va amaliyotda qo‘llash — mening harakatlarimning asosidir.
-    </p>
-  </div>
-
-  <!-- Projects / Achievements -->
-  <div class="mb-5">
+  <div class="about-glass-card mt-4">
     <h3 class="section-title">Loyihalar va yutuqlar</h3>
-    <ul>
-      <li>Python va Django yordamida talabalarga mo‘ljallangan interaktiv ta’lim platformalari ishlab chiqdim</li>
-      <li>Telegram botlar yaratdim va foydalanuvchilar bilan avtomatik aloqa tizimlarini joriy qildim</li>
-      <li>PostgreSQL va responsive UI bilan to‘liq ishlaydigan veb ilovalar tuzdim</li>
-      <li>Kod yozish bo‘yicha o‘quv materiallarini chop etdim</li>
-      <li>Docker orqali loyihalarda CI/CD tizimini joriy qildim</li>
+    <ul class="opacity-75">
+      <li>Talabalar uchun interaktiv ta’lim platformalari</li>
+      <li>Telegram botlar va avtomatik aloqa tizimlari</li>
+      <li>Responsive UI va PostgreSQL bilan integratsiya</li>
+      <li>Docker orqali CI/CD tizimlarini joriy qilish</li>
     </ul>
   </div>
 
