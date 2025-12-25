@@ -6,8 +6,9 @@ import requests
 from .forms import QuestionForm
 from .models import *
 
+from django.conf import settings
 
-ALLOWED_DOMAINS = ['axrorback.uz', 'www.axrorback.uz','127.0.0.1']
+ALLOWED_DOMAINS = settings.ALLOWED_HOSTS
 
 def protected_media(request, path):
     """
