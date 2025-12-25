@@ -1,27 +1,158 @@
 {% extends 'base.html' %}
-{% block title %}Savollar{% endblock %}
+{% block title %}Savollar — Ahrorjon Ibrohimjonov{% endblock %}
+
+{% block extra_head %}
+<style>
+  .text-gradient {
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+
+  .question-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .question-item:hover {
+    border-color: rgba(108, 92, 231, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .user-meta {
+    font-size: 0.85rem;
+    color: #a3b0c2;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .user-meta i {
+    color: var(--accent);
+    margin-right: 5px;
+  }
+
+  .question-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+  }
+
+  .question-text {
+    color: #cbd5e1;
+    line-height: 1.7;
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .admin-reply {
+    background: rgba(108, 92, 231, 0.07) !important;
+    border: 1px solid rgba(108, 92, 231, 0.15) !important;
+    border-left: 4px solid var(--accent) !important;
+    border-radius: 16px;
+    margin-top: 20px;
+    padding: 18px;
+    position: relative;
+  }
+
+  .admin-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+
+  .status-waiting {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .empty-state {
+    padding: 60px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container my-5">
-  <div class="glass-card p-4">
-    <h2 class="mb-4 text-gradient"><i class="bi bi-chat-dots"></i> Foydalanuvchi savollari</h2>
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="display-5 text-gradient mb-3">
+      <i class="bi bi-chat-square-quote me-2"></i> Savol-javoblar
+    </h2>
+    <p class="text-secondary mx-auto" style="max-width: 600px;">
+      Menga yo'llangan savollar va ularga berilgan rasmiy javoblar. Siz ham o'z savolingizni qoldirishingiz mumkin.
+    </p>
+  </div>
 
-    {% for q in questions %}
-    <div class="mb-4 p-3 border rounded-3 bg-transparent shadow-sm">
-      <h5 class="text-light">{{ q.title }}</h5>
-      <p class="text-muted mb-1"><i class="bi bi-person-circle"></i> {{ q.name }} • 📞 {{ q.masked_phone }}</p>
-      <p class="text-light">{{ q.question }}</p>
-      <small class="text-secondary"><i class="bi bi-clock"></i> {{ q.created|date:"d M Y, H:i" }}</small>
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
 
-      {% if q.answer %}
-      <div class="mt-3 p-3 rounded-3" style="background: rgba(108, 92, 231, 0.1); border-left: 3px solid #6C5CE7;">
-        <strong><i class="bi bi-chat-left-quote"></i> Admin javobi:</strong>
-        <p class="mb-0">{{ q.answer }}</p>
+      {% for q in questions %}
+      <div class="question-item p-4 mb-4">
+        <div class="user-meta">
+          <span><i class="bi bi-person-circle"></i> {{ q.name }}</span>
+          <span><i class="bi bi-telephone"></i> {{ q.masked_phone }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ q.created|date:"d M, Y" }}</span>
+          <span><i class="bi bi-clock"></i> {{ q.created|date:"H:i" }}</span>
+        </div>
+
+        <div class="mb-2">
+          <h5 class="question-title">{{ q.title }}</h5>
+          <p class="question-text">{{ q.question }}</p>
+        </div>
+
+        {% if q.answer %}
+        <div class="admin-reply">
+          <span class="admin-badge">Admin javobi</span>
+          <p class="mb-0 text-light opacity-90">{{ q.answer }}</p>
+        </div>
+        {% else %}
+        <div class="mt-3">
+          <span class="status-waiting">
+            <i class="bi bi-hourglass-split"></i> Bu savolga hali javob berilmagan...
+          </span>
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
+
+      {% empty %}
+      <div class="empty-state">
+        <i class="bi bi-chat-dots display-1 text-muted opacity-25"></i>
+        <h3 class="mt-4 text-secondary">Hozircha hech qanday savol yo'q</h3>
+        <p class="text-muted mb-4">Siz birinchi bo'lib savol berishingiz mumkin!</p>
+        <a href="{% url 'ask_question' %}" class="btn btn-accent px-4 py-2">
+          <i class="bi bi-plus-lg me-2"></i> Savol yo'llash
+        </a>
+      </div>
+      {% endfor %}
+
     </div>
-    {% empty %}
-    <p class="text-center text-muted">Hozircha savollar yo‘q 😎</p>
-    {% endfor %}
   </div>
 </div>
 {% endblock %}
