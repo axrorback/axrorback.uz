@@ -80,10 +80,12 @@
     .nav-link {
       color: #cbd5e1;
       font-weight: 500;
-      padding: 8px 18px !important;
+      padding: 6px 8px !important;
       border-radius: 10px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      margin: 0 2px;
+      transition: all 0.3s ease;
+      margin: 0 1px;
+      font-size: 0.88rem;
+      white-space: nowrap;
     }
 
     .nav-link:hover {
@@ -145,17 +147,26 @@
       box-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
     }
 
-    @media (max-width: 991px) {
-      .navbar-collapse {
-        background: #0f172a;
-        margin-top: 15px;
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
+    @media (min-width: 992px) {
+      .navbar-expand-lg .navbar-nav {
+        flex-wrap: nowrap !important;
       }
+
+      .container-lg, .container-fluid {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+      }
+
+      .navbar-brand {
+        margin-right: 10px !important;
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (min-width: 992px) and (max-width: 1200px) {
       .nav-link {
-        margin: 5px 0;
-        text-align: center;
+        font-size: 0.8rem;
+        padding: 6px 5px !important;
       }
     }
   </style>
@@ -174,48 +185,35 @@
 <body>
   <div class="container-lg">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'about' %}">
-           <img src="{% url 'protected_media' path='images/favicon.ico' %}" alt="favicon" style="width:24px; height:24px; margin-right:8px;">axrorback</a>
-        <button class="navbar-toggler bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navMenu">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'about' %}">Home</a>
-            </li>
-              <li class="nav-item">
-               <a class="nav-link" href="{% url 'achievements' %}">Yutuqlar</a>
-                </li>
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" href="https://library.coderboys.uz" target="_blank">Kutubxona</a>
-                </li>
-            <li class="nav-item">
-               <a class="nav-link" href="https://project.coderboys.uz" target="_blank">Loyihalar</a>
-                </li>
-            <li class="nav-item">
-               <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">Telegram Bot</a>
-                </li>
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About Me</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'ask_question' %}active{% endif %}" href="{% url 'ask_question' %}">
-                Savol berish
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'about' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'achievements' %}active{% endif %}" href="{% url 'achievements' %}">Yutuqlar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://library.coderboys.uz" target="_blank">Kutubxona</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://project.coderboys.uz" target="_blank">Loyihalar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">Telegram Bot</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'about' and request.path != '/' %}active{% endif %}" href="{% url 'about' %}">About Me</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'ask_question' %}active{% endif %}" href="{% url 'ask_question' %}">Savol berish</a>
+      </li>
+    </ul>
 
     <!-- Main content -->
     <main>
