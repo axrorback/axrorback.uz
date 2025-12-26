@@ -18,7 +18,7 @@
     <meta property="og:description" content="Explore my projects, blog posts, and full-stack web development skills.">
     <meta property="og:image" content="{% static 'images/profile.jpg' %}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:url" content="https://axrorback.dev">
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -194,7 +194,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'about' %}">Ahrorjon<span>.dev</span></a>
+        <a class="navbar-brand" href="{% url 'about' %}">axrorback<span>.dev</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -210,12 +210,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://library.coderboys.uz" target="_blank">Kutubxona</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://project.coderboys.uz" target="_blank">Loyihalar</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">Bot</a>
