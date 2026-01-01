@@ -38,6 +38,11 @@
     border-radius: 24px;
     padding: 30px;
     margin-bottom: 30px;
+    transition: 0.3s ease-in-out;
+  }
+
+  .about-glass-card:hover {
+    border-color: rgba(108, 92, 231, 0.3);
   }
 
   .profile-img-wrapper {
@@ -68,11 +73,12 @@
   .skill-item {
     background: rgba(108, 92, 231, 0.1);
     border: 1px solid rgba(108, 92, 231, 0.2);
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 12px;
     transition: 0.3s;
     display: flex;
     align-items: center;
+    gap: 12px;
   }
 
   .skill-item:hover {
@@ -81,13 +87,15 @@
     transform: translateX(5px);
   }
 
+  /* DevIcon va BI ikonkalari uchun umumiy stil */
   .skill-item i {
-    margin-right: 10px;
+    font-size: 1.4rem;
     color: var(--accent);
+    transition: 0.3s;
   }
 
   .skill-item:hover i {
-    color: white;
+    color: white !important; /* Hover bo'lganda rangli ikonka ham oq bo'ladi */
   }
 
   .lead-text {
@@ -98,10 +106,6 @@
   @media (max-width: 991px) {
     .about-glass-card {
       margin-bottom: 25px !important;
-    }
-
-    .row .col-md-6:last-child .about-glass-card {
-      margin-bottom: 0 !important;
     }
   }
 </style>
@@ -143,17 +147,30 @@
   <div class="about-glass-card">
     <h3 class="section-title">Ko‘nikmalar va tajriba</h3>
     <div class="skill-list">
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Python & Django</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Flask & FastApi</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> HTML, CSS, JS, Bootstrap</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> PostgreSQL & SQLite</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Telegram Bot (Aiogram)</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Docker , DevOps & CI/CD</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Git & GitHub</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Linux</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Redis & Celery</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> API & Microservices & Deploying</div>
-      <div class="skill-item"><i class="bi bi-patch-check"></i> Mobile App Development  Flutter</div>
+      <div class="skill-item">
+        <i class="devicon-python-plain colored"></i> Python & Django
+      </div>
+      <div class="skill-item">
+        <i class="devicon-flask-original"></i> Flask & FastAPI
+      </div>
+      <div class="skill-item">
+        <i class="bi bi-code-square"></i> HTML, CSS, JS, Bootstrap
+      </div>
+      <div class="skill-item">
+        <i class="devicon-postgresql-plain colored"></i> PostgreSQL & SQLite
+      </div>
+      <div class="skill-item">
+        <i class="bi bi-robot"></i> Telegram Bot (Aiogram)
+      </div>
+      <div class="skill-item">
+        <i class="devicon-docker-plain colored"></i> Docker & DevOps basics
+      </div>
+      <div class="skill-item">
+        <i class="bi bi-git"></i> Git & GitHub
+      </div>
+      <div class="skill-item">
+        <i class="devicon-linux-plain"></i> Linux (Ubuntu)
+      </div>
     </div>
   </div>
 
@@ -162,7 +179,7 @@
       <div class="about-glass-card h-100">
         <h3 class="section-title">Qiziqishlarim</h3>
         <p class="opacity-75">
-          Texnologiyalar, sun’iy intellekt va ta’limga oid platformalar yaratishga katta qiziqishim bor.
+          <i class="bi bi-cpu me-2 text-accent"></i> Texnologiyalar, sun’iy intellekt va ta’limga oid platformalar yaratishga katta qiziqishim bor.
           Kod yozishdan tashqari, foydali mahsulotlar yaratishni yoqtiraman.
         </p>
       </div>
@@ -171,7 +188,7 @@
       <div class="about-glass-card h-100">
         <h3 class="section-title">Mening maqsadim</h3>
         <p class="opacity-75">
-          Texnologiyalar yordamida insonlar hayotini yengillashtirish, qulay va zamonaviy yechimlar yaratishga intilaman.
+          <i class="bi bi-rocket-takeoff me-2 text-accent"></i> Texnologiyalar yordamida insonlar hayotini yengillashtirish, qulay va zamonaviy yechimlar yaratishga intilaman.
           O‘rganish va o‘sish — mening asosimdir.
         </p>
       </div>
@@ -180,11 +197,11 @@
 
   <div class="about-glass-card mt-4">
     <h3 class="section-title">Loyihalar va yutuqlar</h3>
-    <ul class="opacity-75">
-      <li>Talabalar uchun interaktiv ta’lim platformalari</li>
-      <li>Telegram botlar va avtomatik aloqa tizimlari</li>
-      <li>Responsive UI va PostgreSQL bilan integratsiya</li>
-      <li>Docker orqali CI/CD tizimlarini joriy qilish</li>
+    <ul class="list-unstyled opacity-75">
+      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Talabalar uchun interaktiv ta’lim platformalari</li>
+      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Telegram botlar va avtomatik aloqa tizimlari</li>
+      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Responsive UI va PostgreSQL bilan integratsiya</li>
+      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Docker orqali CI/CD tizimlarini joriy qilish</li>
     </ul>
   </div>
 
