@@ -2,14 +2,22 @@
 {% block title %}Bloglar — Ahrorjon Ibrohimjonov{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="text-center mb-5" data-aos="zoom-in">
-    <div class="blog-icon-box mb-3">
-      <i class="bi bi-rocket-takeoff-fill"></i>
-    </div>
-    <h2 class="display-4 fw-bold text-white mb-2">Foydali <span class="text-accent-glow">Maqolalar</span></h2>
-    <p class="text-muted mx-auto" style="max-width: 600px;">Dasturlash sirlari, yangi texnologiyalar va tajribalarim bilan bo'lishaman.</p>
+<div class="text-center mb-5" data-aos="zoom-in">
+  <div class="blog-icon-box mb-3">
+    <i class="bi bi-rocket-takeoff-fill"></i>
   </div>
+  <h2 class="display-4 fw-bold text-white mb-3">Foydali <span class="text-accent-glow">Maqolalar</span></h2>
+
+  <div class="description-container mx-auto">
+    <p class="premium-description">
+      <span class="bracket">[</span>
+      Dasturlash sirlari, yangi texnologiyalar va tajribalarim bilan bo'lishaman
+      <span class="bracket">]</span>
+    </p>
+  </div>
+
+  <div class="header-line mx-auto mt-4"></div>
+</div>
 
   <div class="row g-4">
     {% for blog in blogs %}
@@ -88,6 +96,45 @@
     color: var(--primary-glow);
     display: inline-block;
     animation: float 3s ease-in-out infinite;
+  }
+
+  /* Tavsif matni uchun maxsus stil */
+  .premium-description {
+    color: rgba(255, 255, 255, 0.85); /* Sof oqqa yaqinroq, lekin ko'zni charchatmaydi */
+    font-size: 1.15rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Matn yonidagi dekorativ qavslar */
+  .bracket {
+    color: var(--primary-glow);
+    font-weight: bold;
+    font-size: 1.4rem;
+    opacity: 0.8;
+    margin: 0 10px;
+    vertical-align: middle;
+  }
+
+  /* Sarlavha ostidagi chiziqni yanada chiroyli qilish */
+  .header-line {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+    border-radius: 10px;
+  }
+
+  /*description-container uchun yengil soya (glow) */
+  .description-container {
+    padding: 10px;
+    border-radius: 15px;
+    background: rgba(108, 92, 231, 0.05); /* Juda yengil binafsha fon */
+    display: inline-block;
   }
 
   /* 2. Ultra Card Dizayni */
