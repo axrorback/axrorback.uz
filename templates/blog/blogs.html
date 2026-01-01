@@ -1,178 +1,76 @@
 {% extends 'base.html' %}
-{% block title %}Bloglar — Ahrorjon Ibrohimjonov{% endblock %}
+{% block title %}Bloglar{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="text-center mb-5" data-aos="fade-down">
-    <h2 class="display-5 fw-bold text-gradient mb-3">
-      <i class="bi bi-journal-richtext me-2"></i> Maqolalar va Blog
-    </h2>
-    <p class="text-muted fs-5">Texnologiyalar, backend olami va shaxsiy tajribalarim haqida mutolaa qiling.</p>
-    <div class="header-line mx-auto"></div>
-  </div>
+<div class="container my-5">
+  <div class="glass-card p-4 shadow-lg">
+    <h2 class="mb-4 text-gradient">📝 Bloglar</h2>
 
-  <div class="row row-cols-1 row-cols-md-2 g-4">
-    {% for blog in blogs %}
-    <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
-      <div class="card h-100 blog-glass-card">
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <span class="badge-custom"><i class="bi bi-hash"></i> Django</span>
-            <span class="read-time"><i class="bi bi-clock me-1"></i> 5 min o'qish</span>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for blog in blogs %}
+      <div class="col">
+        <div class="card h-100 bg-transparent border-0 shadow-sm glass-card-hover">
+          <div class="card-body">
+            <h5 class="card-title fw-bold text-light">{{ blog.title }}</h5>
+            <p class="card-text text-secondary">{{ blog.body|truncatewords:25 }}</p>
+            <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-sm btn-outline-primary mt-2">
+              <i class="bi bi-eye"></i> Ko‘rish
+            </a>
           </div>
-
-          <h4 class="card-title fw-bold text-white mb-3 hover-accent">
-            {{ blog.title }}
-          </h4>
-
-          <p class="card-text text-secondary mb-4">
-            <i class="bi bi-quote fs-5 opacity-25"></i>
-            {{ blog.body|truncatewords:22 }}
-          </p>
-
-          <a href="{% url 'blog_detail' blog.slug %}" class="btn-modern mt-auto">
-            <span>Batafsil o'qish</span>
-            <i class="bi bi-arrow-right-circle-fill"></i>
-          </a>
-        </div>
-
-        <div class="card-footer blog-footer-meta">
-          <div class="row align-items-center">
-            <div class="col-6">
-              <span class="meta-item">
-                <i class="bi bi-person-circle"></i>
-                {{ blog.author.get_full_name|default:blog.author.username }}
-              </span>
-            </div>
-            <div class="col-6 text-end">
-              <span class="meta-item">
-                <i class="bi bi-calendar-event"></i>
-                {{ blog.created|date:"d M, Y" }}
-              </span>
-            </div>
+          <div class="card-footer footer-meta d-flex justify-content-between small">
+            <span><i class="bi bi-person-circle me-1"></i> {{ blog.author.get_full_name|default:blog.author.username }}</span>
+            <span><i class="bi bi-calendar3 me-1"></i> {{ blog.created|date:"d M Y" }}</span>
           </div>
         </div>
       </div>
+      {% empty %}
+      <p class="text-light text-center fs-5 mt-4">Hozircha blog yo‘q 😎</p>
+      {% endfor %}
     </div>
-    {% empty %}
-    <div class="col-12 text-center py-5">
-      <div class="empty-glass p-5">
-        <i class="bi bi-inboxes display-1 opacity-25 text-white"></i>
-        <h3 class="mt-4 text-light">Hozircha maqolalar mavjud emas</h3>
-        <p class="text-secondary">Tez orada juda qiziqarli mavzularda bloglar qo'shiladi. 😎</p>
-      </div>
-    </div>
-    {% endfor %}
   </div>
 </div>
 
 <style>
-  /* Gradient va ranglar */
-  :root {
-    --accent: #6C5CE7;
-    --accent-light: #a29bfe;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --border-rgba: rgba(255, 255, 255, 0.08);
-  }
+.text-gradient {
+  background: linear-gradient(90deg, #6C5CE7, #00CEC9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  .text-gradient {
-    background: linear-gradient(90deg, #ffffff 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+.glass-card-hover {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
 
-  .header-line {
-    width: 60px;
-    height: 4px;
-    background: var(--accent);
-    border-radius: 2px;
-  }
+.glass-card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+}
 
-  /* Card Stilistikasi */
-  .blog-glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--border-rgba);
-    border-radius: 20px;
-    transition: all 0.4s ease;
-    overflow: hidden;
-  }
+.footer-meta {
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);  /* <<< Ko‘rinishni yaxshilaydigan rang */
+}
 
-  .blog-glass-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-    box-shadow: 0 15px 35px rgba(108, 92, 231, 0.2);
-  }
+.footer-meta i {
+  color: #6C5CE7; /* ikonlar uchun gradientga mos rang */
+}
 
-  .hover-accent { transition: 0.3s; }
-  .blog-glass-card:hover .hover-accent { color: var(--accent-light) !important; }
+.btn-outline-primary {
+  border-color: #6C5CE7;
+  color: #6C5CE7;
+}
 
-  /* Badge va Meta */
-  .badge-custom {
-    background: rgba(108, 92, 231, 0.1);
-    color: var(--accent-light);
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
+.btn-outline-primary:hover {
+  background-color: #6C5CE7;
+  color: white;
+}
 
-  .read-time {
-    font-size: 0.8rem;
-    color: #64748b;
-  }
-
-  .meta-item {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .meta-item i { color: var(--accent); }
-
-  /* Tugma Stili */
-  .btn-modern {
-    text-decoration: none;
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border-rgba);
-    transition: 0.3s;
-  }
-
-  .btn-modern:hover {
-    background: var(--accent);
-    color: white;
-    transform: scale(1.02);
-  }
-
-  .btn-modern i {
-    font-size: 1.2rem;
-    transition: 0.3s;
-  }
-
-  .btn-modern:hover i {
-    transform: translateX(5px);
-  }
-
-  /* Footer qismi */
-  .blog-footer-meta {
-    background: rgba(0, 0, 0, 0.2);
-    border-top: 1px solid var(--border-rgba);
-    padding: 15px 25px;
-  }
-
-  .empty-glass {
-    background: var(--glass-bg);
-    border-radius: 30px;
-    border: 2px dashed var(--border-rgba);
-  }
+.card-text.text-secondary {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
 </style>
 {% endblock %}
