@@ -7,184 +7,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="{% url 'protected_media' path='images/favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% url 'protected_media' path='images/favicon.ico' %}" type="image/x-icon">
-  <title>{% block title %}Ahrorjon Ibrohimjonov — Web Developer{% endblock %}</title>
+  <title>{% block title %}Ahrorjon-DevOps Engineer{% endblock %}</title>
 
-  <meta name="description" content="Ahrorjon Ibrohimjonov - Full-stack Web Developer. Python, Django, Flask, and web technologies enthusiast.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="description" content="Ahrorjon Ibrohimjonov - DevOps & Python Engineer.">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
   <style>
     :root {
-      --accent: #00d2ff;
-      --accent-2: #3a7bd5;
-      --bg-dark: #050a14;
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.08);
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
+      --accent: #6C5CE7;
+      --accent-hover: #5a4bd0;
+      --muted: #a3b0c2;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Asosiy Layout strukturasini to'g'rilash */
+    html, body {
+      height: 100%;
+      margin: 0;
     }
 
     /* Asosiy fon va fon effektlari */
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top right, #1e293b, #0f172a 50%) fixed;
+      color: #e6eef8;
+      display: flex;
+      flex-direction: column;
       overflow-x: hidden;
-      min-height: 100vh;
+    }
+
+    .container-lg {
+      flex: 1 0 auto;
       display: flex;
       flex-direction: column;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: -10%; left: -10%;
-      width: 40%; height: 40%;
-      background: radial-gradient(circle, rgba(0, 210, 255, 0.1) 0%, transparent 70%);
-      z-index: -1;
+    main {
+      flex: 1;
     }
 
-    /* Fixed Progress Bar */
+    /* Scroll progress bar (Agar kerak bo'lsa HTMLga qo'shing) */
     #myBar {
       height: 4px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      background: var(--accent);
       width: 0%;
       position: fixed;
-      top: 0; left: 0;
-      z-index: 10001;
-      box-shadow: 0 0 15px var(--accent);
+      top: 0;
+      left: 0;
+      z-index: 9999;
     }
 
-    /* Modern Fixed Navbar */
+    /* Navbar stilidagi konfliktlarni yechish */
     .custom-navbar {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 95%;
-      max-width: 1200px;
-      z-index: 1000;
       backdrop-filter: blur(15px);
-      background: rgba(10, 15, 25, 0.7);
-      border: 1px solid var(--border);
+      -webkit-backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.05) !important;
       border-radius: 20px;
       padding: 12px 25px;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .custom-navbar.scrolled {
-      top: 0;
-      width: 100%;
-      max-width: 100%;
-      border-radius: 0;
-      background: rgba(5, 10, 20, 0.95);
-      border-bottom: 1px solid var(--accent);
+      margin-top: 20px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
     .navbar-brand {
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: -1px;
+      font-weight: 700;
+      color: #fff !important;
     }
 
-    .navbar-brand span { color: var(--accent); }
+    .navbar-brand span {
+      color: var(--accent) !important;
+    }
 
-    /* Nav Link Pseudo-elements */
     .nav-link {
-      position: relative;
-      color: var(--text-muted) !important;
-      font-weight: 500;
-      margin: 0 5px;
-      transition: 0.3s;
-    }
-
-    .nav-link::after {
-      content: "";
-      position: absolute;
-      bottom: 0; left: 50%;
-      width: 0; height: 2px;
-      background: var(--accent);
+      color: #cbd5e1 !important;
+      padding: 8px 15px !important;
       transition: all 0.3s ease;
-      transform: translateX(-50%);
-    }
-
-    .nav-link:hover::after, .nav-link.active::after {
-      width: 80%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .nav-link:hover, .nav-link.active {
-      color: var(--accent) !important;
-      transform: translateY(-2px);
+      color: #fff !important;
+      transform: translateY(-1px);
     }
 
-    /* Main Content Padding */
-    main {
-      flex: 1;
-      padding-top: 120px;
-      animation: fadeInUp 1s ease;
-    }
-
-    /* Social Icons with Pseudo-classes */
+    /* Ijtimoiy tarmoqlar */
     .social-link {
-      position: relative;
-      width: 50px; height: 50px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      color: var(--text-muted) !important;
-      overflow: hidden;
-      transition: 0.4s;
-      z-index: 1;
-    }
-
-    .social-link::before {
-      content: "";
-      position: absolute;
-      top: 100%; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(45deg, var(--accent), var(--accent-2));
-      transition: 0.4s;
-      z-index: -1;
-    }
-
-    .social-link:hover::before {
-      top: 0;
+      display: inline-block;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      color: var(--muted) !important;
+      text-decoration: none;
     }
 
     .social-link:hover {
-      color: white !important;
-      border-color: transparent;
-      transform: translateY(-8px) rotate(360deg);
-      box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+      color: var(--accent) !important;
+      transform: translateY(-5px) scale(1.2);
     }
 
-    /* Footer Styling */
     footer {
+      flex-shrink: 0;
       border-top: 1px solid var(--border);
-      padding: 50px 0;
-      margin-top: 80px;
-      background: rgba(0, 0, 0, 0.2);
+      padding: 30px 0;
+      margin-top: 40px;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Mobile view fixes */
     @media (max-width: 991px) {
-      .custom-navbar { width: 90%; top: 10px; }
       .navbar-collapse {
-        background: rgba(10, 15, 25, 0.95);
+        background: #1e293b;
+        margin-top: 15px;
         padding: 20px;
         border-radius: 15px;
-        margin-top: 10px;
+        border: 1px solid var(--border);
       }
     }
   </style>
@@ -194,23 +134,45 @@
 <div id="myBar"></div>
 
 <div class="container-lg">
-  <nav class="navbar navbar-expand-lg navbar-dark custom-navbar" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'about' %}">Ahrorjon<span>.dev</span></a>
+      <a class="navbar-brand" href="{% url 'about' %}">axrorback<span>.dev</span></a>
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'about' %}"><i class="bi bi-house-door"></i> Home</a></li>
-          <li class="nav-item"><a class="nav-link {% if 'achievements' in request.path %}active{% endif %}" href="{% url 'achievements' %}"><i class="bi bi-award"></i> Yutuqlar</a></li>
-          <li class="nav-item"><a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog' %}"><i class="bi bi-chat-left-text"></i> Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://library.coderboys.uz" target="_blank"><i class="bi bi-journal-bookmark"></i> Kutubxona</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://project.coderboys.uz" target="_blank"><i class="bi bi-code-square"></i> Loyihalar</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://t.me/axror_contactbot" target="_blank"><i class="bi bi-robot"></i> Bot</a></li>
-          <li class="nav-item"><a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}"><i class="bi bi-envelope"></i> Contact</a></li>
-          <li class="nav-item"><a class="nav-link {% if 'ask_question' in request.path %}active{% endif %}" href="{% url 'ask_question' %}"><i class="bi bi-question-circle"></i> Savol</a></li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'about' %}">
+              <i class="bi bi-house"></i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'achievements' in request.path %}active{% endif %}" href="{% url 'achievements' %}">
+              <i class="bi bi-trophy"></i> Yutuqlar
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog' %}">
+              <i class="bi bi-chat-left-text"></i> Blog
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://t.me/axror_contactbot" target="_blank">
+              <i class="bi bi-robot"></i> Bot
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">
+              <i class="bi bi-person-lines-fill"></i> Contact
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'ask_question' in request.path %}active{% endif %}" href="{% url 'ask_question' %}">
+              <i class="bi bi-question-circle"></i> Savol
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -220,18 +182,18 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="text-center">
-    <div class="mb-4 d-flex justify-content-center flex-wrap gap-4">
-      <a href="https://instagram.com/axrorback" target="_blank" class="social-link"><i class="bi bi-instagram"></i></a>
-      <a href="https://twitter.com/axrorback" target="_blank" class="social-link"><i class="bi bi-twitter-x"></i></a>
-      <a href="https://t.me/axrorback" target="_blank" class="social-link"><i class="bi bi-telegram"></i></a>
-      <a href="https://github.com/axrorback" target="_blank" class="social-link"><i class="bi bi-github"></i></a>
-      <a href="mailto:axrorback@gmail.com" class="social-link"><i class="bi bi-envelope-heart"></i></a>
-      <a href="tel:+998931004005" class="social-link"><i class="bi bi-telephone-plus"></i></a>
+  <footer class="text-center text-light">
+    <div class="mb-3 d-flex justify-content-center flex-wrap gap-4">
+      <a href="https://instagram.com/axrorback" target="_blank" class="social-link"><i class="bi bi-instagram fs-4"></i></a>
+      <a href="https://twitter.com/axrorback" target="_blank" class="social-link"><i class="bi bi-twitter-x fs-4"></i></a>
+      <a href="https://t.me/axrorback" target="_blank" class="social-link"><i class="bi bi-telegram fs-4"></i></a>
+      <a href="https://facebook.com/axrorback" target="_blank" class="social-link"><i class="bi bi-facebook fs-4"></i></a>
+      <a href="https://github.com/axrorback" target="_blank" class="social-link"><i class="bi bi-github fs-4"></i></a>
+      <a href="mailto:axrorback@gmail.com" class="social-link"><i class="bi bi-envelope-at fs-4"></i></a>
+      <a href="tel:+998931004005" class="social-link"><i class="bi bi-telephone-outbound fs-4"></i></a>
     </div>
     <div class="small text-secondary">
-      <p class="mb-0">Designed with <i class="bi bi-heart-fill text-danger"></i> by</p>
-      <strong class="text-white">Ahrorjon Ibrohimjonov</strong> © <span id="footerYear"></span>
+      © <span id="footerYear"></span> <strong>Ahrorjon Ibrohimjonov</strong>
     </div>
   </footer>
 </div>
@@ -240,21 +202,14 @@
 <script>
   document.getElementById('footerYear').textContent = new Date().getFullYear();
 
-  // Scroll effekti
+  // Xatolikni oldini olish uchun tekshiruv bilan yozildi
   window.onscroll = function() {
     let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     let scrolled = (winScroll / height) * 100;
-
-    // Progress bar
-    document.getElementById("myBar").style.width = scrolled + "%";
-
-    // Navbar scroll effekti
-    const nav = document.getElementById("mainNav");
-    if (winScroll > 50) {
-      nav.classList.add("scrolled");
-    } else {
-      nav.classList.remove("scrolled");
+    let bar = document.getElementById("myBar");
+    if(bar) {
+      bar.style.width = scrolled + "%";
     }
   };
 </script>
