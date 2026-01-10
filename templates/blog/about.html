@@ -1,112 +1,181 @@
 {% extends 'base.html' %}
-{% block title %}Ahrorjon Ibrohimjonov{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — Men haqimda{% endblock %}
 {% load static %}
 
 {% block extra_head %}
 <style>
+  /* Ism va Sarlavha animatsiyasi */
   .name-highlight {
     font-weight: 800;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    background: linear-gradient(to right, #fff 20%, var(--accent) 50%, #fff 80%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite;
     margin-bottom: 0.5rem;
   }
 
+  @keyframes shine {
+    to { background-position: 200% center; }
+  }
+
+  /* Glass Card - Yangicha talqinda */
+  .about-glass-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 30px;
+    padding: 40px;
+    margin-bottom: 40px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .about-glass-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at top left, rgba(0, 210, 255, 0.05), transparent);
+    pointer-events: none;
+  }
+
+  .about-glass-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(0, 210, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Sarlavha stili */
   .section-title {
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1.1rem;
     color: var(--accent);
     margin-bottom: 1.5rem;
-    position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .section-title::after {
     content: "";
-    display: block;
-    width: 50px;
-    height: 3px;
-    background: var(--accent);
-    margin-top: 5px;
-    border-radius: 2px;
+    height: 1px;
+    flex-grow: 1;
+    background: linear-gradient(to right, var(--accent), transparent);
   }
 
-  .about-glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 24px;
-    padding: 30px;
-    margin-bottom: 30px;
-    transition: 0.3s ease-in-out;
-  }
-
-  .about-glass-card:hover {
-    border-color: rgba(108, 92, 231, 0.3);
-  }
-
+  /* Profil rasmi effekti */
   .profile-img-wrapper {
     position: relative;
+    padding: 10px;
     display: inline-block;
   }
 
-  .profile-img-wrapper::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    opacity: 0.3;
+  .profile-img-wrapper img {
+    position: relative;
+    z-index: 2;
+    filter: grayscale(20%);
+    transition: 0.5s;
   }
 
+  .profile-img-wrapper:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+  }
+
+  .profile-img-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px dashed var(--accent);
+    border-radius: 50%;
+    animation: rotate 10s linear infinite;
+    opacity: 0.5;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Ko'nikmalar (Skills) */
   .skill-list {
-    list-style: none;
-    padding-left: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
   }
 
   .skill-item {
-    background: rgba(108, 92, 231, 0.1);
-    border: 1px solid rgba(108, 92, 231, 0.2);
-    padding: 12px 18px;
-    border-radius: 12px;
-    transition: 0.3s;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    padding: 15px 20px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
+    transition: 0.4s;
+    overflow: hidden;
+  }
+
+  .skill-item::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+  }
+
+  .skill-item:hover::before {
+    left: 100%;
   }
 
   .skill-item:hover {
-    background: var(--accent);
-    color: white;
-    transform: translateX(5px);
+    background: rgba(0, 210, 255, 0.1);
+    border-color: var(--accent);
+    transform: translateX(10px);
   }
 
-  /* DevIcon va BI ikonkalari uchun umumiy stil */
   .skill-item i {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     color: var(--accent);
-    transition: 0.3s;
   }
 
-  .skill-item:hover i {
-    color: white !important; /* Hover bo'lganda rangli ikonka ham oq bo'ladi */
+  /* Maqsad va Qiziqishlar */
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 210, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
   }
 
-  .lead-text {
-    color: var(--muted);
+  .custom-list li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+  }
+
+  .custom-list li i {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    color: var(--accent);
     font-size: 1.2rem;
   }
 
-  @media (max-width: 991px) {
-    .about-glass-card {
-      margin-bottom: 25px !important;
-    }
+  @media (max-width: 768px) {
+    .about-glass-card { padding: 25px; }
   }
 </style>
 {% endblock %}
@@ -114,62 +183,67 @@
 {% block content %}
 <div class="container-lg py-5">
 
-  <div class="text-center mb-5">
+  <div class="text-center mb-5" style="margin-top: 40px;">
     <h1 class="name-highlight">Ahrorjon Ibrohimjonov</h1>
-    <p class="lead lead-text">BackEnd Engineer | Python, Django & Flask</p>
+    <div class="d-flex justify-content-center align-items-center gap-3">
+      <span class="badge rounded-pill bg-dark border border-secondary px-3 py-2">
+        <i class="bi bi-cpu me-2"></i>Backend Engineer
+      </span>
+      <span class="badge rounded-pill bg-dark border border-secondary px-3 py-2">
+        <i class="bi bi-code-slash me-2"></i>Python Enthusiast
+      </span>
+    </div>
   </div>
 
   <div class="about-glass-card">
     <div class="row align-items-center">
-      <div class="col-md-4 text-center mb-4 mb-md-0">
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
         <div class="profile-img-wrapper">
           <img src="{% url 'protected_media' path='images/img.png' %}"
                alt="Ahrorjon Ibrohimjonov"
-               class="img-fluid rounded-circle shadow-lg"
-               style="max-width:220px; border: 4px solid rgba(255,255,255,0.1);">
+               class="img-fluid rounded-circle"
+               style="max-width:240px; object-fit: cover;">
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-lg-8">
         <h3 class="section-title">Men haqimda</h3>
-        <p class="text-light opacity-75">
-          Men <strong>Ahrorjon Ibrohimjonov</strong>, Backend dasturchiman. Asosiy yo‘nalishim — backend dasturlash bo‘lib,
-          Python, Django va Flask hamda DRF yordamida veb ilovalar ishlab chiqaman. Shuningdek, frontend texnologiyalarida faol ishlayman.
-          BackEnd tizimlarida API lar bilan ishlashni yoqtiraman
+        <p class="lead-text text-light opacity-75 mb-4" style="font-size: 1.1rem; line-height: 1.8;">
+          Salom! Men <span class="text-white fw-bold">Ahrorjon</span>, yuqori yuklamali va samarali backend tizimlar yaratishga ishtiyoqi baland bo'lgan dasturchiman.
+          Asosiy e'tiborim <strong>Python ekotizimi</strong> (Django, Flask, FastAPI) orqali murakkab biznes mantiqlarini xavfsiz va tezkor API ko'rinishida amalga oshirishga qaratilgan.
         </p>
-        <p class="text-light opacity-75">
-          Hozirda Acharya Universitetida ikkinchi bosqich talabasi bo‘lib, IT sohasida bilimlarimni chuqurlashtiryapman.
-          Yangi texnologiyalarni o‘rganish va ularni amaliy loyihalarda qo‘llash — mening asosiy maqsadimdir.
+        <p class="text-light opacity-50">
+          Hozirda Acharya Universitetida bilimlarimni akademik darajada mustahkamlamoqdaman. Har bir loyihada nafaqat kod yozish, balki foydalanuvchi muammolariga eng optimal arxitekturaviy yechim topishni maqsad qilaman.
         </p>
       </div>
     </div>
   </div>
 
   <div class="about-glass-card">
-    <h3 class="section-title">Ko‘nikmalar va tajriba</h3>
+    <h3 class="section-title">Texnologik stack</h3>
     <div class="skill-list">
       <div class="skill-item">
-        <i class="devicon-python-plain colored"></i> Python & Django
+        <i class="devicon-python-plain colored"></i>
+        <div><span class="d-block fw-bold">Python</span><small class="text-muted">Django, Flask</small></div>
       </div>
       <div class="skill-item">
-        <i class="devicon-flask-original"></i> Flask & FastAPI
+        <i class="devicon-postgresql-plain colored"></i>
+        <div><span class="d-block fw-bold">Database</span><small class="text-muted">PostgreSQL, Redis</small></div>
       </div>
       <div class="skill-item">
-        <i class="bi bi-code-square"></i> HTML, CSS, JS, Bootstrap
+        <i class="bi bi-robot"></i>
+        <div><span class="d-block fw-bold">Automation</span><small class="text-muted">Aiogram, Bots</small></div>
       </div>
       <div class="skill-item">
-        <i class="devicon-postgresql-plain colored"></i> PostgreSQL & SQLite
+        <i class="devicon-docker-plain colored"></i>
+        <div><span class="d-block fw-bold">DevOps</span><small class="text-muted">Docker, Nginx</small></div>
       </div>
       <div class="skill-item">
-        <i class="bi bi-robot"></i> Telegram Bot (Aiogram)
+        <i class="devicon-linux-plain"></i>
+        <div><span class="d-block fw-bold">OS</span><small class="text-muted">Linux, Bash</small></div>
       </div>
       <div class="skill-item">
-        <i class="devicon-docker-plain colored"></i> Docker & DevOps
-      </div>
-      <div class="skill-item">
-        <i class="bi bi-git"></i> Git & GitHub
-      </div>
-      <div class="skill-item">
-        <i class="devicon-linux-plain"></i> Linux (Ubuntu)
+        <i class="bi bi-window-sidebar"></i>
+        <div><span class="d-block fw-bold">Frontend</span><small class="text-muted">JS, Bootstrap</small></div>
       </div>
     </div>
   </div>
@@ -177,31 +251,31 @@
   <div class="row g-4">
     <div class="col-md-6">
       <div class="about-glass-card h-100">
-        <h3 class="section-title">Qiziqishlarim</h3>
+        <div class="feature-icon"><i class="bi bi-lightbulb"></i></div>
+        <h3 class="section-title" style="border:none">Qiziqishlarim</h3>
         <p class="opacity-75">
-          <i class="bi bi-cpu me-2 text-accent"></i> Texnologiyalar, sun’iy intellekt va ta’limga oid platformalar yaratishga katta qiziqishim bor.
-          Kod yozishdan tashqari, foydali mahsulotlar yaratishni yoqtiraman.
+          Sun'iy intellekt integratsiyasi, mikroservislar arxitekturasi va ma'lumotlar xavfsizligi mening asosiy fokusimda. Bo'sh vaqtimda yangi kutubxonalarni test qilish va open-source loyihalarni o'rganishni yoqtiraman.
         </p>
       </div>
     </div>
     <div class="col-md-6">
       <div class="about-glass-card h-100">
-        <h3 class="section-title">Mening maqsadim</h3>
+        <div class="feature-icon"><i class="bi bi-flag"></i></div>
+        <h3 class="section-title" style="border:none">Asosiy maqsad</h3>
         <p class="opacity-75">
-          <i class="bi bi-rocket-takeoff me-2 text-accent"></i> Texnologiyalar yordamida insonlar hayotini yengillashtirish, qulay va zamonaviy yechimlar yaratishga intilaman.
-          O‘rganish va o‘sish — mening asosimdir.
+          Global miqyosdagi muammolarni hal qila oladigan, millionlab foydalanuvchilarga xizmat qiluvchi barqaror va kengayuvchan (scalable) platformalar yaratish hamda O'zbekiston IT ekotizimiga hissa qo'shish.
         </p>
       </div>
     </div>
   </div>
 
   <div class="about-glass-card mt-4">
-    <h3 class="section-title">Loyihalar va yutuqlar</h3>
-    <ul class="list-unstyled opacity-75">
-      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Talabalar uchun interaktiv ta’lim platformalari</li>
-      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Telegram botlar va avtomatik aloqa tizimlari</li>
-      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Responsive UI va PostgreSQL bilan integratsiya</li>
-      <li class="mb-2"><i class="bi bi-check2-circle me-2 text-accent"></i> Docker orqali CI/CD tizimlarini joriy qilish</li>
+    <h3 class="section-title">Nimalar bilan shug'ullanaman?</h3>
+    <ul class="list-unstyled custom-list opacity-75">
+      <li><i class="bi bi-shield-check"></i> Xavfsiz va yuqori samaradorlikka ega RESTful API lar ishlab chiqish.</li>
+      <li><i class="bi bi-lightning-charge"></i> Murakkab ma'lumotlar bazasi so'rovlarini optimallashtirish va migratsiyalar.</li>
+      <li><i class="bi bi-layers"></i> Docker konteynerizatsiya orqali loyihalarni deploy qilishga tayyorlash.</li>
+      <li><i class="bi bi-send-check"></i> Biznes jarayonlarni avtomatlashtiruvchi murakkab Telegram ekotizimlari.</li>
     </ul>
   </div>
 
