@@ -18,97 +18,65 @@
 
   <style>
     :root {
-      --accent: #00d2ff;
-      --accent-2: #3a7bd5;
-      --bg-dark: #050a14;
+      --accent: #7C4DFF; /* Yoroqinroq binafsha */
+      --accent-glow: rgba(124, 77, 255, 0.4);
+      --bg-dark: #0a0f1b;
       --card-bg: rgba(255, 255, 255, 0.03);
-      --border: rgba(255, 255, 255, 0.08);
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
+      --border-light: rgba(255, 255, 255, 0.08);
+      --text-main: #e2e8f0;
     }
 
-    /* Asosiy fon va fon effektlari */
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-dark);
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 0% 0%, #16213e 0%, #0a0f1b 50%);
       color: var(--text-main);
-      overflow-x: hidden;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      line-height: 1.6;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: -10%; left: -10%;
-      width: 40%; height: 40%;
-      background: radial-gradient(circle, rgba(0, 210, 255, 0.1) 0%, transparent 70%);
-      z-index: -1;
-    }
-
-    /* Fixed Progress Bar */
-    #myBar {
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      width: 0%;
-      position: fixed;
-      top: 0; left: 0;
-      z-index: 10001;
-      box-shadow: 0 0 15px var(--accent);
-    }
-
-    /* Modern Fixed Navbar */
+    /* Glassmorphism Navbar */
     .custom-navbar {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 95%;
-      max-width: 1200px;
-      z-index: 1000;
-      backdrop-filter: blur(15px);
-      background: rgba(10, 15, 25, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 12px 25px;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .custom-navbar.scrolled {
-      top: 0;
-      width: 100%;
-      max-width: 100%;
-      border-radius: 0;
-      background: rgba(5, 10, 20, 0.95);
-      border-bottom: 1px solid var(--accent);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .navbar-brand {
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: -1px;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
     }
 
-    .navbar-brand span { color: var(--accent); }
+    .navbar-brand span {
+      color: var(--accent);
+      text-shadow: 0 0 15px var(--accent-glow);
+    }
 
-    /* Nav Link Pseudo-elements */
+    /* Nav Linklari uchun effekt */
     .nav-link {
       position: relative;
-      color: var(--text-muted) !important;
       font-weight: 500;
       margin: 0 5px;
-      transition: 0.3s;
+      color: #94a3b8 !important;
     }
 
     .nav-link::after {
-      content: "";
+      content: '';
       position: absolute;
-      bottom: 0; left: 50%;
-      width: 0; height: 2px;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%;
       background: var(--accent);
       transition: all 0.3s ease;
       transform: translateX(-50%);
+      box-shadow: 0 0 10px var(--accent);
     }
 
     .nav-link:hover::after, .nav-link.active::after {
@@ -116,76 +84,52 @@
     }
 
     .nav-link:hover, .nav-link.active {
-      color: var(--accent) !important;
-      transform: translateY(-2px);
+      color: #fff !important;
     }
 
-    /* Main Content Padding */
-    main {
-      flex: 1;
-      padding-top: 120px;
-      animation: fadeInUp 1s ease;
+    /* Footer va Ijtimoiy tarmoqlar */
+    footer {
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      padding: 40px 0;
+      border-top: 1px solid var(--border-light);
     }
 
-    /* Social Icons with Pseudo-classes */
     .social-link {
-      position: relative;
-      width: 50px; height: 50px;
-      display: inline-flex;
+      width: 45px;
+      height: 45px;
+      display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 12px;
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      color: var(--text-muted) !important;
-      overflow: hidden;
-      transition: 0.4s;
-      z-index: 1;
-    }
-
-    .social-link::before {
-      content: "";
-      position: absolute;
-      top: 100%; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(45deg, var(--accent), var(--accent-2));
-      transition: 0.4s;
-      z-index: -1;
-    }
-
-    .social-link:hover::before {
-      top: 0;
+      border: 1px solid var(--border-light);
+      color: #94a3b8 !important;
+      transition: all 0.3s ease;
     }
 
     .social-link:hover {
+      background: var(--accent);
       color: white !important;
-      border-color: transparent;
-      transform: translateY(-8px) rotate(360deg);
-      box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3);
     }
 
-    /* Footer Styling */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 50px 0;
-      margin-top: 80px;
-      background: rgba(0, 0, 0, 0.2);
+    /* Scroll progress */
+    #myBar {
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--accent));
+      box-shadow: 0 0 10px var(--accent);
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
+    /* Animatsiya uchun */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Mobile view fixes */
-    @media (max-width: 991px) {
-      .custom-navbar { width: 90%; top: 10px; }
-      .navbar-collapse {
-        background: rgba(10, 15, 25, 0.95);
-        padding: 20px;
-        border-radius: 15px;
-        margin-top: 10px;
-      }
+    main {
+      animation: fadeIn 0.8s ease-out;
     }
   </style>
   {% block extra_head %}{% endblock %}
