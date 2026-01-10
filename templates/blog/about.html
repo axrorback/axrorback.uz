@@ -11,7 +11,6 @@
     --border-color: #1a1a1a;
   }
 
-  /* Kiber-karta uslubi */
   .about-glass-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -21,7 +20,6 @@
     overflow: hidden;
   }
 
-  /* Karta burchagidagi dekor */
   .about-glass-card::before {
     content: "";
     position: absolute;
@@ -48,6 +46,78 @@
     content: "> ";
     color: var(--neon-green);
   }
+  /* Texnologiyalar konteyneri - umumiy blok */
+  .tech-section-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    overflow: hidden; /* Tashqariga chiqib ketgan qismlarni yashirish */
+  }
+
+  /* Suzib yuradigan zona widthni cheklash uchun */
+  .marquee-viewport {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .tech-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: scroll-left 20s linear infinite;
+  }
+
+  .tech-track:hover {
+    animation-play-state: paused; /* Sichqoncha ustiga kelganda to'xtaydi */
+  }
+
+  .tech-card {
+    background: #111;
+    border: 1px solid #1a1a1a;
+    padding: 8px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .tech-card i {
+    color: var(--neon-green);
+    font-size: 1.2rem;
+  }
+
+  .tech-card span {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    color: #ccc;
+  }
+
+  /* Statik "...and more" qismi */
+  .and-more-text {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    color: #555;
+    white-space: nowrap;
+    padding-left: 10px;
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Ro'yxatning yarmini bosib o'tganda sikl qaytariladi */
+  }
+
+  /* Kichik joy egallashi uchun viewport balandligini olib tashlaymiz */
+  .spinner-view-viewport {
+    height: auto !important;
+    perspective: none !important;
+    background: none !important;
+    display: block !important;
+  }
 
   .section-title::after {
     content: "";
@@ -56,45 +126,12 @@
     background: linear-gradient(to right, #222, transparent);
   }
 
-  /* Skill list */
-  .skill-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+  @keyframes rotate-spinner {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
   }
 
-  .skill-item {
-    background: #050505;
-    border: 1px solid #111;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    clip-path: polygon(5% 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0 10%);
-  }
-
-  .skill-item i {
-    font-size: 1.8rem;
-    color: var(--neon-green);
-    filter: drop-shadow(0 0 5px rgba(57, 255, 20, 0.3));
-  }
-
-  .skill-item .tech-title {
-    color: #ffffff !important;
-    font-weight: 700;
-    font-size: 1rem;
-    display: block;
-    font-family: 'Fira Code', monospace;
-  }
-
-  .skill-item .tech-subtitle {
-    color: #555 !important;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-
-  /* Profil rasm wrapper - Cyber Frame */
+  /* Profile Frame */
   .profile-img-wrapper {
     position: relative;
     padding: 10px;
@@ -111,16 +148,12 @@
 
   .profile-img-wrapper img {
     max-width: 260px;
-    filter: grayscale(0.5) contrast(1.1);
+    filter: grayscale(0.4) contrast(1.1);
     transition: 0.5s;
     background: #111;
   }
 
-  .profile-img-wrapper:hover img {
-    filter: grayscale(0) contrast(1);
-  }
-
-  /* Listlar */
+  /* Lists */
   .custom-list li {
     list-style: none;
     padding: 12px 15px;
@@ -147,6 +180,11 @@
     color: #aaa;
     line-height: 1.8;
   }
+
+  @media (max-width: 768px) {
+    .spinner-view-viewport { height: 350px; }
+    h1 { font-size: 2.2rem; }
+  }
 </style>
 {% endblock %}
 
@@ -168,36 +206,35 @@
         <p class="bio-text">
           Asosiy e'tiborim Python ekotizimi (Django, FastAPI) orqali murakkab biznes mantiqlarini xavfsiz va tezkor API ko'rinishida amalga oshirishga qaratilgan. Hozirda Acharya Universitetida bilimlarimni akademik darajada mustahkamlamoqdaman.
         </p>
-      </div>
-    </div>
-  </div>
+        <div class="about-glass-card">
+          <h3 class="section-title">TECHNICAL_STACK.sys</h3>
 
-  <div class="about-glass-card">
-    <h3 class="section-title">TECHNICAL_STACK.sys</h3>
-    <div class="skill-list">
-      <div class="skill-item">
-        <i class="bi bi-braces"></i>
-        <div><span class="tech-title">Python</span><span class="tech-subtitle">Django, Flask, FastAPI</span></div>
-      </div>
-      <div class="skill-item">
-        <i class="bi bi-database-fill-gear"></i>
-        <div><span class="tech-title">Database</span><span class="tech-subtitle">PostgreSQL, Redis</span></div>
-      </div>
-      <div class="skill-item">
-        <i class="bi bi-robot"></i>
-        <div><span class="tech-title">Automation</span><span class="tech-subtitle">Aiogram, Bots</span></div>
-      </div>
-      <div class="skill-item">
-        <i class="bi bi-box-seam"></i>
-        <div><span class="tech-title">DevOps</span><span class="tech-subtitle">Docker, Nginx</span></div>
-      </div>
-      <div class="skill-item">
-        <i class="bi bi-terminal"></i>
-        <div><span class="tech-title">OS</span><span class="tech-subtitle">Linux, Bash</span></div>
-      </div>
-      <div class="skill-item">
-        <i class="bi bi-window-sidebar"></i>
-        <div><span class="tech-title">Frontend</span><span class="tech-subtitle">JS, Bootstrap</span></div>
+          <div class="tech-section-wrapper">
+            <div class="marquee-viewport">
+              <div class="tech-track">
+                <div class="tech-card"><i class="bi bi-braces"></i><span>Python</span></div>
+                <div class="tech-card"><i class="bi bi-window-sidebar"></i><span>Django</span></div>
+                <div class="tech-card"><i class="bi bi-database-fill-gear"></i><span>PostgreSQL</span></div>
+                <div class="tech-card"><i class="bi bi-box-seam"></i><span>Docker</span></div>
+                <div class="tech-card"><i class="bi bi-lightning-charge"></i><span>FastAPI</span></div>
+                <div class="tech-card"><i class="bi bi-terminal"></i><span>Linux</span></div>
+                <div class="tech-card"><i class="bi bi-cpu"></i><span>Redis</span></div>
+
+                <div class="tech-card"><i class="bi bi-braces"></i><span>Python</span></div>
+                <div class="tech-card"><i class="bi bi-window-sidebar"></i><span>Django</span></div>
+                <div class="tech-card"><i class="bi bi-database-fill-gear"></i><span>PostgreSQL</span></div>
+                <div class="tech-card"><i class="bi bi-box-seam"></i><span>Docker</span></div>
+                <div class="tech-card"><i class="bi bi-lightning-charge"></i><span>FastAPI</span></div>
+                <div class="tech-card"><i class="bi bi-terminal"></i><span>Linux</span></div>
+                <div class="tech-card"><i class="bi bi-cpu"></i><span>Redis</span></div>
+              </div>
+            </div>
+
+            <div class="and-more-text">
+              ...and more
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -236,21 +273,25 @@
 
 {% block extra_scripts %}
 <script>
-  // Texnologik stack kartalariga interaktivlik qo'shish
-  document.querySelectorAll('.skill-item').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.borderColor = 'var(--neon-green)';
-      card.style.boxShadow = '0 0 20px rgba(57, 255, 20, 0.15)';
-      card.style.transform = 'translateY(-5px) scale(1.02)';
-    });
+  // 3D Spinner Initialization
+  function initTechSpinner() {
+    const items = document.querySelectorAll('.spinner-item');
+    const totalItems = items.length;
+    const angleStep = 360 / totalItems;
 
-    card.addEventListener('mouseleave', () => {
-      card.style.borderColor = '#111';
-      card.style.boxShadow = 'none';
-      card.style.transform = 'translateY(0) scale(1)';
-    });
-  });
+    // Radiusni ekran o'lchamiga qarab sozlash
+    const radius = window.innerWidth < 768 ? 180 : 320;
 
-  console.log("%c [STATUS] Personal profile decrypted and loaded.", "color: #39ff14; font-weight: bold;");
+    items.forEach((item, index) => {
+      const angle = index * angleStep;
+      item.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+    });
+  }
+
+  // Sahifa yuklanganda va ekran o'zgarganda ishga tushirish
+  window.addEventListener('load', initTechSpinner);
+  window.addEventListener('resize', initTechSpinner);
+
+  console.log("%c [STATUS] personal_profile_v2.0 loaded with 3D_SPINNER.", "color: #39ff14; font-weight: bold;");
 </script>
 {% endblock %}
