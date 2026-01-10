@@ -11,25 +11,24 @@
     --border-color: #1a1a1a;
   }
 
-  /* Sarlavha - Terminal uslubida */
   .achievements-title {
     color: var(--neon-green);
     font-family: 'Fira Code', monospace;
     text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    font-weight: 800;
   }
 
   .achievements-title::before {
     content: "> ";
-    color: #555;
+    color: #444;
   }
 
-  /* Sertifikat Kartasi - Kiber Dizayn */
   .cert-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 0; /* Qirrali dizayn */
+    border-radius: 0;
     padding: 30px;
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -37,15 +36,16 @@
     overflow: hidden;
   }
 
-  /* Burchak effekti */
   .cert-card::before {
     content: "";
     position: absolute;
-    top: 0; right: 0;
-    width: 0; height: 0;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
     border-style: solid;
-    border-width: 0 25px 25px 0;
-    border-color: transparent var(--border-color) transparent transparent;
+    border-width: 0 30px 30px 0;
+    border-color: transparent #1a1a1a transparent transparent;
     transition: 0.3s;
   }
 
@@ -53,6 +53,7 @@
     border-color: var(--neon-blue);
     transform: translateY(-8px);
     background: #0d0d0d;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
   .cert-card:hover::before {
@@ -60,43 +61,44 @@
   }
 
   .cert-icon {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     color: var(--neon-green);
     margin-bottom: 20px;
-    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.4));
+    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.3));
   }
 
   .cert-title {
-    font-weight: 600;
-    font-size: 1.15rem;
-    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
     margin-bottom: 25px;
-    line-height: 1.5;
+    line-height: 1.6;
     font-family: 'Space Grotesk', sans-serif;
+    min-height: 3.2em;
   }
 
-  /* Tugmalar - Terminal Style */
   .btn-preview {
     background: transparent;
     color: var(--neon-green) !important;
     border: 1px solid var(--neon-green);
     border-radius: 0;
-    padding: 10px 15px;
+    padding: 12px 15px;
     font-family: 'Fira Code', monospace;
     transition: 0.3s;
     text-transform: uppercase;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
   }
 
   .btn-preview:hover {
     background: rgba(57, 255, 20, 0.1);
-    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
   }
 
   .btn-action-outline {
     background: transparent;
-    border: 1px solid var(--border-color);
-    color: #888 !important;
+    border: 1px solid #222;
+    color: #555 !important;
     border-radius: 0;
     padding: 10px;
     transition: 0.3s;
@@ -111,13 +113,13 @@
   .cert-container {
     display: grid;
     gap: 25px;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
-  /* Bo'sh holat */
   .empty-state {
-    color: #444;
-    font-family: var(--font-mono);
+    color: #333;
+    font-family: 'Fira Code', monospace;
+    padding: 100px 0;
   }
 </style>
 {% endblock %}
@@ -125,21 +127,23 @@
 {% block content %}
 <div class="container py-5">
   <div class="text-center mb-5">
-    <h1 class="achievements-title mb-3">LIST_ACHIEVEMENTS.exe</h1>
-    <p style="color: #888; font-family: 'Fira Code', monospace;">[ STATUS: Verified Certificates Found ]</p>
+    <h1 class="achievements-title mb-3">LIST_ACHIEVEMENTS.log</h1>
+    <p style="color: #444; font-family: 'Fira Code', monospace; font-size: 0.9rem;">
+      [ TOTAL_RECORDS: {{ certificates|length }} | STATUS: VERIFIED ]
+    </p>
   </div>
 
   <div class="cert-container">
     {% for cert in certificates %}
     <div class="cert-card text-center cert-item-js">
       <div class="cert-icon">
-        <i class="bi bi-patch-check"></i>
+        <i class="bi bi-shield-check"></i>
       </div>
       <p class="cert-title">{{ cert.title }}</p>
 
       <div class="d-flex flex-column gap-2 mt-auto">
         <button class="btn btn-preview w-100" onclick="openPreview('{{ cert.file.url }}')">
-          <i class="bi bi-terminal-fill me-2"></i> EXECUTE_VIEW
+          <i class="bi bi-terminal me-2"></i> EXEC_VIEW
         </button>
         <div class="d-flex gap-2">
           <a href="{{ cert.file.url }}" download class="btn btn-action-outline flex-grow-1">
@@ -152,9 +156,10 @@
       </div>
     </div>
     {% empty %}
-    <div class="col-12 text-center py-5 empty-state">
-      <i class="bi bi-exclamation-triangle display-3 mb-3"></i>
-      <p>NO_DATA_FOUND: Sertifikatlar bazasi bo'sh.</p>
+    <div class="col-12 text-center empty-state">
+      <i class="bi bi-database-exclamation display-3 mb-3 d-block"></i>
+      <h3>ERROR_404: NO_CERTIFICATES_LOADED</h3>
+      <p>Tizim ma'lumotlar bazasidan tasdiqlangan hujjatlar topa olmadi.</p>
     </div>
     {% endfor %}
   </div>
@@ -163,18 +168,6 @@
 
 {% block extra_scripts %}
 <script>
-  // 1. Sertifikat kartalariga JS orqali nurlanish qo'shish
-  document.querySelectorAll('.cert-item-js').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      // Hover bo'lganda terminal ovozi simulyatsiyasi (ixtiyoriy)
-      card.style.boxShadow = "0 0 20px rgba(0, 210, 255, 0.15)";
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.boxShadow = "none";
-    });
-  });
-
-  // 2. Mavjud funksiyalarni saqlab qolamiz
   function openPreview(url) {
     window.open(url, '_blank');
   }
@@ -188,13 +181,19 @@
       }).catch(console.error);
     } else {
       navigator.clipboard.writeText(url);
-      // Custom toast yoki alert (dizaynga mos)
-      console.log('URL copied to clipboard');
-      alert('Havola nusxalandi!');
+      alert('LINK_COPIED_TO_CLIPBOARD');
     }
   }
 
-  // Console log status
-  console.log("%c [ACHIEVEMENTS] System check: OK", "color: #00d2ff; font-weight: bold;");
+  document.querySelectorAll('.cert-item-js').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.boxShadow = "0 0 25px rgba(0, 210, 255, 0.1)";
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.boxShadow = "none";
+    });
+  });
+
+  console.log("%c [SYS] Achievements module initialized.", "color: #39ff14; font-weight: bold;");
 </script>
 {% endblock %}
