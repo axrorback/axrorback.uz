@@ -1,90 +1,123 @@
 {% extends 'base.html' %}
-{% block title %}Yutuqlar{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — Yutuqlar{% endblock %}
 {% load static %}
 
 {% block extra_head %}
 <style>
-  .achievements-title {
-    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
+  :root {
+    --neon-blue: #00d2ff;
+    --neon-green: #39ff14;
+    --card-bg: #0a0a0a;
+    --border-color: #1a1a1a;
   }
 
+  /* Sarlavha - Terminal uslubida */
+  .achievements-title {
+    color: var(--neon-green);
+    font-family: 'Fira Code', monospace;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+  }
+
+  .achievements-title::before {
+    content: "> ";
+    color: #555;
+  }
+
+  /* Sertifikat Kartasi - Kiber Dizayn */
   .cert-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 25px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0; /* Qirrali dizayn */
+    padding: 30px;
+    transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100%;
+    position: relative;
+    overflow: hidden;
   }
 
-  .cert-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent);
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  }
-
-  .cert-icon {
-    font-size: 2.5rem;
-    color: var(--accent);
-    margin-bottom: 15px;
+  /* Burchak effekti */
+  .cert-card::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 25px 25px 0;
+    border-color: transparent var(--border-color) transparent transparent;
     transition: 0.3s;
   }
 
-  .cert-card:hover .cert-icon {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 10px var(--accent));
+  .cert-card:hover {
+    border-color: var(--neon-blue);
+    transform: translateY(-8px);
+    background: #0d0d0d;
+  }
+
+  .cert-card:hover::before {
+    border-color: transparent var(--neon-blue) transparent transparent;
+  }
+
+  .cert-icon {
+    font-size: 2.8rem;
+    color: var(--neon-green);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.4));
   }
 
   .cert-title {
     font-weight: 600;
-    font-size: 1.1rem;
-    color: #e6eef8;
-    margin-bottom: 20px;
-    line-height: 1.4;
+    font-size: 1.15rem;
+    color: #ffffff !important;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
+  /* Tugmalar - Terminal Style */
   .btn-preview {
-    background: var(--accent);
-    color: white !important;
-    border: none;
-    border-radius: 10px;
+    background: transparent;
+    color: var(--neon-green) !important;
+    border: 1px solid var(--neon-green);
+    border-radius: 0;
     padding: 10px 15px;
+    font-family: 'Fira Code', monospace;
     transition: 0.3s;
-    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.9rem;
   }
 
   .btn-preview:hover {
-    background: var(--accent-hover);
-    box-shadow: 0 0 15px rgba(108, 92, 231, 0.4);
+    background: rgba(57, 255, 20, 0.1);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
   }
 
   .btn-action-outline {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--muted) !important;
-    border-radius: 10px;
-    padding: 8px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: #888 !important;
+    border-radius: 0;
+    padding: 10px;
     transition: 0.3s;
   }
 
   .btn-action-outline:hover {
-    border-color: var(--accent);
-    color: white !important;
-    background: rgba(108, 92, 231, 0.1);
+    border-color: var(--neon-blue);
+    color: var(--neon-blue) !important;
+    background: rgba(0, 210, 255, 0.05);
   }
 
   .cert-container {
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+
+  /* Bo'sh holat */
+  .empty-state {
+    color: #444;
+    font-family: var(--font-mono);
   }
 </style>
 {% endblock %}
@@ -92,21 +125,21 @@
 {% block content %}
 <div class="container py-5">
   <div class="text-center mb-5">
-    <h1 class="display-5 achievements-title mb-3">🎓 Mening yutuqlarim</h1>
-    <p class="text-secondary">Dasturlash va texnologiya sohasidagi sertifikatlarim to‘plami.</p>
+    <h1 class="achievements-title mb-3">LIST_ACHIEVEMENTS.exe</h1>
+    <p style="color: #888; font-family: 'Fira Code', monospace;">[ STATUS: Verified Certificates Found ]</p>
   </div>
 
   <div class="cert-container">
     {% for cert in certificates %}
-    <div class="cert-card text-center">
+    <div class="cert-card text-center cert-item-js">
       <div class="cert-icon">
-        <i class="bi bi-patch-check-fill"></i>
+        <i class="bi bi-patch-check"></i>
       </div>
       <p class="cert-title">{{ cert.title }}</p>
 
       <div class="d-flex flex-column gap-2 mt-auto">
         <button class="btn btn-preview w-100" onclick="openPreview('{{ cert.file.url }}')">
-          <i class="bi bi-eye"></i> Ko‘rish
+          <i class="bi bi-terminal-fill me-2"></i> EXECUTE_VIEW
         </button>
         <div class="d-flex gap-2">
           <a href="{{ cert.file.url }}" download class="btn btn-action-outline flex-grow-1">
@@ -119,17 +152,29 @@
       </div>
     </div>
     {% empty %}
-        <div class="col-12 text-center py-5">
-      <i class="bi bi-emoji-neutral display-1 text-secondary"></i>
-      <p class="text-secondary mt-3">
-        Hozircha sertifikatlar mavjud emas.
-      </p>
+    <div class="col-12 text-center py-5 empty-state">
+      <i class="bi bi-exclamation-triangle display-3 mb-3"></i>
+      <p>NO_DATA_FOUND: Sertifikatlar bazasi bo'sh.</p>
     </div>
     {% endfor %}
   </div>
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
+  // 1. Sertifikat kartalariga JS orqali nurlanish qo'shish
+  document.querySelectorAll('.cert-item-js').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      // Hover bo'lganda terminal ovozi simulyatsiyasi (ixtiyoriy)
+      card.style.boxShadow = "0 0 20px rgba(0, 210, 255, 0.15)";
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.boxShadow = "none";
+    });
+  });
+
+  // 2. Mavjud funksiyalarni saqlab qolamiz
   function openPreview(url) {
     window.open(url, '_blank');
   }
@@ -143,8 +188,13 @@
       }).catch(console.error);
     } else {
       navigator.clipboard.writeText(url);
+      // Custom toast yoki alert (dizaynga mos)
+      console.log('URL copied to clipboard');
       alert('Havola nusxalandi!');
     }
   }
+
+  // Console log status
+  console.log("%c [ACHIEVEMENTS] System check: OK", "color: #00d2ff; font-weight: bold;");
 </script>
 {% endblock %}

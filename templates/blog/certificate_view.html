@@ -1,54 +1,158 @@
 {% extends 'base.html' %}
-{% block title %}{{ cert.title }} — Sertifikat{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — {{ cert.title }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  :root {
+    --neon-green: #39ff14;
+    --neon-blue: #00d2ff;
+    --card-bg: #0a0a0a;
+    --border-color: #1a1a1a;
+  }
+
+  /* Sarlavha terminal uslubida */
+  .cert-header {
+    font-family: 'Fira Code', monospace;
+    color: var(--neon-green);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+  }
+
+  /* Sertifikat ramkasi */
+  .preview-frame {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .preview-frame::before {
+    content: "SECURE_VIEWER_V2.0";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #000;
+    padding: 0 10px;
+    color: #444;
+    font-size: 0.75rem;
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* Taymer bloki */
+  .timer-box {
+    background: rgba(0, 210, 255, 0.05);
+    border: 1px dashed var(--neon-blue);
+    display: inline-block;
+    padding: 15px 30px;
+    font-family: 'Fira Code', monospace;
+    color: #fff;
+  }
+
+  #timer {
+    color: var(--neon-blue);
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+  }
+
+  /* Rasm effekti */
+  .img-preview {
+    border: 1px solid #222;
+    filter: brightness(0.9);
+    transition: 0.5s;
+  }
+
+  .img-preview:hover {
+    filter: brightness(1.1);
+    border-color: var(--neon-green);
+  }
+
+  .error-terminal {
+    background: #1a0000;
+    border: 1px solid #ff0000;
+    color: #ff0000;
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container py-5 text-center">
-  <h1 class="mb-4">{{ cert.title }}</h1>
+  <div class="mb-5">
+    <h1 class="cert-header mb-3">
+      <i class="bi bi-shield-lock-fill"></i> VIEW_DOCUMENT: {{ cert.title }}
+    </h1>
+    <div style="height: 1px; width: 100px; background: var(--neon-green); margin: 0 auto;"></div>
+  </div>
 
-  <div class="card shadow-sm p-3">
+  <div class="preview-frame mb-5">
     {% if cert.is_image %}
-      <img src="{{ cert.file.url }}" class="img-fluid rounded" alt="{{ cert.title }}">
+    <img src="{{ cert.file.url }}" class="img-fluid img-preview" alt="{{ cert.title }}">
     {% elif cert.is_pdf %}
-      <div class="ratio ratio-16x9">
-        <iframe
-          src="{{ cert.file.url }}"
-          width="100%"
-          height="600"
-          style="border:none;"
-          allowfullscreen>
-        </iframe>
-      </div>
+    <div class="ratio ratio-16x9">
+      <iframe
+              src="{{ cert.file.url }}"
+              width="100%"
+              height="600"
+              style="border:none; filter: invert(0);"
+              allowfullscreen>
+      </iframe>
+    </div>
     {% else %}
-      <p class="text-danger">⚠️ Sertifikat fayli ko‘rsatib bo‘lmaydi.</p>
+    <div class="error-terminal">
+      <p class="mb-0">⚠️ FATAL_ERROR: MIME_TYPE_NOT_SUPPORTED</p>
+      <small>Faylni yuklab olishga urinib ko'ring.</small>
+    </div>
     {% endif %}
   </div>
 
-  <div class="mt-4 fs-5 fw-semibold">
-    ⏳ Havola amal qilish muddati tugashiga:
-    <span id="timer" class="text-primary"></span> qoldi
+  <div class="timer-box">
+    <span class="small opacity-50 d-block mb-1">> ACCESS_EXPIRES_IN:</span>
+    <span id="timer">--:--</span>
   </div>
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
   let remaining = {{ remaining }};
+  const timerDisplay = document.getElementById("timer");
+
   function updateTimer() {
     if (remaining <= 0) {
       document.body.innerHTML = `
-        <div class="container text-center mt-5">
-          <h2>⏳ Havola muddati tugadi!</h2>
-          <p class="text-muted">Sertifikatga kirish vaqti yakunlandi.</p>
+        <div class="container text-center mt-5 py-5">
+          <h2 class="text-danger fw-bold" style="font-family: 'Fira Code', monospace;">
+            [!] SESSION_EXPIRED
+          </h2>
+          <p class="text-secondary mt-3">Havola muddati tugadi. Tizimga qayta kiring.</p>
+          <a href="{% url 'achievements' %}" class="btn btn-outline-success mt-4">BACK_TO_HOME</a>
         </div>`;
       return;
     }
 
     const minutes = Math.floor(remaining / 60);
     const seconds = remaining % 60;
-    document.getElementById("timer").textContent =
-      `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    timerDisplay.textContent =
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    // So'nggi 30 soniyada taymerni qizil qilish
+    if (remaining < 30) {
+      timerDisplay.style.color = "#ff0000";
+      timerDisplay.style.textShadow = "0 0 10px #ff0000";
+    }
 
     remaining--;
     setTimeout(updateTimer, 1000);
   }
-  updateTimer();
+
+  // Sahifa yuklanganda log berish
+  window.addEventListener('load', () => {
+    console.log("%c [SECURITY] Temporary link authorized. Decrypting asset...", "color: #00d2ff");
+    updateTimer();
+  });
 </script>
 {% endblock %}

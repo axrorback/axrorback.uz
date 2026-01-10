@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404</title>
+  <title>ERROR_404: PAGE_NOT_FOUND</title>
   <script
-    src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js"
-    type="module"
+          src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js"
+          type="module"
   ></script>
   <style>
     :root {
-      --primary: #f2f6ff;
-      --accent: #1d3557;
-      --button-bg: #457b9d;
-      --button-hover: #1d3557;
+      --neon-green: #39ff14;
+      --neon-red: #ff3131;
+      --bg-black: #0a0a0a;
+      --font-mono: 'Fira Code', 'Courier New', monospace;
     }
 
     body {
-      background: var(--primary);
-      color: var(--accent);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-black);
+      color: #fff;
+      font-family: var(--font-mono);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -28,70 +28,120 @@
       text-align: center;
       margin: 0;
       padding: 20px;
+      overflow: hidden;
+    }
+
+    /* Kiber fon effekti */
+    body::before {
+      content: " ";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+      z-index: 10;
     }
 
     dotlottie-wc {
-      width: 420px;
+      width: 400px;
       max-width: 90vw;
       height: auto;
+      filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.2));
     }
 
-    h1 {
-      font-size: 3.5rem;
-      margin-top: 10px;
-      font-weight: bold;
+    .error-code {
+      font-size: 5rem;
+      color: var(--neon-red);
+      text-shadow: 0 0 20px rgba(255, 49, 49, 0.5);
+      margin: 0;
+      font-weight: 900;
     }
 
-    p {
+    .status-msg {
       font-size: 1.2rem;
-      margin-top: 10px;
+      color: var(--neon-green);
+      margin-top: 15px;
       max-width: 600px;
+      letter-spacing: 1px;
+    }
+
+    .terminal-text {
+      color: #444;
+      font-size: 0.9rem;
+      margin-top: 5px;
     }
 
     .btn-home {
-      margin-top: 30px;
+      margin-top: 40px;
       display: inline-block;
-      background: var(--button-bg);
-      color: #fff;
-      padding: 14px 30px;
-      border-radius: 35px;
+      background: transparent;
+      color: var(--neon-green);
+      padding: 12px 35px;
+      border: 1px solid var(--neon-green);
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
-      font-size: 1rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      position: relative;
+      z-index: 20;
     }
 
     .btn-home:hover {
-      background: var(--button-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      background: rgba(57, 255, 20, 0.1);
+      box-shadow: 0 0 20px var(--neon-green);
+      transform: translateY(-3px);
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2.5rem;
-      }
-      p {
-        font-size: 1rem;
-      }
-      .btn-home {
-        padding: 12px 24px;
-        font-size: 0.95rem;
-      }
+    /* Glitch effekti */
+    .glitch {
+      position: relative;
+    }
+
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 2px;
+      text-shadow: -1px 0 red;
+      top: 0;
+      color: white;
+      background: black;
+      overflow: hidden;
+      clip: rect(0,900px,0,0);
+      animation: noise-anim 2s infinite linear alternate-reverse;
+    }
+
+    @keyframes noise-anim {
+      0% { clip: rect(10px, 9999px, 50px, 0); }
+      100% { clip: rect(80px, 9999px, 100px, 0); }
     }
   </style>
 </head>
 <body>
-  <dotlottie-wc
-    src="https://lottie.host/26a42d90-1005-4106-8f78-55dd91130587/kg9WDVwrkU.lottie"
-    autoplay
-    loop
-  ></dotlottie-wc>
-  <p>
-    Ehh.... afsuski siz izlagan sahifa serverimda topilmadi...
-    Balki u hozir bekatda Wi-Fi izlayotgandir 📡
-  </p>
+<div class="glitch" data-text="404">
+  <h1 class="error-code">404</h1>
+</div>
 
-  <a href="/" class="btn-home">🏡 Bosh sahifaga qaytish</a>
+<dotlottie-wc
+        src="https://lottie.host/26a42d90-1005-4106-8f78-55dd91130587/kg9WDVwrkU.lottie"
+        autoplay
+        loop
+></dotlottie-wc>
+
+<p class="status-msg">
+  [!] FATAL_ERROR: PAGE_NOT_FOUND_IN_SERVER
+</p>
+
+<p class="terminal-text">
+  Ehh... afsuski siz izlagan sahifa topilmadi. <br>
+  Balki u hozir bekatda Wi-Fi izlayotgandir... 📡
+</p>
+
+<a href="/" class="btn-home">> RETURN_TO_BASE</a>
+
+<script>
+  console.log("%c [ERROR] 404: Resource not found.", "color: #ff3131; font-weight: bold;");
+</script>
 </body>
 </html>

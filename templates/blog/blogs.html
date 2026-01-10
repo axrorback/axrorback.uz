@@ -2,36 +2,38 @@
 {% block title %}Bloglar — Ahrorjon Ibrohimjonov{% endblock %}
 
 {% block content %}
-<div class="text-center mb-5" data-aos="zoom-in">
-  <div class="blog-icon-box mb-3">
-    <i class="bi bi-rocket-takeoff-fill"></i>
-  </div>
-  <h2 class="display-4 fw-bold text-white mb-3">Foydali <span class="text-accent-glow">Maqolalar</span></h2>
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <div class="blog-icon-box mb-3">
+      <i class="bi bi-terminal-split"></i>
+    </div>
+    <h2 class="display-5 fw-bold text-white mb-3">
+      READ_<span class="text-accent-glow">ARTICLES</span>.log
+    </h2>
 
-  <div class="description-container mx-auto">
-    <p class="premium-description">
-      <span class="bracket">[</span>
-      Dasturlash sirlari, yangi texnologiyalar va tajribalarim bilan bo'lishaman
-      <span class="bracket">]</span>
-    </p>
+    <div class="description-container mx-auto">
+      <p class="premium-description">
+        <span class="bracket">[</span>
+        Dasturlash sirlari, yangi texnologiyalar va tajribalarim tizimi
+        <span class="bracket">]</span>
+      </p>
+    </div>
+    <div class="header-line mx-auto mt-4"></div>
   </div>
-
-  <div class="header-line mx-auto mt-4"></div>
-</div>
 
   <div class="row g-4">
     {% for blog in blogs %}
-    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
-      <div class="ultra-card">
+    <div class="col-lg-6">
+      <div class="ultra-card blog-card-js">
         <div class="card-accent-line"></div>
 
         <div class="card-content p-4">
           <div class="d-flex justify-content-between align-items-start mb-3">
             <div class="category-tag">
-              <i class="bi bi-terminal-fill me-1"></i> Tech Blog
+              <i class="bi bi-cpu me-1"></i> System.Post
             </div>
             <div class="date-badge">
-              <i class="bi bi-calendar-check me-1"></i> {{ blog.created|date:"d M, Y" }}
+              <i class="bi bi-calendar3 me-1"></i> {{ blog.created|date:"d M, Y" }}
             </div>
           </div>
 
@@ -48,15 +50,15 @@
           <div class="card-bottom mt-4 d-flex justify-content-between align-items-center">
             <div class="author-info d-flex align-items-center">
               <div class="author-avatar">
-                <i class="bi bi-person-fill"></i>
+                <i class="bi bi-person-circle"></i>
               </div>
-              <span class="ms-2 small text-light opacity-75">
-                {{ blog.author.get_full_name|default:blog.author.username }}
+              <span class="ms-2 small text-secondary fw-mono">
+                @{{ blog.author.username }}
               </span>
             </div>
 
             <div class="read-more-wrapper">
-              <span class="me-2 small fw-bold">O'qish</span>
+              <span class="me-2 small fw-bold font-monospace">EXEC_READ</span>
               <div class="circle-icon">
                 <i class="bi bi-chevron-right"></i>
               </div>
@@ -67,10 +69,10 @@
     </div>
     {% empty %}
     <div class="col-12 text-center py-5">
-      <div class="empty-state-card p-5" data-aos="zoom-in">
-        <div class="pulse-icon mb-4"><i class="bi bi-envelope-open"></i></div>
-        <h4>Hozircha maqolalar yo'q</h4>
-        <p class="text-secondary">Yaqinda yangi postlar qo'shiladi, bizni kuzatib boring!</p>
+      <div class="empty-state-card p-5">
+        <div class="pulse-icon mb-4"><i class="bi bi-database-exclamation"></i></div>
+        <h4 class="text-white">NO_POSTS_FOUND</h4>
+        <p class="text-secondary font-monospace">Yaqinda yangi loglar qo'shiladi. Tizimni kuzatib boring.</p>
       </div>
     </div>
     {% endfor %}
@@ -78,188 +80,161 @@
 </div>
 
 <style>
-  /* 1. Asosiy Ranglar va Effektlar */
   :root {
-    --primary-glow: #6C5CE7;
-    --secondary-glow: #a29bfe;
-    --dark-card: rgba(15, 23, 42, 0.6);
-    --border-glass: rgba(255, 255, 255, 0.1);
+    --neon-green: #39ff14;
+    --neon-blue: #00d2ff;
+    --dark-card: #0a0a0a;
+    --border-color: #1a1a1a;
   }
 
   .text-accent-glow {
-    color: var(--primary-glow);
-    text-shadow: 0 0 15px rgba(108, 92, 231, 0.5);
+    color: var(--neon-green);
+    text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
   }
 
   .blog-icon-box {
     font-size: 2.5rem;
-    color: var(--primary-glow);
+    color: var(--neon-green);
     display: inline-block;
     animation: float 3s ease-in-out infinite;
   }
 
-  /* Tavsif matni uchun maxsus stil */
   .premium-description {
-    color: rgba(255, 255, 255, 0.85); /* Sof oqqa yaqinroq, lekin ko'zni charchatmaydi */
-    font-size: 1.15rem;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto;
-    position: relative;
-    display: inline-block;
+    color: #888;
+    font-size: 1.1rem;
+    font-family: 'Fira Code', monospace;
   }
 
-  /* Matn yonidagi dekorativ qavslar */
   .bracket {
-    color: var(--primary-glow);
-    font-weight: bold;
-    font-size: 1.4rem;
+    color: var(--neon-green);
     opacity: 0.8;
-    margin: 0 10px;
-    vertical-align: middle;
   }
 
-  /* Sarlavha ostidagi chiziqni yanada chiroyli qilish */
   .header-line {
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
-    border-radius: 10px;
+    width: 60px;
+    height: 2px;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
   }
 
-  /*description-container uchun yengil soya (glow) */
   .description-container {
-    padding: 10px;
-    border-radius: 15px;
-    background: rgba(108, 92, 231, 0.05); /* Juda yengil binafsha fon */
-    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(57, 255, 20, 0.02);
+    border: 1px solid rgba(57, 255, 20, 0.05);
   }
 
-  /* 2. Ultra Card Dizayni */
+  /* Kiber Card Dizayni */
   .ultra-card {
     background: var(--dark-card);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-glass);
-    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 0; /* Terminal uslubi uchun qirrali */
     position: relative;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.4s ease;
     height: 100%;
   }
 
   .ultra-card:hover {
-    transform: translateY(-12px) scale(1.01);
-    border-color: var(--primary-glow);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(108, 92, 231, 0.2);
+    transform: translateY(-8px);
+    border-color: var(--neon-blue);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 210, 255, 0.1);
   }
 
   .card-accent-line {
     position: absolute;
-    top: 0; left: 0; width: 4px; height: 100%;
-    background: linear-gradient(to bottom, var(--primary-glow), var(--secondary-glow));
-    transition: width 0.3s ease;
+    top: 0; left: 0; width: 3px; height: 100%;
+    background: var(--neon-green);
+    transition: 0.3s;
   }
 
   .ultra-card:hover .card-accent-line {
-    width: 8px;
+    background: var(--neon-blue);
+    width: 5px;
   }
 
-  /* 3. Matnlar */
   .blog-title {
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    line-height: 1.3;
-    transition: color 0.3s ease;
-  }
-
-  .ultra-card:hover .blog-title {
-    color: var(--secondary-glow);
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   .blog-description {
-    color: #94a3b8;
+    color: #666;
     font-size: 0.95rem;
     line-height: 1.6;
   }
 
-  /* 4. Elementlar (Tags, Avatar) */
   .category-tag {
-    background: rgba(108, 92, 231, 0.15);
-    color: var(--secondary-glow);
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    background: rgba(0, 210, 255, 0.05);
+    color: var(--neon-blue);
+    border: 1px solid rgba(0, 210, 255, 0.1);
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-family: 'Fira Code', monospace;
     text-transform: uppercase;
   }
 
   .date-badge {
-    color: #64748b;
+    color: #444;
     font-size: 0.8rem;
+    font-family: 'Fira Code', monospace;
   }
 
   .author-avatar {
-    width: 35px; height: 35px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary-glow);
-    border: 1px solid var(--border-glass);
+    color: var(--neon-green);
+    font-size: 1.2rem;
   }
 
-  /* 5. Read More tugmasi animatsiyasi */
   .read-more-wrapper {
-    display: flex;
-    align-items: center;
-    color: #fff;
-    transition: all 0.3s ease;
+    color: var(--neon-green);
   }
 
   .circle-icon {
-    width: 32px; height: 32px;
-    background: var(--primary-glow);
-    border-radius: 50%;
+    width: 30px; height: 30px;
+    border: 1px solid var(--neon-green);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.8rem;
-    transition: all 0.4s ease;
+    transition: 0.4s;
   }
 
   .ultra-card:hover .circle-icon {
-    transform: rotate(-45deg) scale(1.1);
-    box-shadow: 0 0 15px var(--primary-glow);
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-green);
   }
 
-  /* 6. Animatsiyalar */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
 
   .empty-state-card {
-    background: var(--dark-card);
-    border-radius: 30px;
-    border: 2px dashed var(--border-glass);
+    background: #050505;
+    border: 1px dashed #222;
   }
 
   .pulse-icon {
-    font-size: 4rem;
-    color: var(--border-glass);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 0.5; }
+    font-size: 3rem;
+    color: #222;
   }
 </style>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Kartalarga hover bo'lganda terminal effekti (JS)
+  document.querySelectorAll('.blog-card-js').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.querySelector('.blog-title').style.color = 'var(--neon-blue)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.querySelector('.blog-title').style.color = '#fff';
+    });
+  });
+
+  console.log("%c [SYSTEM] Blog database loaded: OK", "color: #39ff14; font-weight: bold;");
+</script>
 {% endblock %}
