@@ -1,99 +1,135 @@
 {% extends 'base.html' %}
-{% block title %}Savol berish{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — Savol berish{% endblock %}
 
 {% block extra_head %}
 <style>
-  .text-gradient {
-    background: linear-gradient(90deg, #6C5CE7, #00CEC9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  :root {
+    --neon-green: #39ff14;
+    --neon-blue: #00d2ff;
+    --card-bg: #0a0a0a;
+    --border-color: #1a1a1a;
   }
 
+  /* Sarlavha - Terminal uslubida */
+  .text-gradient {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* Glass Card - Kiber variant */
   .glass-card {
     max-width: 850px;
     margin: 0 auto;
-    background: rgba(30, 30, 45, 0.4);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0; /* O'tkir qirralar */
     padding: 40px;
+    position: relative;
   }
 
+  .glass-card::before {
+    content: "QUERY_INPUT";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--bg-black);
+    padding: 0 10px;
+    color: #555;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+  }
+
+  /* Inputlar - Terminal Input Style */
   input, textarea {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #fff !important;
-    border-radius: 12px !important;
+    background: #050505 !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--neon-green) !important;
+    border-radius: 0 !important;
     padding: 12px 18px !important;
     transition: all 0.3s ease !important;
     margin-bottom: 15px;
+    font-family: var(--font-mono);
   }
 
   input:focus, textarea:focus {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: #6C5CE7 !important;
-    box-shadow: 0 0 15px rgba(108, 92, 231, 0.3) !important;
+    border-color: var(--neon-green) !important;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) !important;
     outline: none;
   }
 
   input::placeholder, textarea::placeholder {
-    color: rgba(255, 255, 255, 0.4) !important;
+    color: #333 !important;
   }
 
+  /* Tugma - Execute Command */
   .btn-submit {
-    background: linear-gradient(90deg, #6C5CE7, #00CEC9);
-    border: none;
-    color: white;
+    background: transparent;
+    border: 1px solid var(--neon-green);
+    color: var(--neon-green);
     padding: 12px;
-    border-radius: 12px;
+    border-radius: 0;
     font-weight: 600;
+    font-family: var(--font-mono);
     transition: all 0.4s ease;
+    text-transform: uppercase;
   }
 
   .btn-submit:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(108, 92, 231, 0.4);
-    filter: brightness(1.1);
+    background: rgba(57, 255, 20, 0.1);
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+    color: var(--neon-green);
+    transform: translateY(-2px);
   }
 
+  /* Savol Kartalari */
   .old-question-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
+    background: #050505;
+    border: 1px solid var(--border-color);
+    border-radius: 0;
     padding: 25px;
     transition: 0.3s;
+    position: relative;
   }
 
   .old-question-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(0, 206, 201, 0.3);
+    border-color: var(--neon-blue);
+    background: #080808;
   }
 
   .admin-response {
-    background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 206, 201, 0.1));
-    border-left: 4px solid #00CEC9;
-    border-radius: 12px;
+    background: rgba(0, 210, 255, 0.03);
+    border-left: 3px solid var(--neon-blue);
+    border-radius: 0;
+    margin-top: 15px;
+    padding: 15px;
   }
 
   .user-info {
+    font-family: var(--font-mono);
     font-size: 0.9rem;
-    color: #00CEC9;
-    font-weight: 500;
+    color: var(--neon-blue);
+  }
+
+  .status-waiting {
+    color: #555;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
   }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container py-5">
-  <div class="glass-card shadow-lg">
+  <div class="glass-card">
     <div class="text-center mb-5">
-      <h2 class="text-gradient fw-bold display-6">
-        <i class="bi bi-patch-question-fill"></i> Menga savol yo'llang
+      <h2 class="text-gradient fw-bold">
+        <i class="bi bi-terminal"></i> SEND_MESSAGE.py
       </h2>
-      <p class="text-secondary">Xabaringizni qoldiring, men imkon qadar tezroq javob beraman.</p>
+      <p style="color: #666; font-family: var(--font-mono);">[ Tizim orqali admin bilan bog'lanish ]</p>
     </div>
 
-    <form method="post" class="mb-5 pb-5 border-bottom border-secondary border-opacity-25">
+    <form method="post" class="mb-5 pb-5 border-bottom border-secondary border-opacity-10" id="questionForm">
       {% csrf_token %}
       <div class="row">
         <div class="col-md-6 mb-2">
@@ -107,48 +143,73 @@
         </div>
       </div>
       <button type="submit" class="btn btn-submit w-100">
-        <i class="bi bi-send-fill me-2"></i> Xabarni yuborish
+        <i class="bi bi-play-fill me-2"></i> EXECUTE_SEND
       </button>
     </form>
 
     <div class="mt-4">
-      <h3 class="text-light fw-bold mb-4"><i class="bi bi-chat-dots-fill me-2"></i> Oxirgi savol-javoblar</h3>
+      <h3 class="text-white fw-bold mb-4" style="font-family: var(--font-mono);">
+        <i class="bi bi-hdd-stack me-2"></i> DATABASE_RECORDS
+      </h3>
 
       {% for q in questions %}
-      <div class="old-question-card mb-4">
+      <div class="old-question-card mb-4 question-item-js">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="user-info">
-            <i class="bi bi-person-circle me-1"></i> {{ q.name }}
-            <span class="text-secondary mx-2">•</span>
-            <i class="bi bi-telephone-fill me-1 small"></i> {{ q.masked_phone }}
+            <i class="bi bi-person"></i> USER: {{ q.name }}
+            <span class="mx-2" style="color: #333;">|</span>
+            <i class="bi bi-phone"></i> {{ q.masked_phone }}
           </span>
-          <small class="text-secondary">
-            <i class="bi bi-calendar3 me-1"></i> {{ q.created|date:"d M Y" }}
+          <small style="color: #444; font-family: var(--font-mono);">
+            [{{ q.created|date:"d.m.Y" }}]
           </small>
         </div>
 
-        <p class="text-light opacity-90 mb-2" style="font-size: 1.05rem;">{{ q.question }}</p>
+        <p class="text-white-50 mb-2" style="font-family: 'Space Grotesk';">{{ q.question }}</p>
 
         {% if q.answer %}
-        <div class="admin-response p-3 mt-3">
+        <div class="admin-response">
           <div class="mb-2">
-            <strong class="text-gradient"><i class="bi bi-chat-left-quote-fill me-2"></i> Admin javobi:</strong>
+            <strong style="color: var(--neon-blue); font-family: var(--font-mono);">
+              <i class="bi bi-reply-all"></i> ADMIN_ROOT:
+            </strong>
           </div>
-          <p class="mb-0 text-light opacity-75">{{ q.answer }}</p>
+          <p class="mb-0 text-white-50 small">{{ q.answer }}</p>
         </div>
         {% else %}
-        <div class="mt-3 opacity-50 small">
-          <i class="bi bi-hourglass-split me-1"></i> Javob kutilmoqda...
+        <div class="mt-3 status-waiting">
+          <i class="bi bi-hourglass"></i> PENDING_RESPONSE...
         </div>
         {% endif %}
       </div>
       {% empty %}
       <div class="text-center py-5">
-        <i class="bi bi-chat-dots display-4 text-muted opacity-25"></i>
-        <p class="text-muted mt-3">Hozircha savollar yo'q. Birinchilardan bo'ling!</p>
+        <i class="bi bi-folder-x display-4 text-secondary opacity-25"></i>
+        <p class="text-secondary mt-3 font-monospace">ERROR_404: No questions found in database.</p>
       </div>
       {% endfor %}
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // JS interaktivligi
+  document.querySelectorAll('.question-item-js').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      item.style.transform = "translateX(10px)";
+      item.style.boxShadow = "inset 5px 0 0 var(--neon-blue)";
+    });
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = "translateX(0)";
+      item.style.boxShadow = "none";
+    });
+  });
+
+  // Form yuborilganda kichik log
+  document.getElementById('questionForm').addEventListener('submit', () => {
+    console.log("%c [SYSTEM] Message encryption started...", "color: #39ff14");
+  });
+</script>
 {% endblock %}

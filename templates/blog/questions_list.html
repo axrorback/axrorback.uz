@@ -1,46 +1,56 @@
 {% extends 'base.html' %}
-{% block title %}Savollar{% endblock %}
+{% block title %}Savol-javoblar — Ahrorjon Ibrohimjonov{% endblock %}
 
 {% block extra_head %}
 <style>
+  :root {
+    --neon-green: #39ff14;
+    --neon-blue: #00d2ff;
+    --card-bg: #0a0a0a;
+    --border-color: #1a1a1a;
+  }
+
+  /* Sarlavha - Terminal Style */
   .text-gradient {
-    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--neon-green);
+    text-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+    font-family: 'Fira Code', monospace;
     font-weight: 800;
   }
 
+  /* Savol bloki - Kiber-terminal ko'rinishida */
   .question-item {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0; /* O'tkir qirralar */
+    transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
   }
 
   .question-item:hover {
-    border-color: rgba(108, 92, 231, 0.4);
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--neon-blue);
+    background: #0d0d0d;
+    transform: translateX(5px);
+    box-shadow: -5px 0 20px rgba(0, 210, 255, 0.1);
   }
 
+  /* User Meta - Terminal Log ko'rinishida */
   .user-meta {
     font-size: 0.85rem;
-    color: #a3b0c2;
+    color: #555;
+    font-family: 'Fira Code', monospace;
     display: flex;
-    gap: 15px;
+    gap: 20px;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #111;
   }
 
   .user-meta i {
-    color: var(--accent);
+    color: var(--neon-green);
     margin-right: 5px;
   }
 
@@ -48,53 +58,74 @@
     color: #fff;
     font-weight: 700;
     font-size: 1.25rem;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   .question-text {
-    color: #cbd5e1;
+    color: #888;
     line-height: 1.7;
     font-size: 1rem;
     margin-bottom: 0;
   }
 
+  /* Admin Javobi - Kiber blok */
   .admin-reply {
-    background: rgba(108, 92, 231, 0.07) !important;
-    border: 1px solid rgba(108, 92, 231, 0.15) !important;
-    border-left: 4px solid var(--accent) !important;
-    border-radius: 16px;
-    margin-top: 20px;
-    padding: 18px;
+    background: rgba(0, 210, 255, 0.03) !important;
+    border: 1px solid rgba(0, 210, 255, 0.1) !important;
+    border-left: 3px solid var(--neon-blue) !important;
+    border-radius: 0;
+    margin-top: 25px;
+    padding: 20px;
     position: relative;
   }
 
   .admin-badge {
-    background: var(--accent);
-    color: white;
-    font-size: 0.75rem;
-    padding: 3px 10px;
-    border-radius: 8px;
+    background: var(--neon-blue);
+    color: #000;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 10px;
+    border-radius: 0;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     display: inline-block;
   }
 
   .status-waiting {
     font-size: 0.85rem;
-    color: #64748b;
-    font-style: italic;
+    color: #444;
+    font-family: 'Fira Code', monospace;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
   }
 
+  /* Bo'sh holat */
   .empty-state {
-    padding: 60px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px dashed rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
+    background: #050505;
+    border: 1px dashed #222;
+    border-radius: 0;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .btn-accent-kiber {
+    background: transparent;
+    border: 1px solid var(--neon-green);
+    color: var(--neon-green) !important;
+    border-radius: 0;
+    padding: 10px 25px;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+
+  .btn-accent-kiber:hover {
+    background: rgba(57, 255, 20, 0.1);
+    box-shadow: 0 0 15px var(--neon-green);
   }
 </style>
 {% endblock %}
@@ -103,10 +134,10 @@
 <div class="container py-5">
   <div class="text-center mb-5">
     <h2 class="display-5 text-gradient mb-3">
-      <i class="bi bi-chat-square-quote me-2"></i> Savol-javoblar
+      <i class="bi bi-terminal-fill"></i> FETCH_QUESTIONS.log
     </h2>
-    <p class="text-secondary mx-auto" style="max-width: 600px;">
-      Menga yo'llangan savollar va ularga berilgan rasmiy javoblar. Siz ham o'z savolingizni qoldirishingiz mumkin.
+    <p style="color: #666; font-family: 'Fira Code', monospace;">
+      [ Tizimga kelib tushgan savollar va administrator javoblari ]
     </p>
   </div>
 
@@ -114,11 +145,11 @@
     <div class="col-lg-10">
 
       {% for q in questions %}
-      <div class="question-item p-4 mb-4">
+      <div class="question-item p-4 mb-4 question-js">
         <div class="user-meta">
-          <span><i class="bi bi-person-circle"></i> {{ q.name }}</span>
-          <span><i class="bi bi-telephone"></i> {{ q.masked_phone }}</span>
-          <span><i class="bi bi-calendar3"></i> {{ q.created|date:"d M, Y" }}</span>
+          <span><i class="bi bi-person"></i> USER: {{ q.name }}</span>
+          <span><i class="bi bi-hash"></i> {{ q.masked_phone }}</span>
+          <span><i class="bi bi-calendar-event"></i> {{ q.created|date:"d.m.Y" }}</span>
           <span><i class="bi bi-clock"></i> {{ q.created|date:"H:i" }}</span>
         </div>
 
@@ -129,13 +160,13 @@
 
         {% if q.answer %}
         <div class="admin-reply">
-          <span class="admin-badge">Admin javobi</span>
-          <p class="mb-0 text-light opacity-90">{{ q.answer }}</p>
+          <span class="admin-badge">ADMIN_ROOT_REPLY</span>
+          <p class="mb-0 text-white-50" style="font-size: 0.95rem;">{{ q.answer }}</p>
         </div>
         {% else %}
         <div class="mt-3">
           <span class="status-waiting">
-            <i class="bi bi-hourglass-split"></i> Bu savolga hali javob berilmagan...
+            <i class="bi bi-hourglass-split"></i> [STATUS: PENDING_RESPONSE...]
           </span>
         </div>
         {% endif %}
@@ -143,11 +174,11 @@
 
       {% empty %}
       <div class="empty-state">
-        <i class="bi bi-chat-dots display-1 text-muted opacity-25"></i>
-        <h3 class="mt-4 text-secondary">Hozircha hech qanday savol yo'q</h3>
-        <p class="text-muted mb-4">Siz birinchi bo'lib savol berishingiz mumkin!</p>
-        <a href="{% url 'ask_question' %}" class="btn btn-accent px-4 py-2">
-          <i class="bi bi-plus-lg me-2"></i> Savol yo'llash
+        <i class="bi bi-database-exclamation display-3 text-secondary mb-4"></i>
+        <h3 class="text-secondary">ERROR_404: NO_RECORDS_FOUND</h3>
+        <p class="text-muted mb-4">Ma'lumotlar bazasida hozircha savollar mavjud emas.</p>
+        <a href="{% url 'ask_question' %}" class="btn btn-accent-kiber">
+          <i class="bi bi-plus-lg me-2"></i> EXECUTE_ASK_QUESTION
         </a>
       </div>
       {% endfor %}
@@ -155,4 +186,17 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Terminal interaktivligi (JS)
+  document.querySelectorAll('.question-js').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      console.log("%c [DATA] Reading entry...", "color: #00d2ff");
+    });
+  });
+
+  console.log("%c [SYSTEM] Questions database synchronized.", "color: #39ff14; font-weight: bold;");
+</script>
 {% endblock %}

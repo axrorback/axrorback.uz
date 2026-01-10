@@ -3,85 +3,145 @@
 
 {% block extra_head %}
 <style>
+    :root {
+        --neon-green: #39ff14;
+        --neon-blue: #00d2ff;
+        --card-bg: #0a0a0a;
+        --border-color: #1a1a1a;
+    }
+
+    /* Maqola sarlavhasi - Terminal Style */
     .blog-title {
-        background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
+        color: var(--neon-green);
+        font-family: 'Fira Code', monospace;
+        font-weight: 700;
         font-size: clamp(1.8rem, 5vw, 2.8rem);
         line-height: 1.2;
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
     }
 
+    /* Maqola kartasi - Kiber blok */
     .blog-glass-card {
-        background: rgba(30, 30, 45, 0.4);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 30px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0; /* O'tkir qirralar */
         padding: clamp(20px, 5vw, 50px);
+        position: relative;
     }
 
+    .blog-glass-card::before {
+        content: "READ_ACCESS: GRANTED";
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        background: #000;
+        padding: 0 10px;
+        color: #444;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+    }
+
+    /* Rasm qismi */
     .blog-featured-image {
-        border-radius: 20px;
+        border-radius: 0;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        margin-bottom: 30px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        border: 1px solid var(--border-color);
+        margin-bottom: 35px;
+        position: relative;
     }
 
+    .blog-featured-image::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(rgba(57, 255, 20, 0.05) 0%, transparent 100%);
+        pointer-events: none;
+    }
+
+    .blog-featured-image img {
+        filter: grayscale(0.3) contrast(1.1); /* Kiber effekt uchun */
+        transition: 0.5s;
+    }
+
+    .blog-featured-image:hover img {
+        filter: grayscale(0) contrast(1);
+    }
+
+    /* Maqola matni */
     .blog-content {
-        color: #cbd5e1;
-        font-size: 1.1rem;
+        color: #b0b0b0;
+        font-size: 1.15rem;
         line-height: 1.8;
-    }
-
-    .blog-content p {
-        margin-bottom: 1.5rem;
+        font-family: 'Space Grotesk', sans-serif;
     }
 
     .blog-content h2, .blog-content h3 {
-        color: var(--accent);
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
+        color: var(--neon-blue);
+        margin-top: 2.5rem;
+        margin-bottom: 1.2rem;
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        border-bottom: 1px solid #111;
+        padding-bottom: 10px;
     }
 
+    /* Sharing tugmalari */
     .share-btn {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.05);
-        color: #fff;
-        border-radius: 12px;
-        padding: 8px 16px;
+        border: 1px solid var(--border-color);
+        background: transparent;
+        color: #888;
+        border-radius: 0;
+        padding: 10px 20px;
         transition: all 0.3s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
     }
 
     .share-btn:hover {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #fff;
+        background: rgba(0, 210, 255, 0.05);
+        border-color: var(--neon-blue);
+        color: var(--neon-blue);
         transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
     }
 
     .share-btn.copy-link {
-        background: linear-gradient(90deg, #6C5CE7, #00CEC9);
-        border: none;
+        border-color: var(--neon-green);
+        color: var(--neon-green);
     }
 
+    .share-btn.copy-link:hover {
+        background: rgba(57, 255, 20, 0.05);
+        box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+    }
+
+    /* Meta ma'lumotlar */
     .meta-info {
-        color: #94a3b8;
-        font-size: 0.95rem;
+        color: #555;
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
         display: flex;
-        gap: 20px;
+        gap: 25px;
         flex-wrap: wrap;
         margin-bottom: 30px;
+        text-transform: uppercase;
     }
 
     .meta-info i {
-        color: var(--accent);
+        color: var(--neon-green);
+    }
+
+    .back-btn {
+        color: #444 !important;
+        font-family: var(--font-mono);
+        transition: 0.3s;
+    }
+
+    .back-btn:hover {
+        color: var(--neon-green) !important;
     }
 </style>
 {% endblock %}
@@ -90,20 +150,20 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-9">
-            <article class="blog-glass-card shadow-lg">
+            <article class="blog-glass-card shadow-lg blog-entry-js">
 
                 <div class="mb-4">
-                    <a href="{% url 'blog' %}" class="text-decoration-none text-secondary d-flex align-items-center gap-2">
-                        <i class="bi bi-arrow-left"></i> Orqaga qaytish
+                    <a href="{% url 'blog' %}" class="text-decoration-none back-btn d-flex align-items-center gap-2">
+                        <i class="bi bi-chevron-left"></i> cd .. /blog
                     </a>
                 </div>
 
                 <h1 class="blog-title mb-4">{{ blog.title }}</h1>
 
                 <div class="meta-info">
-                    <span><i class="bi bi-person-fill me-1"></i> {{ blog.author.get_full_name|default:blog.author.username }}</span>
-                    <span><i class="bi bi-calendar-event me-1"></i> {{ blog.created|date:"d M, Y" }}</span>
-                    <span><i class="bi bi-clock me-1"></i> {{ blog.created|date:"H:i" }}</span>
+                    <span><i class="bi bi-terminal me-2"></i> AUTHOR: {{ blog.author.get_full_name|default:blog.author.username }}</span>
+                    <span><i class="bi bi-calendar3 me-2"></i> DATE: {{ blog.created|date:"d.m.Y" }}</span>
+                    <span><i class="bi bi-clock me-2"></i> TIME: {{ blog.created|date:"H:i" }}</span>
                 </div>
 
                 {% if blog.image %}
@@ -116,22 +176,22 @@
                     {{ blog.content|safe }}
                 </div>
 
-                <hr style="border-color: rgba(255,255,255,0.1);">
+                <hr style="border-color: #1a1a1a;">
 
                 <div class="mt-5">
-                    <h5 class="mb-4 text-light">Ushbu maqolani ulashing:</h5>
+                    <h5 class="mb-4 text-secondary font-monospace" style="font-size: 0.9rem;">> BROADCAST_CONTENT:</h5>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="share-btn">
-                            <i class="bi bi-telegram"></i> Telegram
+                            <i class="bi bi-telegram"></i> TELEGRAM
                         </a>
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="share-btn">
-                            <i class="bi bi-facebook"></i> Facebook
+                            <i class="bi bi-facebook"></i> FACEBOOK
                         </a>
                         <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="share-btn">
-                            <i class="bi bi-twitter-x"></i> X (Twitter)
+                            <i class="bi bi-twitter-x"></i> X_TWITTER
                         </a>
                         <button class="share-btn copy-link" id="copyLinkBtn">
-                            <i class="bi bi-link-45deg"></i> Linkdan nusxa olish
+                            <i class="bi bi-link-45deg"></i> COPY_URL
                         </button>
                     </div>
                 </div>
@@ -140,19 +200,35 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
+    // Blog interaktivligi
     const copyBtn = document.getElementById('copyLinkBtn');
     copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText("{{ request.build_absolute_uri }}")
             .then(() => {
                 const originalContent = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> Nusxalandi!';
+                copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> COPIED_SUCCESS';
                 setTimeout(() => {
                     copyBtn.innerHTML = originalContent;
                 }, 2000);
             })
             .catch(err => console.error('Failed to copy: ', err));
     });
+
+    // Skroll qilinganda maqola elementlarini biroz jonlantirish (JS)
+    document.addEventListener('scroll', () => {
+        const entry = document.querySelector('.blog-entry-js');
+        const pos = window.scrollY;
+        if(pos > 100) {
+            entry.style.borderLeft = "2px solid var(--neon-green)";
+        } else {
+            entry.style.borderLeft = "1px solid var(--border-color)";
+        }
+    });
+
+    console.log("%c [BLOG] Fetching content: complete.", "color: #39ff14");
 </script>
 {% endblock %}

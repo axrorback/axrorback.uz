@@ -1,97 +1,188 @@
 {% extends 'base.html' %}
-{% block title %}Contact Me{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — Bog'lanish{% endblock %}
 
 {% block extra_head %}
 <style>
+    :root {
+        --neon-green: #39ff14;
+        --neon-blue: #00d2ff;
+        --dark-bg: #0a0a0a;
+    }
+
+    /* Sarlavha - Terminal Status */
+    .contact-header {
+        font-family: 'Fira Code', monospace;
+        color: var(--neon-green);
+        margin-bottom: 50px;
+    }
+
+    .contact-header::before {
+        content: "[SYSTEM]: ";
+        color: #444;
+    }
+
+    /* Kiber Aloqa Kartasi */
     .contact-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 24px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
+        background: var(--dark-bg);
+        border: 1px solid #1a1a1a;
+        border-radius: 0; /* O'tkir qirralar */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Kartaning yuqori qismidagi "Port" raqami */
+    .contact-card::before {
+        content: "PORT_" + attr(data-port);
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 0.65rem;
+        color: #333;
+        font-family: 'Fira Code', monospace;
     }
 
     .contact-card:hover {
-        transform: translateY(-10px);
-        background: rgba(255, 255, 255, 0.08);
-        border-color: var(--card-color, #6C5CE7);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        transform: translateY(-12px);
+        border-color: var(--card-color);
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(var(--card-rgb), 0.2);
     }
 
+    /* Ikonka Box */
     .icon-box {
-        width: 60px;
-        height: 60px;
-        background: rgba(255, 255, 255, 0.05);
-        color: var(--card-color, #6C5CE7);
+        width: 70px;
+        height: 70px;
+        background: #050505;
+        color: var(--card-color);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 20px;
-        border-radius: 18px;
-        font-size: 1.8rem;
-        transition: 0.3s;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 0 auto 25px;
+        font-size: 2rem;
+        transition: 0.4s;
+        border: 1px solid #1a1a1a;
+        clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
     }
 
     .contact-card:hover .icon-box {
-        background: var(--card-color, #6C5CE7);
-        color: white;
-        transform: scale(1.1) rotate(10deg);
-        box-shadow: 0 0 20px var(--card-color);
+        background: var(--card-color);
+        color: #000;
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 0 25px var(--card-color);
+        border-color: var(--card-color);
     }
 
+    .contact-card h5 {
+        font-family: 'Fira Code', monospace;
+        letter-spacing: 1px;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .contact-card p {
+        font-family: 'Space Grotesk', sans-serif;
+        color: #666 !important;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    /* Tugma - Terminal Button */
     .contact-link-btn {
         background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        border-radius: 12px;
-        padding: 8px 25px;
+        border: 1px solid #222;
+        color: #888;
+        border-radius: 0;
+        padding: 10px 25px;
         text-decoration: none;
         transition: 0.3s;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        display: inline-block;
+        width: 100%;
     }
 
     .contact-card:hover .contact-link-btn {
-        background: var(--card-color, #6C5CE7);
+        background: var(--card-color);
         border-color: var(--card-color);
-        color: white;
+        color: #000 !important;
+        font-weight: bold;
+        box-shadow: 0 0 15px var(--card-color);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="row g-4">
-    <div class="col-md-6 col-lg-4">
-        <div class="contact-card text-center p-4 h-100" style="--card-color: #6C5CE7;">
-            <div class="icon-box"><i class="bi bi-envelope"></i></div>
-            <h5 class="fw-bold">Email</h5>
-            <p class="text-secondary">axrorback@gmail.com</p>
-            <a href="mailto:axrorback@gmail.com" class="btn contact-link-btn mt-2">Xat yozish</a>
-        </div>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="contact-header fw-bold">ESTABLISH_CONNECTION.sh</h2>
+        <p class="text-secondary font-monospace">Tanlang va bog'laning. Men har doim onlaynman.</p>
     </div>
 
-    <div class="col-md-6 col-lg-4">
-        <div class="contact-card text-center p-4 h-100" style="--card-color: #0088cc;">
-            <div class="icon-box"><i class="bi bi-telegram"></i></div>
-            <h5 class="fw-bold">Telegram</h5>
-            <p class="text-secondary">@axrorback</p>
-            <a href="https://t.me/axrorback" target="_blank" class="btn contact-link-btn mt-2">Bog'lanish</a>
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-6 col-lg-3">
+            <div class="contact-card text-center p-4 h-100 contact-js"
+                 style="--card-color: #39ff14; --card-rgb: 57, 255, 20;"
+                 data-port="25">
+                <div class="icon-box"><i class="bi bi-envelope-at"></i></div>
+                <h5>EMAIL</h5>
+                <p>axrorback@gmail.com</p>
+                <a href="mailto:axrorback@gmail.com" class="contact-link-btn">Xat yozish</a>
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-6 col-lg-4">
-        <div class="contact-card text-center p-4 h-100" style="--card-color: #E1306C;">
-            <div class="icon-box"><i class="bi bi-instagram"></i></div>
-            <h5 class="fw-bold">Instagram</h5>
-            <p class="text-secondary">@axrorback</p>
-            <a href="https://instagram.com/axrorback" target="_blank" class="btn contact-link-btn mt-2">Profil</a>
+        <div class="col-md-6 col-lg-3">
+            <div class="contact-card text-center p-4 h-100 contact-js"
+                 style="--card-color: #00d2ff; --card-rgb: 0, 210, 255;"
+                 data-port="443">
+                <div class="icon-box"><i class="bi bi-telegram"></i></div>
+                <h5>TELEGRAM</h5>
+                <p>@axrorback</p>
+                <a href="https://t.me/axrorback" target="_blank" class="contact-link-btn">Bog'lanish</a>
+            </div>
         </div>
-    </div>
 
-    <div class="contact-card text-center p-4 h-100" style="--card-color: #333;">
-        <div class="icon-box"><i class="bi bi-github"></i></div>
-        <h5 class="fw-bold">GitHub</h5>
-        <p class="text-secondary">axrorback</p>
-        <a href="https://github.com/axrorback" target="_blank" class="btn contact-link-btn mt-2">Ko'rish</a>
+        <div class="col-md-6 col-lg-3">
+            <div class="contact-card text-center p-4 h-100 contact-js"
+                 style="--card-color: #ff0050; --card-rgb: 255, 0, 80;"
+                 data-port="80">
+                <div class="icon-box"><i class="bi bi-instagram"></i></div>
+                <h5>INSTAGRAM</h5>
+                <p>@axrorback</p>
+                <a href="https://instagram.com/axrorback" target="_blank" class="contact-link-btn">Profil</a>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="contact-card text-center p-4 h-100 contact-js"
+                 style="--card-color: #ffffff; --card-rgb: 255, 255, 255;"
+                 data-port="22">
+                <div class="icon-box"><i class="bi bi-github"></i></div>
+                <h5>GITHUB</h5>
+                <p>axrorback</p>
+                <a href="https://github.com/axrorback" target="_blank" class="contact-link-btn">Ko'rish</a>
+            </div>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // JS interaktivligi: Sichqoncha harakatiga qarab yengil nurlanish
+    document.querySelectorAll('.contact-js').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+
+    console.log("%c [COMMUNICATION] All ports are listening...", "color: #39ff14; font-weight: bold;");
+</script>
 {% endblock %}
