@@ -6,3 +6,4 @@ psycopg[binary]
 whitenoise
 dotenv
 requests
+Pillow
