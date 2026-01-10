@@ -8,20 +8,34 @@
     --neon-blue: #00d2ff;
     --neon-green: #39ff14;
     --card-bg: #0a0a0a;
-    --border-color: #222;
+    --border-color: #1a1a1a;
   }
 
+  /* Kiber-karta uslubi */
   .about-glass-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     padding: 40px;
     margin-bottom: 40px;
-    transition: 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Karta burchagidagi dekor */
+  .about-glass-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(225deg, var(--border-color) 50%, transparent 50%);
   }
 
   .section-title {
+    font-family: 'Fira Code', monospace;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--neon-blue);
     text-transform: uppercase;
     margin-bottom: 1.5rem;
@@ -30,14 +44,19 @@
     gap: 15px;
   }
 
+  .section-title::before {
+    content: "> ";
+    color: var(--neon-green);
+  }
+
   .section-title::after {
     content: "";
     height: 1px;
     flex-grow: 1;
-    background: linear-gradient(to right, var(--neon-blue), transparent);
+    background: linear-gradient(to right, #222, transparent);
   }
 
-  /* Skill list - Matnlarni yorqinlashtirish */
+  /* Skill list */
   .skill-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -45,68 +64,94 @@
   }
 
   .skill-item {
-    background: #111;
-    border: 1px solid #1a1a1a;
+    background: #050505;
+    border: 1px solid #111;
     padding: 20px;
     display: flex;
     align-items: center;
     gap: 15px;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    clip-path: polygon(5% 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0 10%);
   }
 
-  /* Logolar va matnlar endi qorong'uda yo'qolmaydi */
   .skill-item i {
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--neon-green);
-    filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.5));
+    filter: drop-shadow(0 0 5px rgba(57, 255, 20, 0.3));
   }
 
   .skill-item .tech-title {
-    color: #ffffff !important; /* Toza oq rang */
+    color: #ffffff !important;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: block;
+    font-family: 'Fira Code', monospace;
   }
 
   .skill-item .tech-subtitle {
-    color: #00d2ff !important; /* Moviy neon - ko'rinishi uchun */
-    font-size: 0.85rem;
+    color: #555 !important;
+    font-size: 0.8rem;
     font-weight: 500;
   }
 
-  /* Profil rasm wrapper */
+  /* Profil rasm wrapper - Cyber Frame */
   .profile-img-wrapper {
-    border: 2px solid var(--border-color);
-    padding: 5px;
-    background: #000;
+    position: relative;
+    padding: 10px;
     display: inline-block;
+  }
+
+  .profile-img-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--neon-green);
+    clip-path: polygon(0 0, 20% 0, 0 20%, 0 0, 80% 0, 100% 20%, 100% 0, 100% 0, 100% 80%, 80% 100%, 100% 100%, 100% 100%, 20% 100%, 0 80%, 0 100%);
   }
 
   .profile-img-wrapper img {
     max-width: 260px;
-    filter: brightness(1);
+    filter: grayscale(0.5) contrast(1.1);
     transition: 0.5s;
+    background: #111;
   }
 
-  /* Listlar yorqinligi */
+  .profile-img-wrapper:hover img {
+    filter: grayscale(0) contrast(1);
+  }
+
+  /* Listlar */
   .custom-list li {
     list-style: none;
-    padding: 12px 0;
-    color: #ffffff;
+    padding: 12px 15px;
+    color: #888;
     display: flex;
     align-items: center;
     gap: 12px;
+    border-bottom: 1px solid #111;
+    transition: 0.3s;
+  }
+
+  .custom-list li:hover {
+    color: #fff;
+    background: rgba(57, 255, 20, 0.02);
   }
 
   .custom-list li i {
-    color: var(--neon-blue);
-    font-size: 1.2rem;
+    color: var(--neon-green);
+    font-size: 1rem;
+  }
+
+  .bio-text {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #aaa;
+    line-height: 1.8;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container-lg" style="padding-top: 80px;">
+<div class="container-lg" style="padding-top: 40px;">
 
   <div class="about-glass-card">
     <div class="row align-items-center">
@@ -116,11 +161,11 @@
         </div>
       </div>
       <div class="col-lg-8">
-        <h3 class="section-title">Men haqimda</h3>
-        <p class="text-white mb-4" style="font-size: 1.25rem; line-height: 1.7;">
-          Salom! Men <span style="color: var(--neon-green); font-weight: bold;">Ahrorjon</span>, yuqori yuklamali va samarali backend tizimlar yaratishga ishtiyoqi baland bo'lgan dasturchiman.
+        <h3 class="section-title">IDENTITY_DECRYPTED</h3>
+        <p class="mb-4 text-white" style="font-size: 1.3rem; font-weight: 500;">
+          Salom! Men <span style="color: var(--neon-green); font-family: 'Fira Code', monospace;">Ahrorjon</span>, yuqori yuklamali va samarali backend tizimlar yaratishga ishtiyoqi baland bo'lgan dasturchiman.
         </p>
-        <p style="color: #ccc; font-size: 1.1rem;">
+        <p class="bio-text">
           Asosiy e'tiborim Python ekotizimi (Django, FastAPI) orqali murakkab biznes mantiqlarini xavfsiz va tezkor API ko'rinishida amalga oshirishga qaratilgan. Hozirda Acharya Universitetida bilimlarimni akademik darajada mustahkamlamoqdaman.
         </p>
       </div>
@@ -128,7 +173,7 @@
   </div>
 
   <div class="about-glass-card">
-    <h3 class="section-title">Texnologik stack</h3>
+    <h3 class="section-title">TECHNICAL_STACK.sys</h3>
     <div class="skill-list">
       <div class="skill-item">
         <i class="bi bi-braces"></i>
@@ -160,16 +205,16 @@
   <div class="row g-4">
     <div class="col-md-6">
       <div class="about-glass-card h-100">
-        <h3 class="section-title">Qiziqishlarim</h3>
-        <p style="color: #ddd;">
+        <h3 class="section-title">INTERESTS</h3>
+        <p class="bio-text">
           Sun'iy intellekt integratsiyasi, mikroservislar arxitekturasi va ma'lumotlar xavfsizligi mening asosiy fokusimda. Bo'sh vaqtimda yangi texnologiyalarni test qilishni yoqtiraman.
         </p>
       </div>
     </div>
     <div class="col-md-6">
       <div class="about-glass-card h-100">
-        <h3 class="section-title">Asosiy maqsad</h3>
-        <p style="color: #ddd;">
+        <h3 class="section-title">CORE_MISSION</h3>
+        <p class="bio-text">
           Global miqyosdagi muammolarni hal qila oladigan, barqaror va kengayuvchan platformalar yaratish hamda O'zbekiston IT ekotizimiga hissa qo'shish.
         </p>
       </div>
@@ -177,12 +222,12 @@
   </div>
 
   <div class="about-glass-card mt-4">
-    <h3 class="section-title">Nimalar bilan shug'ullanaman?</h3>
+    <h3 class="section-title">EXECUTING_TASKS.exe</h3>
     <ul class="custom-list p-0 m-0">
-      <li><i class="bi bi-patch-check-fill"></i> Xavfsiz va yuqori samaradorlikka ega RESTful API lar ishlab chiqish.</li>
-      <li><i class="bi bi-patch-check-fill"></i> Ma'lumotlar bazasi so'rovlarini optimallashtirish.</li>
-      <li><i class="bi bi-patch-check-fill"></i> Docker konteynerizatsiya orqali loyihalarni deploy qilish.</li>
-      <li><i class="bi bi-patch-check-fill"></i> Biznes jarayonlarni avtomatlashtiruvchi Telegram ekotizimlari.</li>
+      <li><i class="bi bi-chevron-right"></i> Xavfsiz va yuqori samaradorlikka ega RESTful API lar ishlab chiqish.</li>
+      <li><i class="bi bi-chevron-right"></i> Ma'lumotlar bazasi so'rovlarini optimallashtirish.</li>
+      <li><i class="bi bi-chevron-right"></i> Docker konteynerizatsiya orqali loyihalarni deploy qilish.</li>
+      <li><i class="bi bi-chevron-right"></i> Biznes jarayonlarni avtomatlashtiruvchi Telegram ekotizimlari.</li>
     </ul>
   </div>
 
@@ -195,15 +240,17 @@
   document.querySelectorAll('.skill-item').forEach(card => {
     card.addEventListener('mouseenter', () => {
       card.style.borderColor = 'var(--neon-green)';
-      card.style.boxShadow = '0 0 15px rgba(57, 255, 20, 0.3)';
-      card.style.transform = 'translateY(-5px)';
+      card.style.boxShadow = '0 0 20px rgba(57, 255, 20, 0.15)';
+      card.style.transform = 'translateY(-5px) scale(1.02)';
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.borderColor = '#1a1a1a';
+      card.style.borderColor = '#111';
       card.style.boxShadow = 'none';
-      card.style.transform = 'translateY(0)';
+      card.style.transform = 'translateY(0) scale(1)';
     });
   });
+
+  console.log("%c [STATUS] Personal profile decrypted and loaded.", "color: #39ff14; font-weight: bold;");
 </script>
 {% endblock %}
