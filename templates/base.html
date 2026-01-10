@@ -17,116 +17,120 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 
   <style>
-    :root {
-      --accent: #6C5CE7;
-      --accent-hover: #5a4bd0;
-      --muted: #a3b0c2;
-      --card-bg: rgba(255, 255, 255, 0.04);
-      --border: rgba(255, 255, 255, 0.1);
-    }
+   :root {
+  --accent: #7C4DFF; /* Yoroqinroq binafsha */
+  --accent-glow: rgba(124, 77, 255, 0.4);
+  --bg-dark: #0a0f1b;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --text-main: #e2e8f0;
+}
 
-    /* Asosiy Layout strukturasini to'g'rilash */
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at 0% 0%, #16213e 0%, #0a0f1b 50%);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+}
 
-    /* Asosiy fon va fon effektlari */
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top right, #1e293b, #0f172a 50%) fixed;
-      color: #e6eef8;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
+/* Glassmorphism Navbar */
+.custom-navbar {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .container-lg {
-      flex: 1 0 auto;
-      display: flex;
-      flex-direction: column;
-    }
+.navbar-brand {
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+}
 
-    main {
-      flex: 1;
-    }
+.navbar-brand span {
+  color: var(--accent);
+  text-shadow: 0 0 15px var(--accent-glow);
+}
 
-    /* Scroll progress bar (Agar kerak bo'lsa HTMLga qo'shing) */
-    #myBar {
-      height: 4px;
-      background: var(--accent);
-      width: 0%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 9999;
-    }
+/* Nav Linklari uchun effekt */
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  margin: 0 5px;
+  color: #94a3b8 !important;
+}
 
-    /* Navbar stilidagi konfliktlarni yechish */
-    .custom-navbar {
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-radius: 20px;
-      padding: 12px 25px;
-      margin-top: 20px;
-      margin-bottom: 30px;
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background: var(--accent);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px var(--accent);
+}
 
-    .navbar-brand {
-      font-weight: 700;
-      color: #fff !important;
-    }
+.nav-link:hover::after, .nav-link.active::after {
+  width: 80%;
+}
 
-    .navbar-brand span {
-      color: var(--accent) !important;
-    }
+.nav-link:hover, .nav-link.active {
+  color: #fff !important;
+}
 
-    .nav-link {
-      color: #cbd5e1 !important;
-      padding: 8px 15px !important;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+/* Footer va Ijtimoiy tarmoqlar */
+footer {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  padding: 40px 0;
+  border-top: 1px solid var(--border-light);
+}
 
-    .nav-link:hover, .nav-link.active {
-      color: #fff !important;
-      transform: translateY(-1px);
-    }
+.social-link {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  color: #94a3b8 !important;
+  transition: all 0.3s ease;
+}
 
-    /* Ijtimoiy tarmoqlar */
-    .social-link {
-      display: inline-block;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      color: var(--muted) !important;
-      text-decoration: none;
-    }
+.social-link:hover {
+  background: var(--accent);
+  color: white !important;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3);
+}
 
-    .social-link:hover {
-      color: var(--accent) !important;
-      transform: translateY(-5px) scale(1.2);
-    }
+/* Scroll progress */
+#myBar {
+  height: 3px;
+  background: linear-gradient(to right, transparent, var(--accent));
+  box-shadow: 0 0 10px var(--accent);
+}
 
-    footer {
-      flex-shrink: 0;
-      border-top: 1px solid var(--border);
-      padding: 30px 0;
-      margin-top: 40px;
-    }
+/* Animatsiya uchun */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    @media (max-width: 991px) {
-      .navbar-collapse {
-        background: #1e293b;
-        margin-top: 15px;
-        padding: 20px;
-        border-radius: 15px;
-        border: 1px solid var(--border);
-      }
-    }
+main {
+  animation: fadeIn 0.8s ease-out;
+}
   </style>
   {% block extra_head %}{% endblock %}
 </head>
