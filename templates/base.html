@@ -17,12 +17,14 @@
 
   <style>
     :root {
-      --primary: #00ff41; /* Terminal yashili */
+      --primary: #00ff41;
+      --primary-glow: rgba(0, 255, 65, 0.2);
       --bg-black: #000000;
       --card-bg: #0a0a0a;
       --border: #1a1a1a;
       --text: #ffffff;
       --font-mono: 'Fira Code', monospace;
+      --s-cyan: #00d2ff;
     }
 
     body {
@@ -33,207 +35,200 @@
       margin: 0;
     }
 
+    /* --- BACKGROUND ENGINE STYLES --- */
+    #cyber-background-engine {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -100;
+      pointer-events: none;
+      background: #000;
+    }
+    .matrix-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.12; }
+    .grid-layer {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px; perspective: 1000px; transform: rotateX(45deg) translateY(-20%); transform-origin: top;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 90%);
+    }
+    .scanline-layer {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+      background-size: 100% 4px; z-index: 10;
+    }
+    .moving-line {
+      position: absolute; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0.3; box-shadow: 0 0 15px var(--primary);
+      animation: moveLine 12s linear infinite;
+    }
+    @keyframes moveLine { 0% { top: -10%; } 100% { top: 110%; } }
+    .depth-text {
+      position: absolute; font-family: var(--font-mono); font-weight: 900; font-size: 15vw;
+      color: rgba(255, 255, 255, 0.01); white-space: nowrap; z-index: -1; text-transform: uppercase; user-select: none;
+    }
+
     h1 { font-size: 3.5rem; font-weight: 700; }
     p { font-size: 1.2rem; }
 
     #myBar {
-      height: 4px;
-      background: var(--primary);
-      position: fixed;
-      top: 0;
-      z-index: 11000; /* Navbardan tepada turishi uchun */
-      width: 0%;
-      box-shadow: 0 0 20px var(--primary);
-    }
-
-    .nav-link {
-      font-size: 1.1rem;
-      color: #777 !important;
-      margin-left: 25px;
-      padding: 8px 12px !important;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .nav-link i {
-      font-size: 1.4rem;
-      transition: 0.3s;
-    }
-
-    .nav-link:hover {
-      color: var(--primary) !important;
-      text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(0, 255, 65, 0.2);
-      transform: translateY(-5px);
-    }
-
-    .nav-link:hover i {
-      transform: scale(1.2);
-      filter: drop-shadow(0 0 8px var(--primary));
-    }
-
-    .nav-link.active {
-      color: var(--primary) !important;
-      position: relative;
-    }
-
-    .nav-link.active::after {
-      content: "";
-      position: absolute;
-      bottom: -10px;
-      width: 100%;
-      height: 3px;
-      background: var(--primary);
-      box-shadow: 0 0 15px var(--primary);
-      border-radius: 2px;
+      height: 4px; background: var(--primary); position: fixed;
+      top: 0; z-index: 11000; width: 0%; box-shadow: 0 0 20px var(--primary);
     }
 
     .custom-navbar {
-      min-height: 100px;
-      background: rgba(0, 0, 0, 0.95); /* Shaffoflik biroz oshirildi */
-      border-bottom: 2px solid #111;
-      display: flex;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 10000;
-      backdrop-filter: blur(10px);
+      min-height: 100px; background: rgba(0, 0, 0, 0.85);
+      border-bottom: 2px solid #111; display: flex; align-items: center;
+      position: fixed; top: 0; width: 100%; z-index: 10000; backdrop-filter: blur(15px);
     }
 
-    main.container {
-      margin-top: 110px;
+    .nav-link {
+      font-size: 1.1rem; color: #777 !important; margin-left: 25px;
+      padding: 8px 12px !important; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
     }
 
-    .navbar-brand {
-      font-family: var(--font-mono);
-      font-size: 1.8rem;
-      color: var(--primary) !important;
+    .nav-link:hover { color: var(--primary) !important; text-shadow: 0 0 15px var(--primary); transform: translateY(-5px); }
+    .nav-link.active { color: var(--primary) !important; position: relative; }
+    .nav-link.active::after {
+      content: ""; position: absolute; bottom: -10px; width: 100%; height: 3px;
+      background: var(--primary); box-shadow: 0 0 15px var(--primary); border-radius: 2px;
     }
+
+    main.container { margin-top: 110px; position: relative; z-index: 1; }
+
+    .navbar-brand { font-family: var(--font-mono); font-size: 1.8rem; color: var(--primary) !important; }
 
     .cursor {
-      display: inline-block;
-      width: 12px;
-      height: 1.2em;
-      background-color: var(--primary);
-      margin-left: 5px;
-      animation: blink 0.8s infinite;
-      vertical-align: middle;
+      display: inline-block; width: 12px; height: 1.2em;
+      background-color: var(--primary); margin-left: 5px;
+      animation: blink 0.8s infinite; vertical-align: middle;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
     body::before {
-      content: " ";
-      display: block;
-      position: fixed;
-      top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-      linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      z-index: 9999;
-      background-size: 100% 2px, 3px 100%;
-      pointer-events: none;
+      content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      z-index: 9998; background-size: 100% 2px, 3px 100%; pointer-events: none;
     }
 
     .social-link {
-      width: 60px;
-      height: 60px;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--border);
-      color: var(--text) !important;
-      transition: all 0.4s;
-      background: var(--card-bg);
-      clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+      width: 60px; height: 60px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--border); color: var(--text) !important; transition: all 0.4s;
+      background: var(--card-bg); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
     }
 
-    .social-link:hover {
-      background: var(--primary);
-      color: var(--bg-black) !important;
-      transform: skewX(-10deg) scale(1.1);
-      box-shadow: -10px 0 20px var(--primary);
-      border-color: var(--primary);
-    }
+    .social-link:hover { background: var(--primary); color: var(--bg-black) !important; border-color: var(--primary); box-shadow: 0 0 20px var(--primary); }
 
     footer {
-      border-top: 2px solid var(--border);
-      padding: 50px 0;
-      background: #050505;
+      border-top: 1px solid var(--border);
+      padding: 60px 0;
+      background: linear-gradient(to top, #000 0%, #050505 100%);
       font-family: var(--font-mono);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
     }
 
-    .tag-text { color: #555; font-size: 0.9rem; }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 20px var(--primary);
+    }
 
-    /* --- RESPONSIVE ADJUSTMENTS --- */
+    footer p {
+      color: var(--primary);
+      font-size: 1.1rem;
+      text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .tag-text {
+      color: #444 !important;
+      font-size: 0.8rem !important;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .tag-text::after {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      margin-left: 10px;
+      animation: footer-blink 1s infinite;
+    }
+
+    @keyframes footer-blink {
+      0%, 100% { opacity: 0.2; box-shadow: none; }
+      50% { opacity: 1; box-shadow: 0 0 10px var(--primary); }
+    }
+
+    footer .mt-3 {
+      color: #333;
+      font-size: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.02);
+      padding-top: 20px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    footer .container {
+      position: relative;
+    }
+
+    footer .container::before, footer .container::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #1a1a1a;
+    }
+
+    footer .container::before {
+      top: -20px;
+      left: 0;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    footer .container::after {
+      bottom: -20px;
+      right: 0;
+      border-left: none;
+      border-top: none;
+    }
+
     @media (max-width: 991.98px) {
-      .navbar-toggler {
-        border: 1px solid var(--primary) !important;
-        border-radius: 0;
-        padding: 8px;
-        background: rgba(0, 255, 65, 0.05);
-      }
-
-      .navbar-collapse {
-        background: #050505;
-        border: 1px solid var(--border);
-        margin-top: 15px;
-        padding: 20px;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9);
-      }
-
-      .navbar-collapse::before {
-        content: "--- NAVIGATION_MENU ---";
-        display: block;
-        color: #333;
-        font-family: var(--font-mono);
-        font-size: 0.7rem;
-        margin-bottom: 15px;
-        text-align: center;
-      }
-
-      .nav-link {
-        margin-left: 0 !important;
-        padding: 12px 15px !important;
-        flex-direction: row !important;
-        justify-content: flex-start;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-      }
-
-      .nav-link i { width: 30px; text-align: center; }
-
-      .nav-link.active {
-        border-left: 3px solid var(--primary);
-        background: rgba(0, 255, 65, 0.07);
-      }
-
+      .navbar-collapse { background: #050505; border: 1px solid var(--border); margin-top: 15px; padding: 20px; }
+      .nav-link { margin-left: 0 !important; flex-direction: row !important; }
+      .nav-link.active { border-left: 3px solid var(--primary); background: rgba(0, 255, 65, 0.07); }
       .nav-link.active::after { display: none; }
-
-      .nav-link:hover { transform: translateX(10px) !important; }
-
-      h1 { font-size: 2.5rem; }
-
-      main.container { margin-top: 100px; }
-    }
-
-    @media (max-width: 576px) {
-      .navbar-brand { font-size: 1.3rem; }
-      h1 { font-size: 2rem !important; }
-      .social-link { width: 50px; height: 50px; }
     }
   </style>
   {% block extra_head %}{% endblock %}
 </head>
 <body>
+
+<div id="cyber-background-engine">
+  <canvas id="matrix-canvas" class="matrix-layer"></canvas>
+  <div class="grid-layer"></div>
+  <div class="scanline-layer"></div>
+  <div class="moving-line"></div>
+  <div class="depth-text" style="top: 20%; left: -5%;">DEVELOPMENT</div>
+  <div class="depth-text" style="bottom: 20%; right: -5%;">ARCHITECTURE</div>
+</div>
 <div id="myBar"></div>
 
 <div class="container-fluid p-0">
@@ -251,8 +246,6 @@
           <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'about' %}"><i class="bi bi-house-door"></i> Home</a></li>
           <li class="nav-item"><a class="nav-link {% if 'achievements' in request.path %}active{% endif %}" href="{% url 'achievements' %}"><i class="bi bi-award"></i> Yutuqlar</a></li>
           <li class="nav-item"><a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog' %}"><i class="bi bi-chat-left-text"></i> Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://library.coderboys.uz" target="_blank"><i class="bi bi-journal-bookmark"></i> Kutubxona</a></li>
-          <li class="nav-item"><a class="nav-link" href="https://project.coderboys.uz" target="_blank"><i class="bi bi-code-square"></i> Loyihalar</a></li>
           <li class="nav-item"><a class="nav-link" href="https://t.me/axror_contactbot" target="_blank"><i class="bi bi-robot"></i> Bot</a></li>
           <li class="nav-item"><a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}"><i class="bi bi-envelope"></i> Contact</a></li>
           <li class="nav-item"><a class="nav-link {% if 'ask_question' in request.path %}active{% endif %}" href="{% url 'ask_question' %}"><i class="bi bi-question-circle"></i> Savol</a></li>
@@ -262,13 +255,6 @@
   </nav>
 
   <main class="container py-5">
-    <div class="row">
-      <div class="col-12 mb-4">
-        <span class="tag-text">&lt;section id="hero"&gt;</span>
-        <h1 id="main-title" class="my-3"></h1> <span class="tag-text">&lt;/section&gt;</span>
-      </div>
-    </div>
-
     <div class="content-block py-4">
       {% block content %}{% endblock %}
     </div>
@@ -292,6 +278,47 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // MATRIX ENGINE SCRIPT
+  (function() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, columns;
+    const alphabet = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
+    let drops = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      columns = Math.floor(w / 20);
+      drops = [];
+      for (let i = 0; i < columns; i++) drops[i] = Math.random() * -100;
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = '#0f0';
+      ctx.font = '15px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctx.fillText(text, i * 20, drops[i] * 20);
+        if (drops[i] * 20 > h && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    setInterval(draw, 33);
+
+    // Mouse Move Interaction for Grid
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 15;
+      const y = (e.clientY / window.innerHeight - 0.5) * 15;
+      const grid = document.querySelector('.grid-layer');
+      if(grid) grid.style.transform = `rotateX(45deg) translateY(-20%) translate(${x}px, ${y}px)`;
+    });
+  })();
+
   function typeEffect(elementId, text, speed) {
     let i = 0;
     const element = document.getElementById(elementId);
@@ -309,7 +336,6 @@
 
   window.onload = () => {
     typeEffect('logo-type', 'axrorback.dev', 150);
-    typeEffect('main-title', 'Ahrorjon Ibrohimjonov', 100);
   };
 
   window.onscroll = function() {
