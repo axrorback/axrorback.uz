@@ -41,7 +41,7 @@
       background: var(--primary);
       position: fixed;
       top: 0;
-      z-index: 10000;
+      z-index: 11000; /* Navbardan tepada turishi uchun */
       width: 0%;
       box-shadow: 0 0 20px var(--primary);
     }
@@ -95,10 +95,19 @@
 
     .custom-navbar {
       min-height: 100px;
-      background: rgba(0, 0, 0, 0.98);
+      background: rgba(0, 0, 0, 0.95); /* Shaffoflik biroz oshirildi */
       border-bottom: 2px solid #111;
       display: flex;
       align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10000;
+      backdrop-filter: blur(10px);
+    }
+
+    main.container {
+      margin-top: 110px;
     }
 
     .navbar-brand {
@@ -212,6 +221,8 @@
       .nav-link:hover { transform: translateX(10px) !important; }
 
       h1 { font-size: 2.5rem; }
+
+      main.container { margin-top: 100px; }
     }
 
     @media (max-width: 576px) {
