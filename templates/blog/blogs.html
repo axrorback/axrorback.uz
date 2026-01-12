@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% block title %}Bloglar — Ahrorjon Ibrohimjonov{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -225,7 +224,6 @@
 
 {% block extra_scripts %}
 <script>
-  // Kartalarga hover bo'lganda terminal effekti (JS)
   document.querySelectorAll('.blog-card-js').forEach(card => {
     card.addEventListener('mouseenter', () => {
       card.querySelector('.blog-title').style.color = 'var(--neon-blue)';

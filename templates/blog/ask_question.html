@@ -1,215 +1,701 @@
 {% extends 'base.html' %}
-{% block title %}Ahrorjon Ibrohimjonov — Savol berish{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — Ask questions{% endblock %}
 
 {% block extra_head %}
 <style>
   :root {
-    --neon-green: #39ff14;
-    --neon-blue: #00d2ff;
-    --card-bg: #0a0a0a;
-    --border-color: #1a1a1a;
+    --primary: #00ff41;
+    --primary-glow: rgba(0, 255, 65, 0.3);
+    --secondary: #00d2ff;
+    --danger: #ff003c;
+    --warning: #ffbd2e;
+    --bg-black: #000000;
+    --bg-surface: #050505;
+    --bg-card: #080808;
+    --border: #1a1a1a;
+    --border-bright: #333333;
+    --font-mono: 'Fira Code', 'Courier New', monospace;
+    --font-sans: 'Space Grotesk', sans-serif;
   }
 
-  /* Sarlavha - Terminal uslubida */
-  .text-gradient {
-    color: var(--neon-green);
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
-    font-family: 'Fira Code', monospace;
+  body {
+    background-color: var(--bg-black);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    margin: 0;
+    line-height: 1.5;
   }
 
-  /* Glass Card - Kiber variant */
-  .glass-card {
-    max-width: 850px;
-    margin: 0 auto;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 0; /* O'tkir qirralar */
-    padding: 40px;
+  .cyber-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    background-size: 100% 4px, 4px 100%;
+    z-index: 99999;
+    pointer-events: none;
+  }
+
+  .matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.08;
+  }
+
+  .page-frame {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
     position: relative;
   }
 
-  .glass-card::before {
-    content: "QUERY_INPUT";
-    position: absolute;
-    top: -10px;
-    left: 20px;
-    background: var(--bg-black);
-    padding: 0 10px;
+  .terminal-container {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    position: relative;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 1);
+    animation: frame-entrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @keyframes frame-entrance {
+    from { opacity: 0; transform: translateY(40px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .terminal-top-bar {
+    height: 40px;
+    background: #0f0f0f;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+  }
+
+  .os-controls {
+    display: flex;
+    gap: 10px;
+  }
+
+  .os-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .os-red { background: var(--danger); }
+  .os-yellow { background: var(--warning); }
+  .os-green { background: var(--primary); }
+
+  .terminal-identity {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: #555;
-    font-size: 0.8rem;
-    font-family: var(--font-mono);
-  }
-
-  /* Inputlar - Terminal Input Style */
-  input, textarea {
-    background: #050505 !important;
-    border: 1px solid var(--border-color) !important;
-    color: var(--neon-green) !important;
-    border-radius: 0 !important;
-    padding: 12px 18px !important;
-    transition: all 0.3s ease !important;
-    margin-bottom: 15px;
-    font-family: var(--font-mono);
-  }
-
-  input:focus, textarea:focus {
-    border-color: var(--neon-green) !important;
-    box-shadow: 0 0 15px rgba(57, 255, 20, 0.2) !important;
-    outline: none;
-  }
-
-  input::placeholder, textarea::placeholder {
-    color: #333 !important;
-  }
-
-  /* Tugma - Execute Command */
-  .btn-submit {
-    background: transparent;
-    border: 1px solid var(--neon-green);
-    color: var(--neon-green);
-    padding: 12px;
-    border-radius: 0;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    transition: all 0.4s ease;
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
 
-  .btn-submit:hover {
-    background: rgba(57, 255, 20, 0.1);
-    box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
-    color: var(--neon-green);
-    transform: translateY(-2px);
-  }
-
-  /* Savol Kartalari */
-  .old-question-card {
-    background: #050505;
-    border: 1px solid var(--border-color);
-    border-radius: 0;
-    padding: 25px;
-    transition: 0.3s;
+  .hero-banner {
+    padding: 100px 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: radial-gradient(circle at center, #0a0a0a 0%, transparent 100%);
     position: relative;
+    overflow: hidden;
   }
 
-  .old-question-card:hover {
-    border-color: var(--neon-blue);
+  .scanline-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent, rgba(0, 255, 65, 0.05), transparent);
+    animation: scan-move 8s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scan-move {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  .main-title {
+    font-size: 5rem;
+    font-weight: 900;
+    font-family: var(--font-mono);
+    color: var(--primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .main-title .glitch-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+  }
+
+  .main-title .glitch-layer:nth-child(2) {
+    color: var(--secondary);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+    z-index: -1;
+  }
+
+  .main-title .glitch-layer:nth-child(3) {
+    color: var(--danger);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    z-index: -2;
+  }
+
+  @keyframes glitch-anim-1 {
+    0% { clip: rect(20px, 9999px, 40px, 0); transform: translate(-5px, -2px); }
+    50% { clip: rect(80px, 9999px, 90px, 0); transform: translate(5px, 2px); }
+    100% { clip: rect(10px, 9999px, 30px, 0); transform: translate(-2px, -5px); }
+  }
+
+  @keyframes glitch-anim-2 {
+    0% { clip: rect(50px, 9999px, 60px, 0); transform: translate(5px, 2px); }
+    50% { clip: rect(10px, 9999px, 20px, 0); transform: translate(-5px, -2px); }
+    100% { clip: rect(70px, 9999px, 80px, 0); transform: translate(2px, 5px); }
+  }
+
+  .sub-status {
+    font-family: var(--font-mono);
+    color: #444;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+  }
+
+  .comm-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-area {
+    padding: 80px 60px;
+    border-right: 1px solid var(--border);
+  }
+
+  .form-header {
+    margin-bottom: 60px;
+  }
+
+  .form-header h3 {
+    font-family: var(--font-mono);
+    color: #fff;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .form-header .line {
+    height: 1px;
+    flex-grow: 1;
+    background: linear-gradient(90deg, var(--primary), transparent);
+  }
+
+  .input-wrapper {
+    position: relative;
+    margin-bottom: 50px;
+  }
+
+  .input-wrapper label {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--bg-surface);
+    padding: 0 10px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 5;
+  }
+
+  .cyber-input {
+    width: 100%;
+    background: #000 !important;
+    border: 1px solid var(--border) !important;
+    color: #fff !important;
+    padding: 20px 25px !important;
+    border-radius: 0 !important;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cyber-input:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 20px var(--primary-glow) !important;
+    transform: translateX(10px);
+  }
+
+  .cyber-input.is-valid-kiber {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.1) !important;
+  }
+
+  .cyber-input.is-invalid {
+    border-color: var(--danger) !important;
+  }
+
+  .submit-trigger {
+    width: 100%;
+    padding: 25px;
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.5s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-trigger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent);
+    transition: 0.5s;
+  }
+
+  .submit-trigger:hover::before {
+    left: 100%;
+  }
+
+  .submit-trigger:hover {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 0 50px var(--primary);
+  }
+
+  .log-area {
+    padding: 80px 60px;
+    background: #020202;
+    max-height: 1000px;
+    overflow-y: auto;
+  }
+
+  .log-area::-webkit-scrollbar { width: 4px; }
+  .log-area::-webkit-scrollbar-track { background: #000; }
+  .log-area::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .log-entry {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    transition: 0.4s;
+  }
+
+  .log-entry:hover {
+    border-color: var(--primary);
+    transform: scale(1.02);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+
+  .log-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 15px;
+  }
+
+  .user-badge {
+    font-family: var(--font-mono);
+    color: var(--secondary);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .timestamp {
+    font-family: var(--font-mono);
+    color: #333;
+    font-size: 0.75rem;
+  }
+
+  .question-text {
+    font-family: var(--font-mono);
+    color: #ddd;
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+
+  .reply-block {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(0, 255, 65, 0.02);
+    border-left: 2px solid var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: #888;
+  }
+
+  .listening-status {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #222;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: pulse-kf 1.5s infinite;
+  }
+
+  @keyframes pulse-kf {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+  .sidebar-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
     background: #080808;
   }
 
-  .admin-response {
-    background: rgba(0, 210, 255, 0.03);
-    border-left: 3px solid var(--neon-blue);
-    border-radius: 0;
-    margin-top: 15px;
-    padding: 15px;
+  .stat-box {
+    padding: 30px;
+    border-right: 1px solid var(--border);
+    text-align: center;
   }
 
-  .user-info {
+  .stat-label {
+    display: block;
     font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--neon-blue);
+    font-size: 0.65rem;
+    color: #444;
+    text-transform: uppercase;
+    margin-bottom: 10px;
   }
 
-  .status-waiting {
-    color: #555;
+  .stat-value {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .cyber-footer {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #000;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #333;
+  }
+
+  @media (max-width: 1100px) {
+    .comm-section { grid-template-columns: 1fr; }
+    .form-area { border-right: none; border-bottom: 1px solid var(--border); }
+    .main-title { font-size: 3rem; }
+  }
+
+  .background-text {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 12rem;
+    color: rgba(255,255,255,0.02);
+    z-index: -1;
+    pointer-events: none;
+    font-weight: 900;
+    white-space: nowrap;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="glass-card">
-    <div class="text-center mb-5">
-      <h2 class="text-gradient fw-bold">
-        <i class="bi bi-terminal"></i> SEND_MESSAGE.py
-      </h2>
-      <p style="color: #666; font-family: var(--font-mono);">[ Tizim orqali admin bilan bog'lanish ]</p>
+<div class="cyber-overlay"></div>
+<canvas id="matrixCanvas" class="matrix-canvas"></canvas>
+
+<div class="page-frame">
+  <div class="background-text" style="top: -100px; left: -50px;">COMMUNICATION</div>
+  <div class="background-text" style="bottom: 100px; right: -50px;">NEURAL_LINK</div>
+
+  <div class="terminal-container">
+    <div class="terminal-top-bar">
+      <div class="os-controls">
+        <div class="os-dot os-red"></div>
+        <div class="os-dot os-yellow"></div>
+        <div class="os-dot os-green"></div>
+      </div>
+      <div class="terminal-identity">NODE: {{ request.get_host }} | ARCH: x64 | PORT: 443</div>
+      <div class="terminal-identity" id="liveClock">00:00:00</div>
     </div>
 
-    <form method="post" class="mb-5 pb-5 border-bottom border-secondary border-opacity-10" id="questionForm">
-      {% csrf_token %}
-      <div class="row">
-        <div class="col-md-6 mb-2">
-          {{ form.name }}
-        </div>
-        <div class="col-md-6 mb-2">
-          {{ form.phone_number }}
-        </div>
-        <div class="col-12 mb-3">
-          {{ form.question }}
-        </div>
+    <div class="hero-banner">
+      <div class="scanline-effect"></div>
+      <h1 class="main-title">
+        <span class="glitch-layer">SEND_MESSAGE.py</span>
+        <span class="glitch-layer">SEND_MESSAGE.py</span>
+        <span class="glitch-layer">SEND_MESSAGE.py</span>
+        SEND_MESSAGE.py
+      </h1>
+      <div class="sub-status">DIRECT_NEURAL_UPLINK_INITIALIZED</div>
+    </div>
+
+    <div class="sidebar-stats">
+      <div class="stat-box">
+        <span class="stat-label">System Load</span>
+        <span class="stat-value" id="sysLoad">1.2%</span>
       </div>
-      <button type="submit" class="btn btn-submit w-100">
-        <i class="bi bi-play-fill me-2"></i> EXECUTE_SEND
-      </button>
-    </form>
+      <div class="stat-box">
+        <span class="stat-label">Active Users</span>
+        <span class="stat-value">01</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Buffer Capacity</span>
+        <span class="stat-value">99.9%</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Encryption</span>
+        <span class="stat-value" style="color: var(--secondary)">RSA-4K</span>
+      </div>
+    </div>
 
-    <div class="mt-4">
-      <h3 class="text-white fw-bold mb-4" style="font-family: var(--font-mono);">
-        <i class="bi bi-hdd-stack me-2"></i> DATABASE_RECORDS
-      </h3>
-
-      {% for q in questions %}
-      <div class="old-question-card mb-4 question-item-js">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="user-info">
-            <i class="bi bi-person"></i> USER: {{ q.name }}
-            <span class="mx-2" style="color: #333;">|</span>
-            <i class="bi bi-phone"></i> {{ q.masked_phone }}
-          </span>
-          <small style="color: #444; font-family: var(--font-mono);">
-            [{{ q.created|date:"d.m.Y" }}]
-          </small>
+    <div class="comm-section">
+      <div class="form-area">
+        <div class="form-header">
+          <h3><i class="bi bi-shield-lock"></i> TRANSMISSION_FORM <div class="line"></div></h3>
         </div>
 
-        <p class="text-white-50 mb-2" style="font-family: 'Space Grotesk';">{{ q.question }}</p>
-
-        {% if q.answer %}
-        <div class="admin-response">
-          <div class="mb-2">
-            <strong style="color: var(--neon-blue); font-family: var(--font-mono);">
-              <i class="bi bi-reply-all"></i> ADMIN_ROOT:
-            </strong>
+        <form method="post" id="questionForm" novalidate>
+          {% csrf_token %}
+          <div class="input-wrapper">
+            <label># IDENTITY_TOKEN</label>
+            {{ form.name }}
           </div>
-          <p class="mb-0 text-white-50 small">{{ q.answer }}</p>
-        </div>
-        {% else %}
-        <div class="mt-3 status-waiting">
-          <i class="bi bi-hourglass"></i> PENDING_RESPONSE...
-        </div>
-        {% endif %}
+          <div class="input-wrapper">
+            <label># UPLINK_PROTOCOL_PHONE</label>
+            {{ form.phone_number }}
+          </div>
+          <div class="input-wrapper">
+            <label># DATA_PAYLOAD_STRING</label>
+            {{ form.question }}
+          </div>
+
+          <div style="margin-bottom: 40px; font-family: var(--font-mono); font-size: 0.7rem; color: #444;">
+            <p>> Warning: All data transmitted through this portal is encrypted and logged in the decentralized ledger. No unauthorized access permitted.</p>
+          </div>
+
+          <button type="submit" class="submit-trigger" id="execBtn">
+            [ EXECUTE_SEND ]
+          </button>
+        </form>
       </div>
-      {% empty %}
-      <div class="text-center py-5">
-        <i class="bi bi-folder-x display-4 text-secondary opacity-25"></i>
-        <p class="text-secondary mt-3 font-monospace">ERROR_404: No questions found in database.</p>
+
+      <div class="log-area" id="logScroll">
+        <div class="form-header">
+          <h3><i class="bi bi-hdd-network"></i> ARCHIVED_RECORDS.db <div class="line"></div></h3>
+        </div>
+
+        {% for q in questions %}
+        <div class="log-entry entry-anim">
+          <div class="log-entry-header">
+            <div class="user-badge">
+              <i class="bi bi-person-badge"></i> SRC: {{ q.name }}
+            </div>
+            <div class="timestamp">
+              <i class="bi bi-clock-history"></i> {{ q.created|date:"Y.m.d H:i:s" }}
+            </div>
+          </div>
+
+          <div class="question-text">
+            <span style="color: var(--primary)">></span> {{ q.question }}
+          </div>
+
+          {% if q.answer %}
+          <div class="reply-block">
+            <div style="color: var(--secondary); font-size: 0.7rem; margin-bottom: 10px;">[ DECRYPTED_RESPONSE ]</div>
+            {{ q.answer }}
+          </div>
+          {% else %}
+          <div class="listening-status">
+            <div class="pulse-dot"></div>
+            <span>AWAITING_ADMIN_VALIDATION...</span>
+          </div>
+          {% endif %}
+        </div>
+        {% empty %}
+        <div style="padding: 100px 0; text-align: center; color: #111;">
+          <i class="bi bi-slash-circle" style="font-size: 4rem;"></i>
+          <p style="font-family: var(--font-mono); margin-top: 20px;">SYSTEM_STDOUT: NULL_RECORDS</p>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+    </div>
+
+    <div class="cyber-footer">
+      <div>KERNEL: v6.1.0-NODE-JS | UPTIME: 334:12:05</div>
+      <div>ENCRYPTED_WITH_AH_BACK_DEV</div>
+      <div>MEM_FREE: 12.4GB / 32.0GB</div>
     </div>
   </div>
 </div>
-{% endblock %}
 
-{% block extra_scripts %}
 <script>
-  // JS interaktivligi
-  document.querySelectorAll('.question-item-js').forEach(item => {
-    item.addEventListener('mouseenter', () => {
-      item.style.transform = "translateX(10px)";
-      item.style.boxShadow = "inset 5px 0 0 var(--neon-blue)";
-    });
-    item.addEventListener('mouseleave', () => {
-      item.style.transform = "translateX(0)";
-      item.style.boxShadow = "none";
-    });
-  });
+  (function() {
+    'use strict';
 
-  // Form yuborilganda kichik log
-  document.getElementById('questionForm').addEventListener('submit', () => {
-    console.log("%c [SYSTEM] Message encryption started...", "color: #39ff14");
-  });
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, columns;
+    const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%&@#';
+    const drops = [];
+
+    function initMatrix() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      columns = Math.floor(width / 20);
+      for (let i = 0; i < columns; i++) drops[i] = Math.random() * -100;
+    }
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#0f0';
+      ctx.font = '15px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * 20, drops[i] * 20);
+        if (drops[i] * 20 > height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    window.addEventListener('resize', initMatrix);
+    initMatrix();
+    setInterval(drawMatrix, 50);
+
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('liveClock').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    setInterval(() => {
+      const load = (Math.random() * 5 + 0.5).toFixed(1);
+      document.getElementById('sysLoad').textContent = `${load}%`;
+    }, 3000);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('questionForm');
+      const phoneInput = document.querySelector('input[name="phone_number"]');
+      const nameInput = document.querySelector('input[name="name"]');
+      const areaInput = document.querySelector('textarea[name="question"]');
+      const submitBtn = document.getElementById('execBtn');
+      const entries = document.querySelectorAll('.entry-anim');
+
+      const allInputs = [phoneInput, nameInput, areaInput];
+      allInputs.forEach(input => {
+        if(input) {
+          input.classList.add('cyber-input');
+          input.removeAttribute('maxlength');
+        }
+      });
+
+      if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+          let val = e.target.value;
+          if (!val.startsWith('+998')) val = '+998';
+          let digits = val.substring(4).replace(/\D/g, '');
+          if (digits.length > 9) digits = digits.substring(0, 9);
+          e.target.value = '+998' + digits;
+
+          if (e.target.value.length === 13) {
+            e.target.classList.add('is-valid-kiber');
+            e.target.classList.remove('is-invalid');
+          } else {
+            e.target.classList.remove('is-valid-kiber');
+          }
+        });
+      }
+
+      form.addEventListener('submit', (e) => {
+        const pVal = phoneInput.value;
+        const isPhoneOk = /^\+998\d{9}$/.test(pVal);
+        const isNameOk = nameInput.value.trim().length >= 2;
+        const isTextOk = areaInput.value.trim().length >= 5;
+
+        if (!isPhoneOk || !isNameOk || !isTextOk) {
+          e.preventDefault();
+          if(!isPhoneOk) phoneInput.classList.add('is-invalid');
+          if(!isNameOk) nameInput.classList.add('is-invalid');
+          if(!isTextOk) areaInput.classList.add('is-invalid');
+
+          submitBtn.style.borderColor = 'var(--danger)';
+          submitBtn.style.color = 'var(--danger)';
+          submitBtn.innerText = '[ ERROR: PACKET_CORRUPT ]';
+
+          setTimeout(() => {
+            submitBtn.style.borderColor = 'var(--primary)';
+            submitBtn.style.color = 'var(--primary)';
+            submitBtn.innerText = '[ EXECUTE_SEND ]';
+          }, 2000);
+        } else {
+          submitBtn.disabled = true;
+          submitBtn.innerText = '[ UPLOADING_TO_SERVER... ]';
+        }
+      });
+
+      entries.forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          el.style.transition = '0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 500 + (i * 150));
+      });
+    });
+
+    console.log("%c SYSTEM: NEURAL_LINK STABLE", "color: #00ff41; font-weight: bold; font-size: 20px;");
+    console.log("%c Security Clearance: ADMIN", "color: #00d2ff;");
+  })();
 </script>
 {% endblock %}

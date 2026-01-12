@@ -46,16 +46,14 @@
     content: "> ";
     color: var(--neon-green);
   }
-  /* Texnologiyalar konteyneri - umumiy blok */
   .tech-section-wrapper {
     display: flex;
     align-items: center;
     gap: 20px;
     margin-top: 20px;
-    overflow: hidden; /* Tashqariga chiqib ketgan qismlarni yashirish */
+    overflow: hidden;
   }
 
-  /* Suzib yuradigan zona widthni cheklash uchun */
   .marquee-viewport {
     flex-grow: 1;
     overflow: hidden;
@@ -72,7 +70,7 @@
   }
 
   .tech-track:hover {
-    animation-play-state: paused; /* Sichqoncha ustiga kelganda to'xtaydi */
+    animation-play-state: paused;
   }
 
   .tech-card {
@@ -97,7 +95,6 @@
     color: #ccc;
   }
 
-  /* Statik "...and more" qismi */
   .and-more-text {
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
@@ -108,10 +105,9 @@
 
   @keyframes scroll-left {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* Ro'yxatning yarmini bosib o'tganda sikl qaytariladi */
+    100% { transform: translateX(-50%); }
   }
 
-  /* Kichik joy egallashi uchun viewport balandligini olib tashlaymiz */
   .spinner-view-viewport {
     height: auto !important;
     perspective: none !important;
@@ -131,7 +127,6 @@
     to { transform: rotateY(360deg); }
   }
 
-  /* Profile Frame */
   .profile-img-wrapper {
     position: relative;
     padding: 10px;
@@ -153,7 +148,6 @@
     background: #111;
   }
 
-  /* Lists */
   .custom-list li {
     list-style: none;
     padding: 12px 15px;
@@ -270,6 +264,15 @@
 {% endblock %}
 
 {% block content %}
+<div class="row">
+  <div class="col-12 mb-4">
+    <span class="tag-text" style="color: #555; font-size: 0.9rem;">&lt;section id="hero"&gt;</span>
+    <h1 id="main-title" class="my-3" style="font-size: 3.5rem; font-weight: 700;"></h1>
+    <span class="tag-text" style="color: #555; font-size: 0.9rem;">&lt;/section&gt;</span>
+  </div>
+</div>
+
+<div class="container-lg" style="padding-top: 40px;">
 <div class="container-lg" style="padding-top: 40px;">
 
   <div class="about-glass-card">
@@ -372,6 +375,14 @@
   // Sahifa yuklanganda va ekran o'zgarganda ishga tushirish
   window.addEventListener('load', initTechSpinner);
   window.addEventListener('resize', initTechSpinner);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof typeEffect === "function") {
+      typeEffect('main-title', 'Ahrorjon Ibrohimjonov', 100);
+    }
+  });
+
+  console.log("%c [STATUS] About page loaded.", "color: #39ff14; font-weight: bold;");
 
   console.log("%c [STATUS] personal_profile_v2.0 loaded with 3D_SPINNER.", "color: #39ff14; font-weight: bold;");
 </script>
