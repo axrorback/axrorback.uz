@@ -9,18 +9,31 @@
     --neon-green: #39ff14;
     --card-bg: #0a0a0a;
     --border-color: #1a1a1a;
+    --title-color: #ffffff;
+    --sub-text: #444444;
+  }
+
+  /* LIGHT MODE UCHUN RANG O'ZGARUVCHILARI */
+  body.light-mode {
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --title-color: #1a202c;
+    --sub-text: #718096;
+    --neon-blue: #0070f3;
+    --neon-green: #008f11;
   }
 
   .achievements-title {
     color: var(--neon-green);
     font-family: 'Fira Code', monospace;
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
     font-weight: 800;
+    transition: color 0.3s ease;
   }
 
   .achievements-title::before {
     content: "> ";
-    color: #444;
+    color: var(--sub-text);
   }
 
   .cert-card {
@@ -45,15 +58,14 @@
     height: 0;
     border-style: solid;
     border-width: 0 30px 30px 0;
-    border-color: transparent #1a1a1a transparent transparent;
+    border-color: transparent var(--border-color) transparent transparent;
     transition: 0.3s;
   }
 
   .cert-card:hover {
     border-color: var(--neon-blue);
     transform: translateY(-8px);
-    background: #0d0d0d;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   }
 
   .cert-card:hover::before {
@@ -70,11 +82,12 @@
   .cert-title {
     font-weight: 700;
     font-size: 1.1rem;
-    color: #ffffff;
+    color: var(--title-color);
     margin-bottom: 25px;
     line-height: 1.6;
     font-family: 'Space Grotesk', sans-serif;
     min-height: 3.2em;
+    transition: color 0.3s ease;
   }
 
   .btn-preview {
@@ -91,14 +104,14 @@
   }
 
   .btn-preview:hover {
-    background: rgba(57, 255, 20, 0.1);
-    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+    background: var(--primary-glow);
+    box-shadow: 0 0 15px var(--primary-glow);
   }
 
   .btn-action-outline {
     background: transparent;
-    border: 1px solid #222;
-    color: #555 !important;
+    border: 1px solid var(--border-color);
+    color: var(--sub-text) !important;
     border-radius: 0;
     padding: 10px;
     transition: 0.3s;
@@ -110,6 +123,7 @@
     background: rgba(0, 210, 255, 0.05);
   }
 
+  /* --- RWD GRID --- */
   .cert-container {
     display: grid;
     gap: 25px;
@@ -117,9 +131,25 @@
   }
 
   .empty-state {
-    color: #333;
+    color: var(--sub-text);
     font-family: 'Fira Code', monospace;
     padding: 100px 0;
+  }
+
+  /* --- MEDIA QUERIES (RWD) --- */
+  @media (max-width: 992px) {
+    .cert-container { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+  }
+
+  @media (max-width: 768px) {
+    .achievements-title { font-size: 1.8rem !important; }
+    .cert-card { padding: 20px; }
+    .cert-title { font-size: 1rem; min-height: auto; }
+  }
+
+  @media (max-width: 576px) {
+    .cert-container { grid-template-columns: 1fr; }
+    .achievements-title { font-size: 1.5rem !important; }
   }
 </style>
 {% endblock %}
@@ -128,7 +158,7 @@
 <div class="container py-5">
   <div class="text-center mb-5">
     <h1 class="achievements-title mb-3">LIST_ACHIEVEMENTS.log</h1>
-    <p style="color: #444; font-family: 'Fira Code', monospace; font-size: 0.9rem;">
+    <p style="color: var(--sub-text); font-family: 'Fira Code', monospace; font-size: 0.9rem;">
       [ TOTAL_RECORDS: {{ certificates|length }} | STATUS: VERIFIED ]
     </p>
   </div>
@@ -187,13 +217,13 @@
 
   document.querySelectorAll('.cert-item-js').forEach(card => {
     card.addEventListener('mouseenter', () => {
-      card.style.boxShadow = "0 0 25px rgba(0, 210, 255, 0.1)";
+      card.style.boxShadow = "0 0 25px var(--primary-glow)";
     });
     card.addEventListener('mouseleave', () => {
       card.style.boxShadow = "none";
     });
   });
 
-  console.log("%c [SYS] Achievements module initialized.", "color: #39ff14; font-weight: bold;");
+  console.log("%c [SYS] Achievements module adaptive loaded.", "color: #39ff14; font-weight: bold;");
 </script>
 {% endblock %}
