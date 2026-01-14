@@ -8,6 +8,18 @@
     --neon-blue: #00d2ff;
     --card-bg: #0a0a0a;
     --border-color: #1a1a1a;
+    --text-main: #ffffff;
+    --viewer-bg: #000;
+  }
+
+  /* --- LIGHT MODE REJIMI --- */
+  body.light-mode {
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --text-main: #1a202c;
+    --viewer-bg: #f8fafc;
+    --neon-green: #008f11;
+    --neon-blue: #0070f3;
   }
 
   /* Sarlavha terminal uslubida */
@@ -17,15 +29,17 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    font-size: clamp(1.2rem, 5vw, 2rem); /* RWD font */
   }
 
   /* Sertifikat ramkasi */
   .preview-frame {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    padding: 20px;
+    padding: clamp(10px, 3vw, 20px); /* Mobil uchun padding */
     position: relative;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, border 0.3s;
   }
 
   .preview-frame::before {
@@ -33,11 +47,12 @@
     position: absolute;
     top: -10px;
     left: 20px;
-    background: #000;
+    background: var(--card-bg); /* Rejimga qarab o'zgaradi */
     padding: 0 10px;
     color: #444;
     font-size: 0.75rem;
     font-family: 'Fira Code', monospace;
+    border: 1px solid var(--border-color);
   }
 
   /* Taymer bloki */
@@ -47,7 +62,7 @@
     display: inline-block;
     padding: 15px 30px;
     font-family: 'Fira Code', monospace;
-    color: #fff;
+    color: var(--text-main);
   }
 
   #timer {
@@ -59,9 +74,11 @@
 
   /* Rasm effekti */
   .img-preview {
-    border: 1px solid #222;
+    border: 1px solid var(--border-color);
     filter: brightness(0.9);
     transition: 0.5s;
+    max-height: 80vh; /* Ekrandan chiqib ketmasligi uchun */
+    object-fit: contain;
   }
 
   .img-preview:hover {
@@ -76,11 +93,18 @@
     padding: 20px;
     font-family: 'Fira Code', monospace;
   }
+
+  /* PDF Iframe uchun RWD */
+  @media (max-width: 768px) {
+    iframe {
+      height: 400px !important;
+    }
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5 text-center">
+<div class="container py-4 py-md-5 text-center">
   <div class="mb-5">
     <h1 class="cert-header mb-3">
       <i class="bi bi-shield-lock-fill"></i> VIEW_DOCUMENT: {{ cert.title }}
@@ -97,7 +121,7 @@
               src="{{ cert.file.url }}"
               width="100%"
               height="600"
-              style="border:none; filter: invert(0);"
+              style="border:none; background: var(--viewer-bg);"
               allowfullscreen>
       </iframe>
     </div>
@@ -110,7 +134,7 @@
   </div>
 
   <div class="timer-box">
-    <span class="small opacity-50 d-block mb-1">> ACCESS_EXPIRES_IN:</span>
+    <span class="small opacity-50 d-block mb-1" style="color: var(--text-main);">> ACCESS_EXPIRES_IN:</span>
     <span id="timer">--:--</span>
   </div>
 </div>
