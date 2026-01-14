@@ -4,8 +4,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="title" content="Ahrorjon Ibrohimjonov — Web Developer & Backend Architect">
   <meta name="description" content="Python/Django bo'yicha mutaxassis, murakkab backend tizimlar va kiber-xavfsiz platformalar yaratuvchisi. Portfolioni ko'zdan kechiring.">
@@ -17,7 +15,8 @@
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   <meta property="og:title" content="Ahrorjon Ibrohimjonov — Web Developer">
   <meta property="og:description" content="Yuqori yuklamali tizimlar va samarali backend arxitekturasi. Axrorback.dev — Kelajak texnologiyalari.">
-  <meta property="og:image" content="{% static 'images/og-preview.jpg' %}"> <meta property="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="{% static 'images/og-preview.jpg' %}">
+  <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
   <meta property="twitter:title" content="Ahrorjon Ibrohimjonov — Web Developer">
   <meta property="twitter:description" content="Python/Django backend developer portfoliosi.">
@@ -62,7 +61,7 @@
       pointer-events: none;
       background: #000;
     }
-    .matrix-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.12; }
+
     .grid-layer {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background-image: linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
@@ -193,7 +192,6 @@
 
     @media (max-width: 480px) {
       .navbar-brand { font-size: 1.3rem; }
-      .matrix-layer { opacity: 0.08; }
       footer p { font-size: 0.9rem; letter-spacing: 2px; }
     }
   </style>
@@ -202,7 +200,6 @@
 <body>
 
 <div id="cyber-background-engine">
-  <canvas id="matrix-canvas" class="matrix-layer"></canvas>
   <div class="grid-layer"></div>
   <div class="scanline-layer"></div>
   <div class="moving-line"></div>
@@ -258,40 +255,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // MATRIX ENGINE
+  // Mouse harakati bilan Gridni qimirlatish
   (function() {
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h, columns;
-    const alphabet = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*';
-    let drops = [];
-
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      const columnWidth = window.innerWidth < 768 ? 25 : 20;
-      columns = Math.floor(w / columnWidth);
-      drops = [];
-      for (let i = 0; i < columns; i++) drops[i] = Math.random() * -100;
-    }
-
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = '#0f0';
-      ctx.font = (window.innerWidth < 768 ? '12px' : '15px') + ' monospace';
-      const columnWidth = window.innerWidth < 768 ? 25 : 20;
-      for (let i = 0; i < drops.length; i++) {
-        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-        ctx.fillText(text, i * columnWidth, drops[i] * columnWidth);
-        if (drops[i] * columnWidth > h && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-    window.addEventListener('resize', resize);
-    resize();
-    setInterval(draw, 33);
-
     document.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 15;
       const y = (e.clientY / window.innerHeight - 0.5) * 15;
@@ -300,6 +265,7 @@
     });
   })();
 
+  // Logo yozilish effekti
   function typeEffect(elementId, text, speed) {
     let i = 0;
     const element = document.getElementById(elementId);
@@ -317,6 +283,7 @@
 
   window.onload = () => { typeEffect('logo-type', 'axrorback.dev', 150); };
 
+  // Scroll Progress bar
   window.onscroll = function() {
     let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
