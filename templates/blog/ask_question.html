@@ -9,8 +9,23 @@
     --danger: #ff003c;
     --warning: #ffbd2e;
     --bg-surface: rgba(5, 5, 5, 0.9);
+    --terminal-bg: #080808;
     --border: #1a1a1a;
     --font-mono: 'Fira Code', monospace;
+    --text-main: #ffffff;
+    --text-muted: #555555;
+    --input-bg: #000000;
+  }
+
+  /* --- LIGHT MODE ADAPTATION --- */
+  body.light-mode {
+    --bg-surface: rgba(255, 255, 255, 0.95);
+    --terminal-bg: #f8f9fa;
+    --border: #dee2e6;
+    --text-main: #1a1a1a;
+    --text-muted: #718096;
+    --input-bg: #ffffff;
+    --primary: #008f11; /* To'qroq yashil oq fonda yaxshi ko'rinishi uchun */
   }
 
   /* --- TERMINAL CONTAINER --- */
@@ -19,10 +34,11 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     position: relative;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     overflow: hidden;
     animation: frame-entrance 0.6s ease-out;
+    color: var(--text-main);
   }
 
   @keyframes frame-entrance {
@@ -32,7 +48,7 @@
 
   .terminal-top-bar {
     height: 35px;
-    background: #0f0f0f;
+    background: var(--terminal-bg);
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -48,7 +64,7 @@
   .terminal-identity {
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    color: #555;
+    color: var(--text-muted);
     text-transform: uppercase;
   }
 
@@ -61,7 +77,7 @@
   }
 
   .main-title {
-    font-size: clamp(2rem, 8vw, 4rem);
+    font-size: clamp(1.8rem, 6vw, 4rem); /* Responsive font size */
     font-weight: 900;
     font-family: var(--font-mono);
     color: var(--primary);
@@ -74,11 +90,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     border-bottom: 1px solid var(--border);
-    background: #080808;
+    background: var(--terminal-bg);
   }
 
   .stat-box { padding: 15px; border-right: 1px solid var(--border); text-align: center; }
-  .stat-label { display: block; font-size: 0.6rem; color: #444; text-transform: uppercase; }
+  .stat-label { display: block; font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
   .stat-value { font-family: var(--font-mono); font-size: 1.1rem; color: var(--primary); }
 
   /* --- FORM & LOG AREA --- */
@@ -88,18 +104,19 @@
   }
 
   .form-area { padding: 40px; border-right: 1px solid var(--border); }
-  .log-area { padding: 40px; background: rgba(0,0,0,0.3); max-height: 800px; overflow-y: auto; }
+  .log-area { padding: 40px; background: rgba(0,0,0,0.05); max-height: 800px; overflow-y: auto; }
 
   .input-wrapper { position: relative; margin-bottom: 30px; }
   .input-wrapper label {
     position: absolute; top: -10px; left: 15px;
-    background: #050505; padding: 0 8px;
+    background: var(--bg-surface); padding: 0 8px;
     font-family: var(--font-mono); font-size: 0.6rem; color: var(--primary);
+    z-index: 1;
   }
 
   .cyber-input {
-    width: 100%; background: #000; border: 1px solid var(--border);
-    color: #fff; padding: 15px; font-family: var(--font-mono);
+    width: 100%; background: var(--input-bg); border: 1px solid var(--border);
+    color: var(--text-main); padding: 15px; font-family: var(--font-mono);
     transition: 0.3s;
   }
 
@@ -119,18 +136,18 @@
 
   /* --- LOG ENTRIES --- */
   .log-entry {
-    background: #0a0a0a; border: 1px solid var(--border);
+    background: var(--terminal-bg); border: 1px solid var(--border);
     padding: 20px; margin-bottom: 20px; transition: 0.3s;
   }
 
   .log-entry:hover { border-color: var(--secondary); transform: translateY(-3px); }
 
   .user-badge { color: var(--secondary); font-size: 0.75rem; font-family: var(--font-mono); }
-  .question-text { color: #ccc; margin-top: 10px; font-size: 0.95rem; }
+  .question-text { color: var(--text-muted); margin-top: 10px; font-size: 0.95rem; }
 
   .listening-status {
     display: flex; align-items: center; gap: 10px;
-    font-size: 0.7rem; color: #444; margin-top: 15px;
+    font-size: 0.7rem; color: var(--text-muted); margin-top: 15px;
   }
 
   .pulse-dot {
@@ -140,23 +157,25 @@
 
   @keyframes pulse-kf { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-  /* --- RESPONSIVE --- */
+  /* --- RESPONSIVE (RWD) --- */
   @media (max-width: 992px) {
     .comm-section { grid-template-columns: 1fr; }
     .form-area { border-right: none; border-bottom: 1px solid var(--border); padding: 30px; }
-    .log-area { padding: 30px; }
+    .log-area { padding: 30px; max-height: 600px; }
   }
 
   @media (max-width: 576px) {
-    .main-title { font-size: 1.8rem; }
+    .main-title { font-size: 1.5rem !important; }
     .form-area, .log-area { padding: 20px; }
     .terminal-identity { display: none; }
+    .stat-box { border-right: none; border-bottom: 1px solid var(--border); }
+    .sidebar-stats { grid-template-columns: 1fr 1fr; }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="page-frame">
+<div class="page-frame container-fluid px-2 px-md-4">
   <div class="terminal-container">
     <div class="terminal-top-bar">
       <div class="os-controls">
@@ -170,7 +189,7 @@
 
     <div class="hero-banner">
       <h1 class="main-title">SEND_MESSAGE.py</h1>
-      <div style="font-family: var(--font-mono); color: #444; font-size: 0.8rem; letter-spacing: 3px;">
+      <div style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.7rem; letter-spacing: 2px;">
         NEURAL_LINK_ESTABLISHED
       </div>
     </div>
@@ -192,10 +211,10 @@
 
     <div class="comm-section">
       <div class="form-area">
-        <div class="mb-5">
-          <h4 style="font-family: var(--font-mono); color: #fff;">
+        <div class="mb-4">
+          <h5 style="font-family: var(--font-mono); color: var(--text-main);">
             <i class="bi bi-shield-lock"></i> TRANSMISSION_FORM
-          </h4>
+          </h5>
         </div>
 
         <form method="post" id="questionForm">
@@ -221,23 +240,23 @@
 
       <div class="log-area" id="logScroll">
         <div class="mb-4">
-          <h4 style="font-family: var(--font-mono); color: #fff;">
+          <h5 style="font-family: var(--font-mono); color: var(--text-main);">
             <i class="bi bi-hdd-network"></i> ARCHIVED_RECORDS.db
-          </h4>
+          </h5>
         </div>
 
         {% for q in questions %}
         <div class="log-entry">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="user-badge"><i class="bi bi-person"></i> {{ q.name }}</div>
-            <div style="font-size: 0.65rem; color: #444;">{{ q.created|date:"H:i d.m.Y" }}</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted);">{{ q.created|date:"H:i d.m.Y" }}</div>
           </div>
           <div class="question-text">
             <span style="color: var(--primary)">></span> {{ q.question }}
           </div>
 
           {% if q.answer %}
-          <div style="margin-top: 15px; padding: 10px; background: rgba(0, 210, 255, 0.05); border-left: 2px solid var(--secondary); font-size: 0.9rem; color: #aaa;">
+          <div style="margin-top: 15px; padding: 10px; background: rgba(0, 210, 255, 0.05); border-left: 2px solid var(--secondary); font-size: 0.9rem; color: var(--text-muted);">
             <div style="color: var(--secondary); font-size: 0.7rem; margin-bottom: 5px;">[ RESPONSE ]</div>
             {{ q.answer }}
           </div>
@@ -249,7 +268,7 @@
           {% endif %}
         </div>
         {% empty %}
-        <div class="text-center py-5" style="color: #222;">
+        <div class="text-center py-5" style="color: var(--text-muted);">
           <i class="bi bi-slash-circle" style="font-size: 3rem;"></i>
           <p class="mt-2">STDOUT: NULL_RECORDS</p>
         </div>
@@ -257,7 +276,7 @@
       </div>
     </div>
 
-    <div class="p-3 d-flex justify-content-between" style="background: #000; font-size: 0.6rem; color: #333; font-family: var(--font-mono);">
+    <div class="p-3 d-flex justify-content-between" style="background: var(--terminal-bg); border-top: 1px solid var(--border); font-size: 0.6rem; color: var(--text-muted); font-family: var(--font-mono);">
       <span>KERNEL_V6.1.0</span>
       <span>ENCRYPTED_TRANSMISSION</span>
     </div>
@@ -271,20 +290,24 @@
     // Clock
     function updateClock() {
       const now = new Date();
-      document.getElementById('liveClock').textContent = now.toTimeString().split(' ')[0];
+      const clockEl = document.getElementById('liveClock');
+      if(clockEl) clockEl.textContent = now.toTimeString().split(' ')[0];
     }
     setInterval(updateClock, 1000);
     updateClock();
 
     // Random Load
     setInterval(() => {
-      document.getElementById('sysLoad').textContent = (Math.random() * 3 + 0.2).toFixed(1) + '%';
+      const loadEl = document.getElementById('sysLoad');
+      if(loadEl) loadEl.textContent = (Math.random() * 3 + 0.2).toFixed(1) + '%';
     }, 4000);
 
     // Form styling
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(el => {
-      if(!el.classList.contains('btn')) el.classList.add('cyber-input');
+      if(!el.classList.contains('btn') && !el.classList.contains('cyber-input')) {
+        el.classList.add('cyber-input');
+      }
     });
 
     // Form validation and phone mask
@@ -292,18 +315,20 @@
     if(phoneInput) {
       phoneInput.addEventListener('input', (e) => {
         let val = e.target.value;
-        if (!val.startsWith('+998')) val = '+998';
+        if (!val.startsWith('+998')) val = '+998' + val.replace(/\D/g, '');
         let digits = val.substring(4).replace(/\D/g, '');
         e.target.value = '+998' + digits.substring(0, 9);
       });
     }
 
     const form = document.getElementById('questionForm');
-    form.addEventListener('submit', (e) => {
-      const btn = document.getElementById('execBtn');
-      btn.innerHTML = "[ UPLOADING... ]";
-      btn.style.opacity = "0.7";
-    });
+    if(form) {
+      form.addEventListener('submit', (e) => {
+        const btn = document.getElementById('execBtn');
+        btn.innerHTML = "[ UPLOADING... ]";
+        btn.style.opacity = "0.7";
+      });
+    }
   });
 </script>
 {% endblock %}
