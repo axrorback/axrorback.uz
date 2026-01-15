@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{ blog.title }}{% endblock %}
+{% block title %}Ahrorjon Ibrohimjonov — {{ blog.title }}{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -8,6 +8,20 @@
         --neon-blue: #00d2ff;
         --card-bg: #0a0a0a;
         --border-color: #1a1a1a;
+        --text-main: #b0b0b0;
+        --text-bright: #ffffff;
+        --back-btn-color: #444;
+    }
+
+    /* --- LIGHT MODE REJIMI --- */
+    body.light-mode {
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+        --text-main: #2d3748;
+        --text-bright: #1a202c;
+        --back-btn-color: #718096;
+        --neon-green: #008f11;
+        --neon-blue: #0070f3;
     }
 
     /* Maqola sarlavhasi - Terminal Style */
@@ -15,18 +29,20 @@
         color: var(--neon-green);
         font-family: 'Fira Code', monospace;
         font-weight: 700;
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
+        font-size: clamp(1.5rem, 5vw, 2.8rem);
         line-height: 1.2;
         text-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        transition: color 0.3s ease;
     }
 
     /* Maqola kartasi - Kiber blok */
     .blog-glass-card {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
-        border-radius: 0; /* O'tkir qirralar */
-        padding: clamp(20px, 5vw, 50px);
+        border-radius: 0;
+        padding: clamp(15px, 5vw, 50px);
         position: relative;
+        transition: background 0.3s, border 0.3s;
     }
 
     .blog-glass-card::before {
@@ -34,11 +50,12 @@
         position: absolute;
         top: -10px;
         right: 20px;
-        background: #000;
+        background: var(--card-bg);
         padding: 0 10px;
-        color: #444;
+        color: var(--back-btn-color);
         font-size: 0.75rem;
         font-family: var(--font-mono);
+        border: 1px solid var(--border-color);
     }
 
     /* Rasm qismi */
@@ -50,17 +67,10 @@
         position: relative;
     }
 
-    .blog-featured-image::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(rgba(57, 255, 20, 0.05) 0%, transparent 100%);
-        pointer-events: none;
-    }
-
     .blog-featured-image img {
-        filter: grayscale(0.3) contrast(1.1); /* Kiber effekt uchun */
+        filter: grayscale(0.2) contrast(1.1);
         transition: 0.5s;
+        object-fit: cover;
     }
 
     .blog-featured-image:hover img {
@@ -69,8 +79,8 @@
 
     /* Maqola matni */
     .blog-content {
-        color: #b0b0b0;
-        font-size: 1.15rem;
+        color: var(--text-main);
+        font-size: clamp(1rem, 2.5vw, 1.15rem);
         line-height: 1.8;
         font-family: 'Space Grotesk', sans-serif;
     }
@@ -81,7 +91,7 @@
         margin-bottom: 1.2rem;
         font-family: var(--font-mono);
         text-transform: uppercase;
-        border-bottom: 1px solid #111;
+        border-bottom: 1px solid var(--border-color);
         padding-bottom: 10px;
     }
 
@@ -89,16 +99,16 @@
     .share-btn {
         border: 1px solid var(--border-color);
         background: transparent;
-        color: #888;
+        color: var(--back-btn-color);
         border-radius: 0;
-        padding: 10px 20px;
+        padding: 10px 15px;
         transition: all 0.3s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         font-family: var(--font-mono);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .share-btn:hover {
@@ -113,18 +123,13 @@
         color: var(--neon-green);
     }
 
-    .share-btn.copy-link:hover {
-        background: rgba(57, 255, 20, 0.05);
-        box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
-    }
-
     /* Meta ma'lumotlar */
     .meta-info {
-        color: #555;
+        color: var(--back-btn-color);
         font-family: var(--font-mono);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         display: flex;
-        gap: 25px;
+        gap: 20px;
         flex-wrap: wrap;
         margin-bottom: 30px;
         text-transform: uppercase;
@@ -135,21 +140,29 @@
     }
 
     .back-btn {
-        color: #444 !important;
+        color: var(--back-btn-color) !important;
         font-family: var(--font-mono);
         transition: 0.3s;
+        font-size: 0.9rem;
     }
 
     .back-btn:hover {
         color: var(--neon-green) !important;
     }
+
+    /* --- RESPONSIVE (RWD) --- */
+    @media (max-width: 768px) {
+        .meta-info { gap: 10px; }
+        .meta-info span { width: 100%; }
+        .share-btn { flex-grow: 1; justify-content: center; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-4 py-md-5">
     <div class="row justify-content-center">
-        <div class="col-lg-9">
+        <div class="col-lg-10 col-xl-9">
             <article class="blog-glass-card shadow-lg blog-entry-js">
 
                 <div class="mb-4">
@@ -176,10 +189,10 @@
                     {{ blog.content|safe }}
                 </div>
 
-                <hr style="border-color: #1a1a1a;">
+                <hr style="border-color: var(--border-color);">
 
                 <div class="mt-5">
-                    <h5 class="mb-4 text-secondary font-monospace" style="font-size: 0.9rem;">> BROADCAST_CONTENT:</h5>
+                    <h5 class="mb-4 font-monospace" style="font-size: 0.8rem; color: var(--back-btn-color);">> BROADCAST_CONTENT:</h5>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="share-btn">
                             <i class="bi bi-telegram"></i> TELEGRAM
@@ -204,28 +217,32 @@
 
 {% block extra_scripts %}
 <script>
-    // Blog interaktivligi
+    // Blog interaktivligi (Sizning kodingiz)
     const copyBtn = document.getElementById('copyLinkBtn');
-    copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText("{{ request.build_absolute_uri }}")
-            .then(() => {
-                const originalContent = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> COPIED_SUCCESS';
-                setTimeout(() => {
-                    copyBtn.innerHTML = originalContent;
-                }, 2000);
-            })
-            .catch(err => console.error('Failed to copy: ', err));
-    });
+    if(copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText("{{ request.build_absolute_uri }}")
+                .then(() => {
+                    const originalContent = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> COPIED_SUCCESS';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalContent;
+                    }, 2000);
+                })
+                .catch(err => console.error('Failed to copy: ', err));
+        });
+    }
 
-    // Skroll qilinganda maqola elementlarini biroz jonlantirish (JS)
+    // Scroll effekti (Sizning kodingiz, optimizatsiya qilindi)
     document.addEventListener('scroll', () => {
         const entry = document.querySelector('.blog-entry-js');
-        const pos = window.scrollY;
-        if(pos > 100) {
-            entry.style.borderLeft = "2px solid var(--neon-green)";
-        } else {
-            entry.style.borderLeft = "1px solid var(--border-color)";
+        if(entry) {
+            const pos = window.scrollY;
+            if(pos > 100) {
+                entry.style.borderLeft = "2px solid var(--neon-green)";
+            } else {
+                entry.style.borderLeft = "1px solid var(--border-color)";
+            }
         }
     });
 

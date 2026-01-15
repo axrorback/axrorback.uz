@@ -8,6 +8,22 @@
     --neon-blue: #00d2ff;
     --card-bg: #0a0a0a;
     --border-color: #1a1a1a;
+    --text-main: #ffffff;
+    --text-muted: #888888;
+    --text-meta: #555555;
+    --bg-page: #000000;
+  }
+
+  /* --- LIGHT MODE REJIMI --- */
+  body.light-mode {
+    --bg-page: #f8fafc;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --text-main: #1a202c;
+    --text-muted: #4a5568;
+    --text-meta: #718096;
+    --neon-green: #008f11;
+    --neon-blue: #0070f3;
   }
 
   /* Sarlavha - Terminal Style */
@@ -16,13 +32,14 @@
     text-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
     font-family: 'Fira Code', monospace;
     font-weight: 800;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
   }
 
   /* Savol bloki - Kiber-terminal ko'rinishida */
   .question-item {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 0; /* O'tkir qirralar */
+    border-radius: 0;
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -30,7 +47,7 @@
 
   .question-item:hover {
     border-color: var(--neon-blue);
-    background: #0d0d0d;
+    background: var(--card-bg);
     transform: translateX(5px);
     box-shadow: -5px 0 20px rgba(0, 210, 255, 0.1);
   }
@@ -38,15 +55,15 @@
   /* User Meta - Terminal Log ko'rinishida */
   .user-meta {
     font-size: 0.85rem;
-    color: #555;
+    color: var(--text-meta);
     font-family: 'Fira Code', monospace;
     display: flex;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .user-meta i {
@@ -55,15 +72,15 @@
   }
 
   .question-title {
-    color: #fff;
+    color: var(--text-main);
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: clamp(1.1rem, 3vw, 1.25rem);
     margin-bottom: 12px;
     font-family: 'Space Grotesk', sans-serif;
   }
 
   .question-text {
-    color: #888;
+    color: var(--text-muted);
     line-height: 1.7;
     font-size: 1rem;
     margin-bottom: 0;
@@ -71,7 +88,7 @@
 
   /* Admin Javobi - Kiber blok */
   .admin-reply {
-    background: rgba(0, 210, 255, 0.03) !important;
+    background: rgba(0, 210, 255, 0.05) !important;
     border: 1px solid rgba(0, 210, 255, 0.1) !important;
     border-left: 3px solid var(--neon-blue) !important;
     border-radius: 0;
@@ -95,7 +112,7 @@
 
   .status-waiting {
     font-size: 0.85rem;
-    color: #444;
+    color: var(--text-meta);
     font-family: 'Fira Code', monospace;
     display: flex;
     align-items: center;
@@ -106,8 +123,8 @@
   .empty-state {
     padding: 80px 20px;
     text-align: center;
-    background: #050505;
-    border: 1px dashed #222;
+    background: var(--card-bg);
+    border: 1px dashed var(--border-color);
     border-radius: 0;
     font-family: 'Fira Code', monospace;
   }
@@ -121,28 +138,38 @@
     transition: 0.3s;
     text-transform: uppercase;
     font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-block;
   }
 
   .btn-accent-kiber:hover {
-    background: rgba(57, 255, 20, 0.1);
+    background: var(--neon-green);
+    color: #000 !important;
     box-shadow: 0 0 15px var(--neon-green);
+  }
+
+  /* --- RWD MEDIA QUERIES --- */
+  @media (max-width: 576px) {
+    .user-meta { gap: 10px; font-size: 0.75rem; }
+    .question-item { padding: 20px !important; }
+    .admin-reply { padding: 15px; }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-4 py-md-5">
   <div class="text-center mb-5">
-    <h2 class="display-5 text-gradient mb-3">
+    <h2 class="text-gradient mb-3">
       <i class="bi bi-terminal-fill"></i> FETCH_QUESTIONS.log
     </h2>
-    <p style="color: #666; font-family: 'Fira Code', monospace;">
+    <p style="color: var(--text-muted); font-family: 'Fira Code', monospace; font-size: 0.9rem;">
       [ Tizimga kelib tushgan savollar va administrator javoblari ]
     </p>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-lg-10">
+    <div class="col-lg-10 col-xl-9">
 
       {% for q in questions %}
       <div class="question-item p-4 mb-4 question-js">
@@ -161,7 +188,7 @@
         {% if q.answer %}
         <div class="admin-reply">
           <span class="admin-badge">ADMIN_ROOT_REPLY</span>
-          <p class="mb-0 text-white-50" style="font-size: 0.95rem;">{{ q.answer }}</p>
+          <p class="mb-0" style="font-size: 0.95rem; color: var(--text-main); opacity: 0.9;">{{ q.answer }}</p>
         </div>
         {% else %}
         <div class="mt-3">
@@ -190,7 +217,7 @@
 
 {% block extra_scripts %}
 <script>
-  // Terminal interaktivligi (JS)
+  // Terminal interaktivligi (JS - Sizning original kodingiz)
   document.querySelectorAll('.question-js').forEach(item => {
     item.addEventListener('mouseenter', () => {
       console.log("%c [DATA] Reading entry...", "color: #00d2ff");

@@ -7,13 +7,29 @@
         --neon-green: #39ff14;
         --neon-blue: #00d2ff;
         --dark-bg: #0a0a0a;
+        --card-bg: #0a0a0a;
+        --card-border: #1a1a1a;
+        --text-h: #ffffff;
+        --text-p: #666666;
+        --btn-border: #222;
+    }
+
+    /* --- LIGHT MODE REJIMI --- */
+    body.light-mode {
+        --dark-bg: #f8fafc;
+        --card-bg: #ffffff;
+        --card-border: #e2e8f0;
+        --text-h: #1a202c;
+        --text-p: #718096;
+        --btn-border: #cbd5e1;
     }
 
     /* Sarlavha - Terminal Status */
     .contact-header {
         font-family: 'Fira Code', monospace;
         color: var(--neon-green);
-        margin-bottom: 50px;
+        margin-bottom: 30px;
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
     }
 
     .contact-header::before {
@@ -23,30 +39,30 @@
 
     /* Kiber Aloqa Kartasi */
     .contact-card {
-        background: var(--dark-bg);
-        border: 1px solid #1a1a1a;
-        border-radius: 0; /* O'tkir qirralar */
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 0;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
         overflow: hidden;
+        color: var(--text-h);
     }
 
     /* Kartaning yuqori qismidagi "Port" raqami */
     .contact-card::before {
-        content: "PORT_" + attr(data-port);
+        content: "PORT_" attr(data-port);
         position: absolute;
         top: 5px;
         right: 10px;
         font-size: 0.65rem;
-        color: #333;
+        color: var(--text-p);
         font-family: 'Fira Code', monospace;
     }
 
     .contact-card:hover {
         transform: translateY(-12px);
         border-color: var(--card-color);
-        background: rgba(0, 0, 0, 0.8);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
         0 0 20px rgba(var(--card-rgb), 0.2);
     }
 
@@ -54,7 +70,7 @@
     .icon-box {
         width: 70px;
         height: 70px;
-        background: #050505;
+        background: var(--card-bg);
         color: var(--card-color);
         display: flex;
         align-items: center;
@@ -62,7 +78,7 @@
         margin: 0 auto 25px;
         font-size: 2rem;
         transition: 0.4s;
-        border: 1px solid #1a1a1a;
+        border: 1px solid var(--card-border);
         clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
     }
 
@@ -77,22 +93,24 @@
     .contact-card h5 {
         font-family: 'Fira Code', monospace;
         letter-spacing: 1px;
-        color: #fff;
+        color: var(--text-h);
         margin-bottom: 10px;
+        transition: color 0.3s;
     }
 
     .contact-card p {
         font-family: 'Space Grotesk', sans-serif;
-        color: #666 !important;
+        color: var(--text-p) !important;
         font-size: 0.95rem;
         margin-bottom: 25px;
+        transition: color 0.3s;
     }
 
     /* Tugma - Terminal Button */
     .contact-link-btn {
         background: transparent;
-        border: 1px solid #222;
-        color: #888;
+        border: 1px solid var(--btn-border);
+        color: var(--text-p);
         border-radius: 0;
         padding: 10px 25px;
         text-decoration: none;
@@ -111,6 +129,17 @@
         font-weight: bold;
         box-shadow: 0 0 15px var(--card-color);
     }
+
+    /* --- RWD MEDIA QUERIES --- */
+    @media (max-width: 992px) {
+        .col-lg-3 { width: 50%; } /* Planshetda 2 tadan */
+    }
+
+    @media (max-width: 576px) {
+        .col-lg-3 { width: 100%; } /* Mobilda 1 tadan */
+        .contact-header { margin-bottom: 30px; }
+        .contact-card { padding: 30px 20px !important; }
+    }
 </style>
 {% endblock %}
 
@@ -118,7 +147,7 @@
 <div class="container py-5">
     <div class="text-center mb-5">
         <h2 class="contact-header fw-bold">ESTABLISH_CONNECTION.sh</h2>
-        <p class="text-secondary font-monospace">Tanlang va bog'laning. Men har doim onlaynman.</p>
+        <p class="font-monospace" style="color: var(--text-p);">Tanlang va bog'laning. Men har doim onlaynman.</p>
     </div>
 
     <div class="row g-4 justify-content-center">
@@ -157,7 +186,7 @@
 
         <div class="col-md-6 col-lg-3">
             <div class="contact-card text-center p-4 h-100 contact-js"
-                 style="--card-color: #ffffff; --card-rgb: 255, 255, 255;"
+                 style="--card-color: #999999; --card-rgb: 153, 153, 153;"
                  data-port="22">
                 <div class="icon-box"><i class="bi bi-github"></i></div>
                 <h5>GITHUB</h5>
@@ -171,7 +200,7 @@
 
 {% block extra_scripts %}
 <script>
-    // JS interaktivligi: Sichqoncha harakatiga qarab yengil nurlanish
+    // JS interaktivligi saqlandi
     document.querySelectorAll('.contact-js').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();

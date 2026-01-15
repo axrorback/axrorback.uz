@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-4 py-md-5">
   <div class="text-center mb-5">
     <div class="blog-icon-box mb-3">
       <i class="bi bi-terminal-split"></i>
     </div>
-    <h2 class="display-5 fw-bold text-white mb-3">
+    <h2 class="display-5 fw-bold blog-main-title mb-3">
       READ_<span class="text-accent-glow">ARTICLES</span>.log
     </h2>
 
@@ -51,13 +51,13 @@
               <div class="author-avatar">
                 <i class="bi bi-person-circle"></i>
               </div>
-              <span class="ms-2 small text-secondary fw-mono">
+              <span class="ms-2 small text-secondary-custom fw-mono">
                 @{{ blog.author.username }}
               </span>
             </div>
 
             <div class="read-more-wrapper">
-              <span class="me-2 small fw-bold font-monospace">EXEC_READ</span>
+              <span class="me-2 small fw-bold font-monospace d-none d-sm-inline">EXEC_READ</span>
               <div class="circle-icon">
                 <i class="bi bi-chevron-right"></i>
               </div>
@@ -70,8 +70,8 @@
     <div class="col-12 text-center py-5">
       <div class="empty-state-card p-5">
         <div class="pulse-icon mb-4"><i class="bi bi-database-exclamation"></i></div>
-        <h4 class="text-white">NO_POSTS_FOUND</h4>
-        <p class="text-secondary font-monospace">Yaqinda yangi loglar qo'shiladi. Tizimni kuzatib boring.</p>
+        <h4 class="text-main">NO_POSTS_FOUND</h4>
+        <p class="text-secondary-custom font-monospace">Yaqinda yangi loglar qo'shiladi. Tizimni kuzatib boring.</p>
       </div>
     </div>
     {% endfor %}
@@ -84,6 +84,26 @@
     --neon-blue: #00d2ff;
     --dark-card: #0a0a0a;
     --border-color: #1a1a1a;
+    --text-main: #ffffff;
+    --text-body: #666666;
+    --text-muted: #444444;
+    --bg-empty: #050505;
+  }
+
+  /* --- LIGHT MODE ADAPTATION --- */
+  body.light-mode {
+    --dark-card: #ffffff;
+    --border-color: #e2e8f0;
+    --text-main: #1a202c;
+    --text-body: #4a5568;
+    --text-muted: #718096;
+    --bg-empty: #f8fafc;
+    --neon-green: #008f11;
+  }
+
+  .blog-main-title {
+    color: var(--text-main);
+    transition: color 0.3s;
   }
 
   .text-accent-glow {
@@ -92,15 +112,15 @@
   }
 
   .blog-icon-box {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
     color: var(--neon-green);
     display: inline-block;
     animation: float 3s ease-in-out infinite;
   }
 
   .premium-description {
-    color: #888;
-    font-size: 1.1rem;
+    color: var(--text-body);
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     font-family: 'Fira Code', monospace;
   }
 
@@ -119,14 +139,15 @@
   .description-container {
     padding: 10px 20px;
     background: rgba(57, 255, 20, 0.02);
-    border: 1px solid rgba(57, 255, 20, 0.05);
+    border: 1px solid var(--border-color);
+    max-width: 90%;
   }
 
   /* Kiber Card Dizayni */
   .ultra-card {
     background: var(--dark-card);
     border: 1px solid var(--border-color);
-    border-radius: 0; /* Terminal uslubi uchun qirrali */
+    border-radius: 0;
     position: relative;
     transition: all 0.4s ease;
     height: 100%;
@@ -135,7 +156,7 @@
   .ultra-card:hover {
     transform: translateY(-8px);
     border-color: var(--neon-blue);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 210, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 210, 255, 0.1);
   }
 
   .card-accent-line {
@@ -151,14 +172,15 @@
   }
 
   .blog-title {
-    color: #fff;
-    font-size: 1.4rem;
+    color: var(--text-main);
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
     font-weight: 700;
     font-family: 'Space Grotesk', sans-serif;
+    transition: color 0.3s;
   }
 
   .blog-description {
-    color: #666;
+    color: var(--text-body);
     font-size: 0.95rem;
     line-height: 1.6;
   }
@@ -174,7 +196,7 @@
   }
 
   .date-badge {
-    color: #444;
+    color: var(--text-muted);
     font-size: 0.8rem;
     font-family: 'Fira Code', monospace;
   }
@@ -184,8 +206,14 @@
     font-size: 1.2rem;
   }
 
+  .text-secondary-custom {
+    color: var(--text-muted) !important;
+  }
+
   .read-more-wrapper {
     color: var(--neon-green);
+    display: flex;
+    align-items: center;
   }
 
   .circle-icon {
@@ -210,13 +238,23 @@
   }
 
   .empty-state-card {
-    background: #050505;
-    border: 1px dashed #222;
+    background: var(--bg-empty);
+    border: 1px dashed var(--border-color);
   }
 
   .pulse-icon {
     font-size: 3rem;
-    color: #222;
+    color: var(--text-muted);
+  }
+
+  .text-main { color: var(--text-main); }
+
+  /* --- RWD MEDIA QUERIES --- */
+  @media (max-width: 576px) {
+    .ultra-card { padding: 5px; }
+    .card-content { padding: 20px !important; }
+    .blog-title { margin-bottom: 15px !important; }
+    .category-tag { padding: 2px 8px; font-size: 0.6rem; }
   }
 </style>
 
@@ -229,7 +267,8 @@
       card.querySelector('.blog-title').style.color = 'var(--neon-blue)';
     });
     card.addEventListener('mouseleave', () => {
-      card.querySelector('.blog-title').style.color = '#fff';
+      // Light va Dark mode dagi text-main rangini saqlab qolish
+      card.querySelector('.blog-title').style.color = '';
     });
   });
 
