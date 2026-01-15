@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'blog',
+    'django_ckeditor_5'
 ]
 
 SITE_ID = 1
@@ -81,6 +82,56 @@ TEMPLATES = [
         },
     },
 ]
+
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": [
+            "heading", "|",
+            "bold", "italic", "link", "|",
+
+            # 🔹 CODE BLOCK TUGMASI (SHART)
+            "codeBlock", "|",
+
+            "bulletedList", "numberedList", "|",
+            "blockQuote", "insertTable", "|",
+            "imageUpload", "|",
+            "undo", "redo",
+        ],
+
+        "image": {
+            "toolbar": [
+                "imageTextAlternative",
+                "toggleImageCaption",
+                "linkImage",
+            ]
+        },
+
+        "table": {
+            "contentToolbar": [
+                "tableColumn",
+                "tableRow",
+                "mergeTableCells",
+            ]
+        },
+
+        # 🔹 CODE BLOCK SOZLAMASI
+        "codeBlock": {
+            "languages": [
+                {"language": "plaintext", "label": "Plain text"},
+                {"language": "python", "label": "Python"},
+                {"language": "javascript", "label": "JavaScript"},
+                {"language": "html", "label": "HTML"},
+                {"language": "css", "label": "CSS"},
+                {"language": "bash", "label": "Bash"},
+                {"language": "json", "label": "JSON"},
+                {"language": "sql", "label": "SQL"},
+            ]
+        },
+    }
+}
+
+
+
 
 WSGI_APPLICATION = 'config.wsgi.application'
 TELEGRAM_BOT_TOKEN = os.getenv('TOKEN')

@@ -2,8 +2,8 @@ from django.db import models
 from django.conf import settings  # eng to‘g‘ri yo‘l shu
 import hashlib
 import time
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils import timezone
-
 TOKEN_EXPIRE_SECONDS = 30 * 60  # 30 daqiqa = 1800 s
 
 
@@ -20,9 +20,7 @@ class Post(models.Model):
         unique=True,
         verbose_name="Slug (URL nomi)"
     )
-    content = models.TextField(
-        verbose_name="Maqola matni"
-    )
+    content = CKEditor5Field(config_name='default',verbose_name="Maqola matni")
     created = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Yaratilgan vaqt"
@@ -37,12 +35,6 @@ class Post(models.Model):
         related_name='posts',
         verbose_name="Muallif"
     )
-    image = models.ImageField(
-        upload_to='media/blog',
-        null=True,
-        blank=True,
-        verbose_name="Rasm"
-    )
     is_published = models.BooleanField(default=True,verbose_name='Post saytga joylanganmi')
 
     def __str__(self):
@@ -54,7 +46,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = "Post"
         verbose_name_plural = "Postlar"
-        ordering = ['-created']  # 🕒 eng oxirgi yaratilganlar birinchi chiqadi
+        ordering = ['-created']  #  eng oxirgi yaratilganlar birinchi chiqadi
 
 
 class Question(models.Model):
