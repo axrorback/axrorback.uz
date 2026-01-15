@@ -14,6 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}),
+    path('ckeditor5/',include('django_ckeditor_5.urls'))
 ]
 
 def custom_404(request, exception):
