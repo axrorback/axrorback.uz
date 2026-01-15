@@ -15,11 +15,6 @@
     transition: all 0.3s ease;
   }
 
-  /* RWD: Telefonlarda paddingni kamaytirish */
-  @media (max-width: 576px) {
-    .about-glass-card { padding: 25px 15px; margin-bottom: 20px; }
-  }
-
   .about-glass-card::before {
     content: "";
     position: absolute;
@@ -46,31 +41,29 @@
     background: linear-gradient(to right, var(--border), transparent);
   }
 
-  /* --- TECH TRACK (MARQUEE) --- */
+  /* --- TECH TRACK (MARQUEE) RWD FIX --- */
   .tech-section-wrapper {
     display: flex;
+    flex-direction: row; /* Desktopda yonma-yon */
     align-items: center;
     justify-content: space-between;
     gap: 15px;
     margin-top: 20px;
     background: rgba(128, 128, 128, 0.05);
     border-radius: 12px;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid var(--border);
-  }
-
-  /* RWD: Marquee telefonlarda */
-  @media (max-width: 768px) {
-    .tech-section-wrapper { flex-direction: column; align-items: flex-start; }
-    .and-more-text { align-self: flex-end; font-size: 0.7rem; }
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .marquee-viewport {
     flex: 1;
     overflow: hidden;
     position: relative;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    /* Masking: Chetlarini silliq yo'qoladigan qiladi */
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
   }
 
   .tech-track {
@@ -113,16 +106,11 @@
 
   .profile-img-wrapper img {
     max-width: 260px;
-    width: 100%; /* RWD */
+    width: 100%;
     height: auto;
     filter: grayscale(0.4) contrast(1.1);
     transition: 0.5s;
     background: var(--card-bg);
-  }
-
-  /* RWD: Rasm telefonlarda kichrayishi */
-  @media (max-width: 991px) {
-    .profile-img-wrapper img { max-width: 200px; }
   }
 
   .bio-text {
@@ -151,54 +139,106 @@
     padding-left: 25px;
   }
 
-  .custom-list li i { color: var(--primary); }
-
   @keyframes scroll-left {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
 
-  /* --- TYPOGRAPHY RWD --- */
+  /* ======================================================
+     FULL RESPONSIVE BREAKPOINTS (RWD)
+     ====================================================== */
+
+  @media (max-width: 1199px) {
+    #main-title { font-size: 3.5rem !important; }
+    .about-glass-card { padding: 30px; }
+  }
+
+  @media (max-width: 991px) {
+    .profile-img-wrapper img { max-width: 220px; }
+    #main-title { font-size: 3rem !important; }
+    .bio-text { font-size: 0.95rem; }
+  }
+
   @media (max-width: 768px) {
-    #main-title { font-size: 2.5rem !important; text-align: center; }
-    .tag-text { display: block; text-align: center; }
-    .section-title { font-size: 1rem; }
+    #main-title { font-size: 2.2rem !important; text-align: center; }
+    .tag-text { display: block; text-align: center; font-size: 0.8rem; }
+    .about-glass-card { padding: 25px 20px; }
+
+    /* Technical Stack Mobil ko'rinishi */
+    .tech-section-wrapper {
+      flex-direction: column; /* Mobil qurilmada yozuvlarni ustun shakliga o'tkazadi */
+      align-items: center;
+      padding: 15px 10px;
+    }
+
+    .marquee-viewport {
+      width: 100%;
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    .and-more-text {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      align-self: flex-end; /* "And more" o'ng tarafda turadi */
+    }
+
+    .profile-img-wrapper { margin-bottom: 20px; }
+  }
+
+  @media (max-width: 480px) {
+    #main-title { font-size: 1.8rem !important; }
+    .about-glass-card { padding: 20px 15px; }
+    .profile-img-wrapper img { max-width: 160px; }
+    .section-title { font-size: 0.9rem; gap: 10px; }
+    .section-title::after { display: none; } /* Kichik ekranda chiziqni olib tashlaymiz */
+
+    .tech-card { padding: 6px 12px; gap: 8px; }
+    .tech-card i { font-size: 1rem; }
+    .tech-card span { font-size: 0.75rem; }
+
+    .bio-text { font-size: 0.88rem; line-height: 1.6; }
+    .custom-list li { font-size: 0.85rem; padding: 10px; }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12 mb-4">
-    <span class="tag-text" style="color: #555;">&lt;section id="hero"&gt;</span>
-    <h1 id="main-title" class="my-3" style="font-size: 3.5rem; font-weight: 700;"></h1>
-    <span class="tag-text" style="color: #555;">&lt;/section&gt;</span>
+<div class="container-fluid px-2 px-sm-3 px-md-5">
+  <div class="row">
+    <div class="col-12 mb-2 mb-md-4">
+      <span class="tag-text" style="color: #555;">&lt;section id="hero"&gt;</span>
+      <h1 id="main-title" class="my-2 my-md-3" style="font-weight: 700;"></h1>
+      <span class="tag-text" style="color: #555;">&lt;/section&gt;</span>
+    </div>
   </div>
-</div>
 
-<div class="container-lg px-0">
   <div class="about-glass-card">
     <div class="row align-items-center">
-      <div class="col-lg-4 text-center mb-5 mb-lg-0">
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
         <div class="profile-img-wrapper">
           <img src="{% url 'protected_media' path='images/img.png' %}" alt="Ahrorjon Ibrohimjonov">
         </div>
       </div>
-      <div class="col-lg-8">
-        <h3 class="section-title"><span class="status-dot"></span> IDENTITY_DECRYPTED</h3>
-        <p class="mb-4" style="font-size: 1.3rem; font-weight: 500; color: var(--text);">
+      <div class="col-lg-8 text-center text-lg-start">
+        <h3 class="section-title justify-content-center justify-content-lg-start">
+          <span class="status-dot"></span> IDENTITY_DECRYPTED
+        </h3>
+        <p class="mb-3 mb-md-4" style="font-size: clamp(1rem, 4vw, 1.2rem); font-weight: 500; color: var(--text);">
           Salom! Men <span style="color: var(--primary); font-family: var(--font-mono);">Ahrorjon</span>, yuqori yuklamali va samarali backend tizimlar yaratishga ishtiyoqi baland bo'lgan dasturchiman.
         </p>
         <p class="bio-text">
           Asosiy e'tiborim Python ekotizimi (Django, FastAPI) orqali murakkab biznes mantiqlarini xavfsiz va tezkor API ko'rinishida amalga oshirishga qaratilgan. Hozirda Acharya Universitetida bilimlarimni akademik darajada mustahkamlamoqdaman.
         </p>
 
-        <div class="about-glass-card" style="padding: 20px; margin-top: 20px; margin-bottom: 0; border-style: dashed;">
-          <h3 class="section-title" style="font-size: 0.9rem; margin-bottom: 10px;"><span class="status-dot"></span> TECHNICAL_STACK.sys</h3>
+        <div class="about-glass-card" style="padding: 15px; margin-top: 20px; margin-bottom: 0; border-style: dashed; background: rgba(0,0,0,0.1);">
+          <h3 class="section-title" style="font-size: 0.85rem; margin-bottom: 12px;">
+            <span class="status-dot"></span> TECHNICAL_STACK.sys
+          </h3>
           <div class="tech-section-wrapper">
             <div class="marquee-viewport">
               <div class="tech-track" id="techTrack">
-                {% for i in "12" %} <div class="tech-card"><i class="bi bi-braces"></i><span>Python</span></div>
+                {% for i in "12" %}
+                <div class="tech-card"><i class="bi bi-braces"></i><span>Python</span></div>
                 <div class="tech-card"><i class="bi bi-window-sidebar"></i><span>Django</span></div>
                 <div class="tech-card"><i class="bi bi-database-fill-gear"></i><span>PostgreSQL</span></div>
                 <div class="tech-card"><i class="bi bi-box-seam"></i><span>Docker</span></div>
@@ -208,14 +248,14 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="and-more-text" style="color: var(--primary); opacity: 0.6; font-family: var(--font-mono); font-size: 0.8rem; white-space: nowrap;">...and more</div>
+            <div class="and-more-text" style="color: var(--primary); opacity: 0.6; font-family: var(--font-mono); white-space: nowrap;">...and more</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row g-4">
+  <div class="row g-3 g-md-4">
     <div class="col-md-6">
       <div class="about-glass-card h-100">
         <h3 class="section-title"><span class="status-dot"></span> INTERESTS</h3>
@@ -234,7 +274,7 @@
     </div>
   </div>
 
-  <div class="about-glass-card mt-4">
+  <div class="about-glass-card mt-3 mt-md-4">
     <h3 class="section-title"><span class="status-dot"></span> EXECUTING_TASKS.exe</h3>
     <ul class="custom-list p-0 m-0">
       <li><i class="bi bi-chevron-right"></i> Xavfsiz va yuqori samaradorlikka ega RESTful API lar.</li>
@@ -249,29 +289,14 @@
 {% block extra_scripts %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. Typing Effect
+    const titleElement = document.getElementById('main-title');
+    const titleText = 'Ahrorjon Ibrohimjonov';
+
     if (typeof typeEffect === "function") {
-      typeEffect('main-title', 'Ahrorjon Ibrohimjonov', 80);
+      typeEffect('main-title', titleText, 80);
+    } else {
+      titleElement.innerText = titleText;
     }
-
-    // 2. Spinner (Agar kelajakda qo'shsangiz ishlaydi)
-    function initTechSpinner() {
-      const items = document.querySelectorAll('.spinner-item');
-      if (items.length === 0) return;
-      const totalItems = items.length;
-      const angleStep = 360 / totalItems;
-      const radius = window.innerWidth < 768 ? 160 : 300;
-
-      items.forEach((item, index) => {
-        const angle = index * angleStep;
-        item.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
-      });
-    }
-
-    initTechSpinner();
-    window.addEventListener('resize', initTechSpinner);
-
-    console.log("%c [SYSTEM] About page RWD initialized.", "color: #00ff41; font-weight: bold;");
   });
 </script>
 {% endblock %}
