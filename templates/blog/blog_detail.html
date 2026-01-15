@@ -2,6 +2,10 @@
 {% block title %}Ahrorjon Ibrohimjonov — {{ blog.title }}{% endblock %}
 
 {% block extra_head %}
+<!-- ✅ Prism themes (dark + light) -->
+<link id="prism-theme-dark" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet">
+<link id="prism-theme-light" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet" disabled>
+
 <style>
     :root {
         --neon-green: #39ff14;
@@ -11,6 +15,11 @@
         --text-main: #b0b0b0;
         --text-bright: #ffffff;
         --back-btn-color: #444;
+
+        /* Code UI */
+        --code-border: rgba(57,255,20,.22);
+        --code-btn-bg: rgba(0,0,0,.55);
+        --code-btn-text: var(--neon-green);
     }
 
     /* --- LIGHT MODE REJIMI --- */
@@ -22,6 +31,10 @@
         --back-btn-color: #718096;
         --neon-green: #008f11;
         --neon-blue: #0070f3;
+
+        --code-border: rgba(0,143,17,.25);
+        --code-btn-bg: rgba(255,255,255,.75);
+        --code-btn-text: var(--neon-green);
     }
 
     /* Maqola sarlavhasi - Terminal Style */
@@ -73,9 +86,7 @@
         object-fit: cover;
     }
 
-    .blog-featured-image:hover img {
-        filter: grayscale(0) contrast(1);
-    }
+    .blog-featured-image:hover img { filter: grayscale(0) contrast(1); }
 
     /* Maqola matni */
     .blog-content {
@@ -135,9 +146,7 @@
         text-transform: uppercase;
     }
 
-    .meta-info i {
-        color: var(--neon-green);
-    }
+    .meta-info i { color: var(--neon-green); }
 
     .back-btn {
         color: var(--back-btn-color) !important;
@@ -146,15 +155,81 @@
         font-size: 0.9rem;
     }
 
-    .back-btn:hover {
-        color: var(--neon-green) !important;
-    }
+    .back-btn:hover { color: var(--neon-green) !important; }
 
     /* --- RESPONSIVE (RWD) --- */
     @media (max-width: 768px) {
         .meta-info { gap: 10px; }
         .meta-info span { width: 100%; }
         .share-btn { flex-grow: 1; justify-content: center; }
+    }
+
+    /* =========================
+       ✅ CKEditor5 CodeBlock + Prism + Copy Button
+       ========================= */
+
+    /* CKEditor code blocks */
+    .blog-content pre {
+        position: relative;
+        border: 1px solid var(--code-border);
+        margin: 1.2rem 0;
+        overflow: auto;
+    }
+
+    /* Prism background/padding */
+    .blog-content pre[class*="language-"] {
+        padding: 16px 16px;
+    }
+
+    /* Inline code (matn orasida) */
+    .blog-content :not(pre) > code {
+        border: 1px solid var(--code-border);
+        padding: 0.15em 0.35em;
+        color: var(--text-bright);
+        font-family: 'Fira Code', ui-monospace, monospace;
+        font-size: 0.95em;
+        background: rgba(57,255,20,.06);
+    }
+    body.light-mode .blog-content :not(pre) > code {
+        background: rgba(0,143,17,.06);
+        color: var(--text-bright);
+    }
+
+    /* Copy button (per code block) */
+    .code-copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: 1px solid var(--code-border);
+        background: var(--code-btn-bg);
+        color: var(--code-btn-text);
+        padding: 6px 10px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s ease;
+        user-select: none;
+        z-index: 2;
+    }
+    .code-copy-btn:hover {
+        box-shadow: 0 0 12px rgba(57, 255, 20, 0.18);
+        transform: translateY(-1px);
+    }
+    body.light-mode .code-copy-btn:hover {
+        box-shadow: 0 0 12px rgba(0, 143, 17, 0.18);
+    }
+
+    .code-copy-btn[data-state="copied"] {
+        color: var(--neon-blue);
+        border-color: rgba(0,210,255,.35);
+    }
+
+    @media (max-width: 576px) {
+        .blog-content pre[class*="language-"] { padding: 14px 12px; }
+        .code-copy-btn { top: 8px; right: 8px; padding: 6px 9px; font-size: 0.75rem; }
     }
 </style>
 {% endblock %}
@@ -203,7 +278,7 @@
                         <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="share-btn">
                             <i class="bi bi-twitter-x"></i> X_TWITTER
                         </a>
-                        <button class="share-btn copy-link" id="copyLinkBtn">
+                        <button class="share-btn copy-link" id="copyLinkBtn" type="button">
                             <i class="bi bi-link-45deg"></i> COPY_URL
                         </button>
                     </div>
@@ -216,8 +291,95 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<!-- ✅ Prism core -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+
+<!-- ✅ Languages -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-markup.min.js"></script>  {# HTML #}
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-css.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+
 <script>
-    // Blog interaktivligi (Sizning kodingiz)
+    // =========================
+    // ✅ Prism theme switch (dark/light) based on body.light-mode
+    // =========================
+    function syncPrismThemeWithBody() {
+        const isLight = document.body.classList.contains('light-mode');
+        const darkLink = document.getElementById('prism-theme-dark');
+        const lightLink = document.getElementById('prism-theme-light');
+
+        if (!darkLink || !lightLink) return;
+
+        if (isLight) {
+            darkLink.disabled = true;
+            lightLink.disabled = false;
+        } else {
+            darkLink.disabled = false;
+            lightLink.disabled = true;
+        }
+    }
+
+    // =========================
+    // ✅ Add COPY buttons to each code block (CKEditor5 codeBlock)
+    // =========================
+    function addCopyButtonsToCodeBlocks() {
+        const blocks = document.querySelectorAll('.blog-content pre');
+
+        blocks.forEach((pre) => {
+            if (pre.querySelector('.code-copy-btn')) return;
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'code-copy-btn';
+            btn.innerHTML = '<i class="bi bi-clipboard"></i> COPY_CODE';
+
+            btn.addEventListener('click', async () => {
+                try {
+                    const codeEl = pre.querySelector('code');
+                    const text = codeEl ? codeEl.innerText : pre.innerText;
+
+                    await navigator.clipboard.writeText(text);
+
+                    const old = btn.innerHTML;
+                    btn.setAttribute('data-state', 'copied');
+                    btn.innerHTML = '<i class="bi bi-check2"></i> COPIED';
+
+                    setTimeout(() => {
+                        btn.removeAttribute('data-state');
+                        btn.innerHTML = old;
+                    }, 1500);
+                } catch (e) {
+                    console.error(e);
+                }
+            });
+
+            // CKEditor ba'zan language classni code'ga beradi, pre'ga emas:
+            const codeLang = pre.querySelector('code[class*="language-"]');
+            if (codeLang && !pre.className.includes('language-')) {
+                const langClass = Array.from(codeLang.classList).find(c => c.startsWith('language-'));
+                if (langClass) pre.classList.add(langClass);
+            }
+
+            pre.appendChild(btn);
+        });
+    }
+
+    // =========================
+    // ✅ Highlight all (Prism)
+    // =========================
+    function runPrismHighlight() {
+        if (window.Prism && Prism.highlightAll) {
+            Prism.highlightAll();
+        }
+    }
+
+    // =========================
+    // ✅ COPY URL button (sizniki)
+    // =========================
     const copyBtn = document.getElementById('copyLinkBtn');
     if(copyBtn) {
         copyBtn.addEventListener('click', () => {
@@ -233,7 +395,9 @@
         });
     }
 
-    // Scroll effekti (Sizning kodingiz, optimizatsiya qilindi)
+    // =========================
+    // ✅ Scroll effekti (sizniki)
+    // =========================
     document.addEventListener('scroll', () => {
         const entry = document.querySelector('.blog-entry-js');
         if(entry) {
@@ -244,6 +408,22 @@
                 entry.style.borderLeft = "1px solid var(--border-color)";
             }
         }
+    });
+
+    // =========================
+    // ✅ Init
+    // =========================
+    document.addEventListener('DOMContentLoaded', () => {
+        syncPrismThemeWithBody();
+        addCopyButtonsToCodeBlocks();
+        runPrismHighlight();
+
+        // Agar sizda theme toggle JS body.light-mode classini runtime’da o‘zgartirsa,
+        // MutationObserver avtomatik theme sync qiladi:
+        const observer = new MutationObserver(() => {
+            syncPrismThemeWithBody();
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
 
     console.log("%c [BLOG] Fetching content: complete.", "color: #39ff14");
