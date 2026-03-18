@@ -150,6 +150,7 @@
           <li class="nav-item w-100 w-lg-auto"><a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog' %}"><i class="bi bi-chat-left-text"></i> Blog</a></li>
           <li class="nav-item w-100 w-lg-auto"><a class="nav-link" href="https://t.me/axror_contactbot" target="_blank"><i class="bi bi-robot"></i> Bot</a></li>
           <li class="nav-item w-100 w-lg-auto"><a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}"><i class="bi bi-envelope"></i> Contact</a></li>
+          <li class="nav-item w-100 w-lg-auto"><a class="nav-link donate-nav-btn {% if 'donate' in request.path %}active{% endif %}" href="{% url 'donate' %}"><i class="bi bi-heart-fill me-1"></i> Donate</a></li>
           <li class="nav-item w-100 w-lg-auto"><a class="nav-link {% if 'ask_question' in request.path %}active{% endif %}" href="{% url 'ask_question' %}"><i class="bi bi-question-circle"></i> Savol</a></li>
         </ul>
       </div>
@@ -166,6 +167,7 @@
       <a href="https://t.me/axrorback" target="_blank" class="social-link" title="Telegram"><i class="bi bi-telegram"></i></a>
       <a href="https://instagram.com/axrorback" target="_blank" class="social-link" title="Instagram"><i class="bi bi-instagram"></i></a>
       <a href="mailto:axrorback@gmail.com" class="social-link" title="Email"><i class="bi bi-envelope"></i></a>
+      <a href="{% url 'donate' %}" class="social-link" title="Donate"><i class="bi bi-heart-fill"></i></a>
     </div>
   </main>
 

@@ -78,6 +78,9 @@ def about(request):
 def contact(request):
     return render(request, 'blog/contact.html')
 
+def donate(request):
+    return render(request, 'blog/donate.html')
+
 
 def blog(request):
     blogs = Post.objects.all()

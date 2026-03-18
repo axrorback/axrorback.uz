@@ -159,3 +159,24 @@ class AdminLog(models.Model):
 
     def __str__(self):
         return f"{self.level}: {self.message[:50]}"
+        return f"{self.level}: {self.message[:50]}"
+
+class Donation(models.Model):
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("paid", "Paid"),
+        ("canceled", "Canceled"),
+        ("failed", "Failed"),
+    ]
+
+    amount = models.PositiveIntegerField()
+    transaction_id = models.CharField(max_length=100, unique=True)
+    cheque_id = models.CharField(max_length=100, blank=True, null=True)
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.transaction_id} - {self.amount}"
