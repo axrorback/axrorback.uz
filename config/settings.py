@@ -30,8 +30,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1','axrorback.dev','axrorback-6964a061f541.herokuapp.com','axror.tech','www.axror.tech','axrorbek.uz','www.axrorbek.uz']
-CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','https://axrorback.dev','https://axrorback-6964a061f541.herokuapp.com/','https://axror.tech','https://www.axror.tech','https://www.axrorback.dev','https://axrorbek.uz','https://www.axrorbek.uz']
+ALLOWED_HOSTS = ['www.axrorback.uz', 'axrorback.uz','127.0.0.1','axrorback.dev','axrorback-6964a061f541.herokuapp.com','axror.tech','www.axror.tech','axrorbek.uz','www.axrorbek.uz','media.axror.tech']
+CSRF_TRUSTED_ORIGINS = ['https://axrorback.uz','https://www.axrorback.uz','https://axrorback.dev','https://axrorback-6964a061f541.herokuapp.com/','https://axror.tech','https://www.axror.tech','https://www.axrorback.dev','https://axrorbek.uz','https://www.axrorbek.uz','https://media.axror.tech']
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
@@ -134,8 +134,10 @@ CKEDITOR_5_CONFIGS = {
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
 TELEGRAM_BOT_TOKEN = os.getenv('TOKEN')
 TELEGRAM_CHANNEL_ID = os.getenv('ID')
+
 # Database
 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -149,6 +151,14 @@ DATABASES = {
 
 if 'DATABASE_URL' not in os.environ:
     DATABASES['default']['ssl_require'] = False
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
+AWS_S3_CUSTOM_DOMAIN = 'media.axror.tech'
+AWS_S3_FILE_OVERWRITE = False
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 
 # Password validation

@@ -1,38 +1,45 @@
+import json
 import os
-
-from django.http import HttpResponseForbidden ,FileResponse,Http404
+from django.http import HttpResponseForbidden, FileResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 import requests
+from django.views.decorators.csrf import csrf_exempt
+from django.utils._os import safe_join
 from .forms import QuestionForm
 from .models import *
-
+from django.core.cache import cache
 from django.conf import settings
+from urllib.parse import urlparse
 
 ALLOWED_DOMAINS = settings.ALLOWED_HOSTS
 
 def protected_media(request, path):
-    """
-    Faol referrer tekshirish: faqat bizning domenimizdan kelgan so‘rovga rasm ko‘rsatiladi.
-    MEDIA_ROOT va STATIC_ROOT fayllarini tekshiradi.
-    """
-    referer = request.META.get('HTTP_REFERER', '')
-    if not any(domain in referer for domain in ALLOWED_DOMAINS):
-        return HttpResponseForbidden(
-            "Rasmlarimni URLni olganiz bilan boshqa yerda ishlata olmaysiz. "
-            "Hotlinking faqat domenimizdan so‘rov borsagina rasm URL ishlaydi."
-        )
+    referer = request.META.get("HTTP_REFERER")
+    if referer:
+        try:
+            referer_host = urlparse(referer).hostname
+        except Exception:
+            return HttpResponseForbidden("Invalid referer")
 
-    # MEDIA_ROOT ichida tekshirish
-    full_path = os.path.join(settings.MEDIA_ROOT, path)
-    if os.path.exists(full_path):
-        return FileResponse(open(full_path, 'rb'))
+        if referer_host not in ALLOWED_DOMAINS:
+            return HttpResponseForbidden("Hotlink forbidden")
 
-    #  Agar MEDIA_ROOT da topilmasa, STATIC_ROOT ichida tekshirish
-    full_path = os.path.join(settings.STATIC_ROOT, path)
-    if os.path.exists(full_path):
-        return FileResponse(open(full_path, 'rb'))
+    try:
+        media_path = safe_join(settings.MEDIA_ROOT, path)
+    except Exception:
+        return HttpResponseForbidden("Invalid path")
 
-    # Agar topilmasa
+    if os.path.exists(media_path):
+        return FileResponse(open(media_path, "rb"))
+
+    try:
+        static_path = safe_join(settings.STATIC_ROOT, path)
+    except Exception:
+        return HttpResponseForbidden("Invalid path")
+
+    if os.path.exists(static_path):
+        return FileResponse(open(static_path, "rb"))
+
     raise Http404()
 
 def secure_certificate_view(request, pk, expire, token):
