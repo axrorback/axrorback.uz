@@ -16,6 +16,6 @@ urlpatterns = [
     path('achievements/', achievements, name='achievements'),  #
     path('media/<path:path>/', protected_media, name='protected_media'),
     path('cert/<int:pk>/<int:expire>/<str:token>/', secure_certificate_view, name='secure_certificate'),
-    path('rss/',LatestPostFeed(),name='rss-feed')
-
+    path('rss/',LatestPostFeed(),name='rss-feed'),
+    path('donate/',donate,name='donate'),
 ]
