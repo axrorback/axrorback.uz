@@ -45,10 +45,8 @@ def protected_media(request, path):
 def secure_certificate_view(request, pk, expire, token):
     cert = get_object_or_404(Certificate, pk=pk)
 
-    # Hozirgi vaqt
     now = int(time.time())
 
-    # Muddati tugaganini tekshirish
     if now > int(expire):
         return render(request, "blog/error_expired.html", {
             "cert": cert,
@@ -63,17 +61,12 @@ def secure_certificate_view(request, pk, expire, token):
             "cert": cert,
             "message": "Noto‘g‘ri yoki buzilgan token.",
         }, status=403)
-
-    # Qolgan vaqtni hisoblash
     remaining = int(expire) - now
 
     return render(request, "blog/certificate_view.html", {
         "cert": cert,
         "remaining": remaining
     })
-
-
-
 
 
 def thanks(request):
@@ -92,7 +85,7 @@ def donate(request):
 
 
 def blog(request):
-    blogs = Post.objects.all()
+    blogs = Post.objects.all().order_by('-created')
     return render(request, 'blog/blogs.html', {'blogs': blogs})
 
 def achievements(request):
@@ -109,12 +102,12 @@ def achievements(request):
 
 
 def blog_detail(request, slug):
-    blog = Post.objects.get(slug=slug)
+    blog = get_object_or_404(Post, slug=slug)
     return render(request, 'blog/blog_detail.html', {'blog': blog})
 
 
 def questions_list(request):
-    questions = Question.objects.filter(is_active=True)
+    questions = Question.objects.filter(is_active=True).order_by('-created')
     return render(request, 'blog/questions_list.html', {'questions': questions})
 
 def send_telegram_message(text):
@@ -141,7 +134,7 @@ def ask_question(request):
             text = (
                 f"📌 <b>Yangi Savol</b>\n"
                 f"Ism: {question.name}\n"
-                f"Telefon: {question.masked_phone()}\n"
+                f"Telefon: {question.phone_number}\n"
                 f"Savol: {question.question}\n"
             )
             send_telegram_message(text)

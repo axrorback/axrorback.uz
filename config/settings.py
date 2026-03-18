@@ -144,7 +144,7 @@ TELEGRAM_CHANNEL_ID = os.getenv('ID')
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3', # Lokalda sqlite
-        conn_max_age=600,
+        conn_max_age=0,
         ssl_require=True
     )
 }
@@ -198,9 +198,6 @@ AUTH_USER_MODEL = 'auth.User'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"  # yoki os.path.join(BASE_DIR, "media")
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
@@ -208,9 +205,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
 
 LOGGING = {
     'version': 1,

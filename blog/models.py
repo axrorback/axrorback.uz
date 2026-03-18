@@ -55,7 +55,7 @@ class Question(models.Model):
         verbose_name="Ism"
     )
     phone_number = models.CharField(
-        max_length=12,
+        max_length=13,
         verbose_name="Telefon raqami"
     )
     question = models.TextField(
@@ -128,7 +128,7 @@ class Certificate(models.Model):
     def is_pdf(self):
         return self.file.name.lower().endswith('.pdf')
 
-    def get_secure_url(self, expires_in_minutes=30):
+    def get_secure_url(self, expires_in_minutes=10):
         """
         30 daqiqalik tokenli havola yaratadi
         """
@@ -158,7 +158,6 @@ class AdminLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.level}: {self.message[:50]}"
         return f"{self.level}: {self.message[:50]}"
 
 class Donation(models.Model):
