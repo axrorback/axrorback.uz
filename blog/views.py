@@ -77,6 +77,8 @@ def secure_certificate_view(request, pk, expire, token):
 
 
 def thanks(request):
+    if not request.session.get('question_id', None):
+        return redirect('ask_question')
     return render(request, 'blog/thanks.html')
 
 def about(request):
@@ -143,8 +145,8 @@ def ask_question(request):
                 f"Savol: {question.question}\n"
             )
             send_telegram_message(text)
-
-            return redirect('ask_question')
+            request.session['question_id'] = question.id
+            return redirect('thanks')
     else:
         form = QuestionForm()
     return render(request, 'blog/ask_question.html', {

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Rahmat! — Ahrorjon Ibrohimjonov{% endblock %}
+
+{% block extra_head %}
+<style>
+    .thanks-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        padding: 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .thanks-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .success-icon {
+        font-size: 4rem;
+        color: var(--primary);
+        text-shadow: 0 0 20px var(--primary-glow);
+        margin-bottom: 1.5rem;
+        display: inline-block;
+    }
+
+    .glitch-text {
+        font-family: var(--font-mono);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .btn-cyber {
+        background: transparent;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        padding: 10px 25px;
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        transition: all 0.3s;
+        position: relative;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .btn-cyber:hover {
+        background: var(--primary);
+        color: #000;
+        box-shadow: 0 0 20px var(--primary-glow);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="col-md-8 col-lg-6">
+        <div class="thanks-card" data-aos="fade-up">
+            <div class="success-icon">
+                <i class="bi bi-check2-circle"></i>
+            </div>
+            
+            <h1 class="glitch-text mb-4">Muvaffaqiyatli!</h1>
+            
+            <p class="lead mb-4 text-secondary">
+                Xabaringiz tizimga qabul qilindi. <br>
+                Tez orada aloqaga chiqaman.
+            </p>
+
+            <div class="terminal-loader mb-4" style="font-family: var(--font-mono); font-size: 0.9rem; color: #666;">
+                <span id="typed-status"></span><span class="cursor"></span>
+            </div>
+
+            <a href="{% url 'about' %}" class="btn-cyber">
+                <i class="bi bi-arrow-left me-2"></i> Bosh sahifaga qaytish
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Status xabarini yozish effekti
+        typeEffect('typed-status', 'STATUS: Message_Sent_Successfully... [OK]', 50);
+    });
+</script>
+{% endblock %}
