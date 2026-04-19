@@ -27,9 +27,9 @@ class QuestionForm(forms.ModelForm):
     def clean_phone_number(self):
         phone = self.cleaned_data.get('phone_number')
         clean_phone = re.sub(r'\s+', '', phone)
-        pattern = r'^\+998\d{10,}$'
+        pattern = r'^\+998\d{9}$'
 
         if not re.match(pattern, clean_phone):
-            raise ValidationError("PROTOCOL_ERROR: Invalid phone structure.")
+            raise ValidationError("Telefon raqamini +998XXXXXXXXX formatida kiriting.")
 
         return clean_phone

@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from django.http import HttpResponseForbidden, FileResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,6 +13,8 @@ from django.conf import settings
 from urllib.parse import urlparse
 
 ALLOWED_DOMAINS = settings.ALLOWED_HOSTS
+TELEGRAM_REQUEST_TIMEOUT = 10
+logger = logging.getLogger(__name__)
 
 def protected_media(request, path):
     referer = request.META.get("HTTP_REFERER")
@@ -114,13 +117,19 @@ def send_telegram_message(text):
     """Bot orqali kanalga xabar yuborish"""
     bot_token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHANNEL_ID
+    if not bot_token or not chat_id:
+        logger.info("Telegram konfiguratsiyasi yo'q: xabar yuborish o'tkazib yuborildi")
+        return
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = {
         "chat_id": chat_id,
         "text": text,
         "parse_mode": "HTML",  # agar <b>bold</b> ishlatmoqchi bo‘lsangiz
     }
-    requests.post(url, data=data)
+    try:
+        requests.post(url, data=data, timeout=TELEGRAM_REQUEST_TIMEOUT)
+    except requests.RequestException as exc:
+        logger.warning("Telegram xabari yuborilmadi: %s", exc)
 
 
 def ask_question(request):

@@ -141,16 +141,14 @@ TELEGRAM_CHANNEL_ID = os.getenv('ID')
 # Database
 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+database_url = os.getenv('DATABASE_URL')
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3', # Lokalda sqlite
+        default=database_url or 'sqlite:///db.sqlite3',  # Lokalda sqlite
         conn_max_age=0,
-        ssl_require=True
+        ssl_require=(database_url or '').startswith(('postgres://', 'postgresql://'))
     )
 }
-
-if 'DATABASE_URL' not in os.environ:
-    DATABASES['default']['ssl_require'] = False
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
