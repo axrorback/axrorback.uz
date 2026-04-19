@@ -13,6 +13,7 @@ from django.conf import settings
 from urllib.parse import urlparse
 
 ALLOWED_DOMAINS = settings.ALLOWED_HOSTS
+TELEGRAM_REQUEST_TIMEOUT = 10
 logger = logging.getLogger(__name__)
 
 def protected_media(request, path):
@@ -117,6 +118,7 @@ def send_telegram_message(text):
     bot_token = settings.TELEGRAM_BOT_TOKEN
     chat_id = settings.TELEGRAM_CHANNEL_ID
     if not bot_token or not chat_id:
+        logger.info("Telegram konfiguratsiyasi yo'q: xabar yuborish o'tkazib yuborildi")
         return
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = {
@@ -125,7 +127,7 @@ def send_telegram_message(text):
         "parse_mode": "HTML",  # agar <b>bold</b> ishlatmoqchi bo‘lsangiz
     }
     try:
-        requests.post(url, data=data, timeout=10)
+        requests.post(url, data=data, timeout=TELEGRAM_REQUEST_TIMEOUT)
     except requests.RequestException as exc:
         logger.warning("Telegram xabari yuborilmadi: %s", exc)
 

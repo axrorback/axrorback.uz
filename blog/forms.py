@@ -30,6 +30,6 @@ class QuestionForm(forms.ModelForm):
         pattern = r'^\+998\d{9}$'
 
         if not re.match(pattern, clean_phone):
-            raise ValidationError("PROTOCOL_ERROR: Invalid phone structure.")
+            raise ValidationError("Telefon raqamini +998XXXXXXXXX formatida kiriting.")
 
         return clean_phone

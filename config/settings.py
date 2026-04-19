@@ -141,12 +141,12 @@ TELEGRAM_CHANNEL_ID = os.getenv('ID')
 # Database
 
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-database_url = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+database_url = os.getenv('DATABASE_URL')
 DATABASES = {
     'default': dj_database_url.config(
-        default=database_url,  # Lokalda sqlite
+        default=database_url or 'sqlite:///db.sqlite3',  # Lokalda sqlite
         conn_max_age=0,
-        ssl_require=database_url.startswith(('postgres://', 'postgresql://'))
+        ssl_require=(database_url or '').startswith(('postgres://', 'postgresql://'))
     )
 }
 

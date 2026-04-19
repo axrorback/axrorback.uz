@@ -1,11 +1,12 @@
 from unittest.mock import patch
 
 import requests
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .forms import QuestionForm
 from .models import Question
+from .views import send_telegram_message
 
 
 class QuestionFormTests(TestCase):
@@ -48,15 +49,33 @@ class AskQuestionViewTests(TestCase):
         mocked_send.assert_called_once()
 
     @patch('blog.views.requests.post', side_effect=requests.RequestException('network'))
-    def test_valid_post_still_redirects_if_telegram_request_fails(self, _):
-        response = self.client.post(
-            reverse('ask_question'),
-            data={
-                'name': 'Vali',
-                'phone_number': '+998991112233',
-                'question': 'Yordam kerak',
-            },
-        )
+    def test_valid_post_still_redirects_if_telegram_request_fails(self, mock_requests_post):
+        with self.assertLogs('blog.views', level='WARNING') as logs:
+            response = self.client.post(
+                reverse('ask_question'),
+                data={
+                    'name': 'Vali',
+                    'phone_number': '+998991112233',
+                    'question': 'Yordam kerak',
+                },
+            )
 
         self.assertRedirects(response, reverse('thanks'))
         self.assertEqual(Question.objects.count(), 1)
+        mock_requests_post.assert_called_once()
+        self.assertTrue(
+            any("Telegram xabari yuborilmadi" in message for message in logs.output)
+        )
+
+
+class SendTelegramMessageTests(TestCase):
+    @override_settings(TELEGRAM_BOT_TOKEN='', TELEGRAM_CHANNEL_ID='')
+    @patch('blog.views.requests.post')
+    def test_skips_request_when_telegram_credentials_missing(self, mock_requests_post):
+        with self.assertLogs('blog.views', level='INFO') as logs:
+            send_telegram_message('test')
+
+        mock_requests_post.assert_not_called()
+        self.assertTrue(
+            any("Telegram konfiguratsiyasi yo'q" in message for message in logs.output)
+        )
