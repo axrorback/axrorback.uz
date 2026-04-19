@@ -4,3 +4,5 @@ baza.sqlite3
 django.log
 media/*
 venv
+__pycache__/
+*.pyc
